@@ -1,0 +1,14 @@
+{
+  "frontendFolder": "C:/Users/oscar/source/repos/TDA367_labs_exercises/get-a-room/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "C:/Users/oscar/source/repos/TDA367_labs_exercises/get-a-room/target/flow-frontend",
+  "staticOutput": "C:/Users/oscar/source/repos/TDA367_labs_exercises/get-a-room/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "frontendBundleOutput": "C:\\Users\\oscar\\source\\repos\\TDA367_labs_exercises\\get-a-room\\target\\classes\\META-INF\\VAADIN\\webapp",
+  "addonFrontendFolder": "target/flow-frontend/",
+  "themeName": "getaroom",
+  "clientServiceWorkerSource": "C:\\Users\\oscar\\source\\repos\\TDA367_labs_exercises\\get-a-room\\target\\sw.ts",
+  "pwaEnabled": true,
+  "offlineEnabled": true,
+  "offlinePath": "'.'"
+}
