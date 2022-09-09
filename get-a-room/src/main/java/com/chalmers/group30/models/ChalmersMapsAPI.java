@@ -27,7 +27,7 @@ public class ChalmersMapsAPI {
     public static JsonObject informationBoard(String uid) throws IOException {
         // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
         final String requestUrl = baseUrl + String.format("information_board/%s/json", uid);
-        return readJsonFromUrl(requestUrl);
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -39,8 +39,8 @@ public class ChalmersMapsAPI {
      * @throws IOException
      */
     public static JsonArray timeEditSchedule(String uid, int year, int week) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%i/%i/json", uid, year, week);
-        return readJsonFromUrl(requestUrl).getAsJsonArray();
+        final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", uid, year, week);
+        return readJsonElementFromUrl(requestUrl).getAsJsonArray();
     }
 
     /**
@@ -53,8 +53,8 @@ public class ChalmersMapsAPI {
      * @throws IOException
      */
     public static JsonObject route(double lat1, double lon1, double lat2, double lon2) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f/json", lat1, lon1, lat2, lon2);
-        return readJsonFromUrl(requestUrl);
+        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f", lat1, lon1, lat2, lon2);
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -65,19 +65,23 @@ public class ChalmersMapsAPI {
      */
     public static JsonObject getInfo(String uid) throws IOException {
         final String requestUrl = baseUrl + String.format("info/%s/json", uid);
-        return readJsonFromUrl(requestUrl);
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
 
-    // Get a JsonObject from a URL endpoint
-    private static JsonObject readJsonFromUrl(String sURL) throws IOException {
+    /** Get a JsonElement from a URL endpoint
+     *
+     * @param sURL The URL to get the JSON from
+     * @return A JsonElement representing the JSON from the URL
+     * @throws IOException If the request failed for some reason
+     */
+    private static JsonElement readJsonElementFromUrl(String sURL) throws IOException {
         // Connect to the URL
         URL url = new URL(sURL);
         URLConnection request = url.openConnection();
         request.connect();
 
         // Convert to a JSON object
-        JsonElement root = JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
-        return root.getAsJsonObject();
+        return JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
     }
 }
