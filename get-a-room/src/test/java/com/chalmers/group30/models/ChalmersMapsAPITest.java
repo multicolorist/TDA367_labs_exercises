@@ -9,13 +9,13 @@ import java.io.IOException;
 import static com.chalmers.group30.models.ChalmersMapsAPI.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ChalmersMapsAPITest {
+public class ChalmersMapsAPITest {
     @Test
     public void informationBoard_shouldGiveProperJsonAndIsNotEmpty() {
         try {
             // Get the information board for Campus Johanneberg
             JsonObject infoBoard = informationBoard("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
-            assertNotEquals(infoBoard.get("suggestions").getAsJsonObject().size(), 0);
+            assertNotEquals(infoBoard.get("suggestions").getAsJsonArray().size(), 0);
         } catch (Exception e) {
             fail(e);
         }
@@ -39,7 +39,7 @@ class ChalmersMapsAPITest {
         try {
             // Get info from a room using an example uid for an existing room
             JsonObject info = getInfo("d1cbbbbf-c9ef-4d41-8bf3-33bd06ab9ac7");
-            assertNotEquals(info.get("items").getAsJsonObject().size(), 0);
+            assertNotEquals(info.get("properties").getAsJsonObject().size(), 0);
         } catch (Exception e) {
             fail(e);
         }
@@ -51,7 +51,7 @@ class ChalmersMapsAPITest {
         try {
             // Get info from a room using an example uid for an existing room
             JsonObject route = route(57.696484034673915, 11.975264592149706,57.700295142972465,11.965737593691228);
-            assertNotEquals(route.get("properties").getAsJsonObject().size(), 0);
+            assertNotEquals(route.get("items").getAsJsonObject().size(), 0);
         } catch (Exception e) {
             fail(e);
         }
