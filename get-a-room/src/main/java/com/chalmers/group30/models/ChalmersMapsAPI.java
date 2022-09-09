@@ -43,6 +43,32 @@ public class ChalmersMapsAPI {
         return readJsonFromUrl(requestUrl).getAsJsonArray();
     }
 
+    /**
+     * Gets a walking route between two points.
+     * @param lat1 The latitude of the first point
+     * @param lon1 The longitude of the first point
+     * @param lat2 The latitude of the second point
+     * @param lon2 The longitude of the second point
+     * @return JSON object representing a walking route between the two points
+     * @throws IOException
+     */
+    public static JsonObject route(double lat1, double lon1, double lat2, double lon2) throws IOException {
+        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f/json", lat1, lon1, lat2, lon2);
+        return readJsonFromUrl(requestUrl);
+    }
+
+    /**
+     * Get information about a API object identified by its UID.
+     * @param uid The unique identifier of the object
+     * @return JSON object representing information about the object
+     * @throws IOException
+     */
+    public static JsonObject getInfo(String uid) throws IOException {
+        final String requestUrl = baseUrl + String.format("info/%s/json", uid);
+        return readJsonFromUrl(requestUrl);
+    }
+
+
     // Get a JsonObject from a URL endpoint
     private static JsonObject readJsonFromUrl(String sURL) throws IOException {
         // Connect to the URL
