@@ -30,8 +30,6 @@ public class HelloWorldView extends HorizontalLayout {
         setMargin(true);
         setVerticalComponentAlignment(Alignment.END, name, sayHello);
 
-        add(name, sayHello);
-
         H1 h1 = new H1("Hello darkness");
 
         Button toggleButton = new Button("Toggle dark theme", click -> {
@@ -46,7 +44,9 @@ public class HelloWorldView extends HorizontalLayout {
 
         add(
                 toggleButton,
-                h1
+                h1,
+                name,
+                sayHello
         );
     }
 
