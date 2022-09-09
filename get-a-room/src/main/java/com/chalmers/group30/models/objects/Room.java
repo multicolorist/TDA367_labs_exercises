@@ -13,21 +13,29 @@ import java.util.List;
  * Represents a room in Campus Maps.
  */
 public class Room {
+    //TODO: Discuss visibility for fields
     List<Booking> bookings;
     String name;
     String building;
     String uid;
+    double longitude;
+    double latitude;
+
 
     /**
      * Initialises a new Room object.
      * @param name The name of the room
      * @param building The building the room is in
      * @param uid The unique identifier of the room
+     * @param longitude The longitude of the room
+     * @param latitude The latitude of the room
      */
-    public Room(String name, String building, String uid) {
+    public Room(String name, String building, String uid, double longitude, double latitude) {
         this.name = name;
         this.building = building;
         this.uid = uid;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     /**
@@ -39,7 +47,9 @@ public class Room {
         String name = obj.get("title").getAsString();
         String building = obj.get("subtitle").getAsString();
         String uid = obj.get("data").getAsString();
-        return new Room(name, building, uid);
+        double longitude = obj.get("longitude").getAsDouble();
+        double latitude = obj.get("latitude").getAsDouble();
+        return new Room(name, building, uid, longitude, latitude);
     }
 
     /**
@@ -61,5 +71,61 @@ public class Room {
         // Update cached bookings and return newly fetched bookings
         this.bookings = bookings;
         return bookings;
+    }
+
+    /**
+     * Calculates the as-the-crow-flies distance in meters between a given position and a room.
+     * @param longitude The longitude of the position
+     * @param latitude The latitude of the position
+     * @return The distance in meters between the position and the room
+     */
+    public double birdsDistance(double longitude, double latitude) {
+        // Example coordinates:
+        // 'longitude': 11.97489,
+        // 'latitude': 57.691049,
+
+        // Using the haversine formula - works well also for small distances:
+        // https://www.movable-type.co.uk/scripts/latlong.html
+        double R = 6371e3; // earth radius
+        double phi1 = Math.toRadians(latitude);
+        double phi2 = Math.toRadians(this.latitude);
+        double dPhi = Math.toRadians(this.latitude - latitude);
+        double dLambda = Math.toRadians(this.longitude - longitude);
+
+        double a = Math.sin(dPhi/2) * Math.sin(dPhi/2) +
+                Math.cos(phi1) * Math.cos(phi2) *
+                Math.sin(dLambda/2) * Math.sin(dLambda/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        return R * c;
+    }
+
+    /**
+     * Calculates the walking distance in meters between a given position and a room.
+     * @param longitude The longitude of the position
+     * @param latitude The latitude of the position
+     * @return The distance in meters between the position and the room
+     * @throws IOException If the API request failed for some reason.
+     */
+    public double walkingDistance(double longitude, double latitude) throws IOException {
+        JsonObject routeJson = ChalmersMapsAPI.route(longitude, latitude, this.longitude, this.latitude);
+        Route route = Route.fromJSON(routeJson);
+        return route.getDistance();
+    }
+
+    /**
+     * Gets the unique identifier of the room.
+     * @return uid The unique identifier of the room
+     */
+    public String getUid() {
+        return uid;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }
