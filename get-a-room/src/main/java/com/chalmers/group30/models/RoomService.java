@@ -16,14 +16,14 @@ public class RoomService {
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
-    private final String areaUID = "a85a8be2-4ff6-4e39-9880-c2adb2a7626f";
+    private final static String areaUID = "a85a8be2-4ff6-4e39-9880-c2adb2a7626f";
 
     /**
      * Gets currently available rooms
      * @return A list of all rooms
      * @throws IOException If the API request failed for some reason.
      */
-    public List<Room> getRooms() throws IOException {
+    public static List<Room> getRooms() throws IOException {
         // Get all buildings and facilities
         JsonObject buildings = ChalmersMapsAPI.informationBoard(areaUID);
 
