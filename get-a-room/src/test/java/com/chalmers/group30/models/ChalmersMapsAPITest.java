@@ -1,5 +1,6 @@
 package com.chalmers.group30.models;
 
+import com.chalmers.group30.models.objects.Location;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class ChalmersMapsAPITest {
     public void route_shouldGiveProperJsonAndIsNotEmpty() {
         try {
             // Get info from a room using an example uid for an existing room
-            JsonObject route = route(57.696484034673915, 11.975264592149706,57.700295142972465,11.965737593691228);
+            JsonObject route = route(new Location(57.696484034673915, 11.975264592149706),new Location(57.700295142972465,11.965737593691228));
             assertNotEquals(route.get("items").getAsJsonObject().size(), 0);
         } catch (Exception e) {
             fail(e);

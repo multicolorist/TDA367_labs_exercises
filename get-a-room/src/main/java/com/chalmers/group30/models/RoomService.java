@@ -38,34 +38,7 @@ public class RoomService {
         return rooms;
     }
 
-    /**
-     * Gets distance to room from a given location
-     * @param uid The room uid
-     * @param latitude The latitude of the location
-     * @param longitude The longitude of the location
-     * @return The distance to the room in meters
-     * @throws IOException If an API request failed for some reason.
-     */
-    public double getDistanceToRoom(String uid, double latitude, double longitude) throws IOException {
-        Route route = getRoute(uid, latitude, longitude);
-        //TODO: Take decision on which distance to use, currently walking distance
-        return route.getDistance();
-    }
 
-    /**
-     * Gets the route between a room and a given location
-     * @param uid The room uid
-     * @param latitude The latitude of the location
-     * @param longitude The longitude of the location
-     * @return A Route object representing the route
-     * @throws IOException If an API request failed for some reason.
-     */
-    public static Route getRoute(String uid, double latitude, double longitude) throws IOException {
-        JsonObject roomJson = ChalmersMapsAPI.getInfo(uid);
-        Room room = Room.fromJSON(roomJson);
-        JsonObject routeJson = ChalmersMapsAPI.route(latitude, longitude, room.getLatitude(), room.getLongitude());
-        return Route.fromJSON(routeJson);
-    }
 
 
 }

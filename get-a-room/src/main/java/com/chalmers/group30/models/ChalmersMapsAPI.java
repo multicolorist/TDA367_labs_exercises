@@ -1,5 +1,6 @@
 package com.chalmers.group30.models;
 
+import com.chalmers.group30.models.objects.Location;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -45,15 +46,13 @@ public class ChalmersMapsAPI {
 
     /**
      * Gets a walking route between two points.
-     * @param lat1 The latitude of the first point
-     * @param lon1 The longitude of the first point
-     * @param lat2 The latitude of the second point
-     * @param lon2 The longitude of the second point
+     * @param origin The origin location
+     * @param destination The destination location
      * @return JSON object representing a walking route between the two points
      * @throws IOException
      */
-    public static JsonObject route(double lat1, double lon1, double lat2, double lon2) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f", lat1, lon1, lat2, lon2);
+    public static JsonObject route(Location origin, Location destination) throws IOException {
+        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f", origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
