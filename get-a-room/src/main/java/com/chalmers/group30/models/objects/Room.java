@@ -88,4 +88,12 @@ public class Room {
     public double getLongitude() {
         return longitude;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBuilding() {
+        return building;
+    }
 }
