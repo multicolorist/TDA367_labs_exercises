@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Facade for finding rooms to the user - the only front-facing interface
@@ -24,7 +25,7 @@ public class BookingService implements BookingServiceInterface{
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
-    private final static String areaUID = "a85a8be2-4ff6-4e39-9880-c2adb2a7626f";
+    private final static UUID areaUID = UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
 
