@@ -59,7 +59,7 @@ public class RoomService implements RoomServiceInterface{
         for(JsonElement building : buildings.get("suggestions").getAsJsonArray()) {
             JsonObject buildingRooms = chalmersMapsAPI.informationBoard(UUID.fromString(building.getAsJsonObject().get("data").getAsString()));
             for(JsonElement room : buildingRooms.get("suggestions").getAsJsonArray()){
-                if(elementTypes.contains(room.getAsJsonObject().get("element_type"))) rooms.add(Room.fromJSON(room.getAsJsonObject()));
+                if(elementTypes.contains(room.getAsJsonObject().get("element_type").getAsString())) rooms.add(Room.fromJSON(room.getAsJsonObject()));
             }
         }
 
