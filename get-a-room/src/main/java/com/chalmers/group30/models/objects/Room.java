@@ -12,7 +12,7 @@ import java.util.UUID;
  * @param uuid     The unique identifier of the room
  * @param location The rooms location
  * */
-public record Room(String name, String building, UUID uuid, Location location) {
+public record Room(String name, String building, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
     /**
      * Parses a given JSON to a Room object.
      *
@@ -20,11 +20,14 @@ public record Room(String name, String building, UUID uuid, Location location) {
      * @return A Room object from the parsed JSON
      */
     public static Room fromJSON(JsonObject obj) {
-        String name = obj.get("title").getAsString();
-        String building = obj.get("subtitle").getAsString();
-        UUID uuid = UUID.fromString(obj.get("data").getAsString());
+        String name = obj.get("name").getAsString();
+        String building = obj.get("building_name").getAsString();
+        String timeEditId = obj.get("timeedit_id").getAsString();
+        UUID uuid = UUID.fromString(obj.get("id").getAsString());
         double longitude = obj.get("longitude").getAsDouble();
         double latitude = obj.get("latitude").getAsDouble();
-        return new Room(name, building, uuid, new Location(longitude, latitude));
+        double entranceLongitude = obj.get("entrance_longitude").getAsDouble();
+        double entranceLatitude = obj.get("entrance_latitude").getAsDouble();
+        return new Room(name, building, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));
     }
 }

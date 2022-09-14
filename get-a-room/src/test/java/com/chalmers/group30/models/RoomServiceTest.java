@@ -169,6 +169,37 @@ public class RoomServiceTest {
 
         when(api.informationBoard(UUID.fromString("e9d284db-f758-494f-bda5-81b7da57ec90"))).thenReturn(jObj3);
 
+        JsonObject jObj4 = JsonParser.parseString("{\n" +
+                "  \"id\": \"02d2ad33-1be9-4389-9882-e8c52e5a54f4\",\n" +
+                "  \"type\": \"Feature\",\n" +
+                "  \"properties\": {\n" +
+                "    \"id\": \"02d2ad33-1be9-4389-9882-e8c52e5a54f4\",\n" +
+                "    \"name\": \"F4058\",\n" +
+                "    \"element_type\": \"breakout_room\",\n" +
+                "    \"timeedit_id\": \"chalmers:_te_205254\",\n" +
+                "    \"node_type\": \"leaf\",\n" +
+                "    \"type\": \"Room\",\n" +
+                "    \"description\": \"\",\n" +
+                "    \"element_label\": \"group room\",\n" +
+                "    \"scopes\": [\n" +
+                "      \"chalmers\"\n" +
+                "    ],\n" +
+                "    \"subtitle\": \"Fysik Origo, Campus Johanneberg\",\n" +
+                "    \"longitude\": 11.97571,\n" +
+                "    \"latitude\": 57.690562,\n" +
+                "    \"entrance_latitude\": 57.690315,\n" +
+                "    \"entrance_longitude\": 11.97572,\n" +
+                "    \"street_address\": \"Fysikgården 2B\",\n" +
+                "    \"area_id\": \"a85a8be2-4ff6-4e39-9880-c2adb2a7626f\",\n" +
+                "    \"area_name\": \"Campus Johanneberg\",\n" +
+                "    \"area_type\": \"campus\",\n" +
+                "    \"building_name\": \"Fysik Origo\",\n" +
+                "    \"building_id\": \"172e3bca-3e05-45ea-ad93-4ba5eff50517\",\n" +
+                "    \"has_photos\": false\n" +
+                "  }\n" +
+                "}").getAsJsonObject();
+
+        when(api.getInfo(UUID.fromString("02d2ad33-1be9-4389-9882-e8c52e5a54f4"))).thenReturn(jObj4);
 
         RoomService service = new RoomService(api); /* TODO: Change to correct interface */
 
