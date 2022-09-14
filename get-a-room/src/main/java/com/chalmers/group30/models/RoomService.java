@@ -11,7 +11,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Facade for finding rooms to the user - the only front-facing interface
@@ -22,7 +24,19 @@ public class RoomService implements RoomServiceInterface{
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
-    private final static String areaUID = "a85a8be2-4ff6-4e39-9880-c2adb2a7626f";
+    private final static UUID areaUuid = UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
+
+    private final List<String> elementTypes = Arrays.asList(
+            "breakout_room",
+            "reading_room'",
+            "quiet_reading_room",
+            "computer_room",
+            "meeting_room",
+            "conference_room",
+            "multifunctional_room",
+            "practice_room",
+            "conversation_room"
+    );
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
 
@@ -38,15 +52,16 @@ public class RoomService implements RoomServiceInterface{
      */
     public List<Room> getRooms() throws IOException {
         // Get all buildings and facilities
-        JsonObject buildings = chalmersMapsAPI.informationBoard(areaUID);
+        JsonObject buildings = chalmersMapsAPI.informationBoard(areaUuid);
 
         // Get all rooms in buildings and facilities
         List<Room> rooms = new ArrayList<>();
-        for(JsonElement e : buildings.get("suggestions").getAsJsonArray()) {
-            rooms.add(Room.fromJSON(e.getAsJsonObject()));
+        for(JsonElement building : buildings.get("suggestions").getAsJsonArray()) {
+            JsonObject buildingRooms = chalmersMapsAPI.informationBoard(UUID.fromString(building.getAsJsonObject().get("data").getAsString()));
+            for(JsonElement room : buildingRooms.get("suggestions").getAsJsonArray()){
+                if(elementTypes.contains(room.getAsJsonObject().get("element_type"))) rooms.add(Room.fromJSON(room.getAsJsonObject()));
+            }
         }
-
-        // TODO: Filter rooms based on requirements
 
         return rooms;
     }
