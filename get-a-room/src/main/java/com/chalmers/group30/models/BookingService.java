@@ -2,6 +2,7 @@ package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Booking;
 import com.chalmers.group30.models.objects.Room;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * Facade for finding rooms to the user - the only front-facing interface
@@ -22,10 +24,6 @@ import java.util.UUID;
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BookingService implements BookingServiceInterface{
-
-    // UID for Campus Johanneberg
-    // TODO: Use both campuses when basic functionality is there for Johanneberg
-    private final static UUID areaUID = UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
 
@@ -35,33 +33,33 @@ public class BookingService implements BookingServiceInterface{
     }
 
     /**
-     * Gets currently available rooms
-     * @return A list of all rooms
-     * @throws IOException If the API request failed for some reason.
+     * Gets bookings for the desired room
+     * @param room The room to check bookings for
+     * @param startTime The time from which bookings should be checked
+     * @param weeksForward How many weeks ahead bookings should be checked. Min 1 Max 10
+     * @return A list of bookings for the given time period
+     * @throws IOException If the underlying API call fails
+     * @throws IllegalArgumentException If weeksForward is too small, or too big (Must be >0 and <=10)
      */
-    public List<Room> getRooms() throws IOException {
-        // Get all buildings and facilities
-        JsonObject buildings = chalmersMapsAPI.informationBoard(areaUID);
-
-        // Get all rooms in buildings and facilities
-        List<Room> rooms = new ArrayList<>();
-        for(JsonElement e : buildings.get("suggestions").getAsJsonArray()) {
-            rooms.add(Room.fromJSON(e.getAsJsonObject()));
+    public List<Booking> getBookings(Room room, Instant startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException {
+        List<Booking> bookings = new ArrayList<>();
+        if (weeksForward <= 0 || weeksForward > 10){
+            throw new IllegalArgumentException();
         }
 
-        // TODO: Filter rooms based on requirements
+        ZonedDateTime zdt = ZonedDateTime.ofInstant(startTime, ZoneId.of("Europe/Paris"));
+        Calendar startTimeCal = GregorianCalendar.from(zdt);
 
-        return rooms;
-    }
+        for(int i = 0; i < weeksForward; i++){
+            int year = startTimeCal.get(Calendar.YEAR);
+            int week = startTimeCal.get(Calendar.WEEK_OF_YEAR);
+            JsonArray schedule = chalmersMapsAPI.timeEditSchedule(room.timeEditId(), year, week);
+            startTimeCal.add(Calendar.WEEK_OF_YEAR, 1);
+            for(JsonElement element : schedule){
+                bookings.add(Booking.fromJSON(element.getAsJsonObject()));
+            }
+        }
 
-    @Override
-    public List<Booking> getBookings(Room room, Instant startTime) throws IOException {
-//        List<Booking> bookings;
-//        startTime.get()
-//        int year = startTime.;
-//        bookings = chalmersMapsAPI.getBookings(room, startTime);
-//                chalmersMapsAPI.timeEditSchedule(room.uuid(), , startTime.plusSeconds(24 * 7 * 4 * 3600));
-//
-        return null;
+        return bookings;
     }
 }
