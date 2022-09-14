@@ -4,22 +4,14 @@ import com.google.gson.JsonObject;
 
 /**
  * Represents a route
+ *
+ * @param distance The distance between the two locations
+ * TODO: Add the rest of the fields for the routeTODO: Discuss visibility for fields
  */
-public class Route {
-    //TODO: Add the rest of the fields for the route
-    //TODO: Discuss visibility for fields
-    double distance;
-
-    /**
-     * Initialises a new Route object.
-     * @param distance The distance between the two locations
-     */
-    public Route(double distance) {
-        this.distance = distance;
-    }
-
+public record Route(double distance) {
     /**
      * Parses a given JSON to a Route object.
+     *
      * @param obj A JSON object representing the route
      * @return A Route object from the parsed JSON
      */
@@ -31,9 +23,5 @@ public class Route {
                 .get("distance").getAsDouble();
 
         return new Route(distance);
-    }
-
-    public double getDistance() {
-        return this.distance;
     }
 }

@@ -7,22 +7,10 @@ import java.time.Instant;
 /**
  * Represents a booking in for a Room in TimeEdit.
  */
-public class Booking {
-    Instant start;
-    Instant end;
-
-    /**
-     * Initialises a new Booking object.
-     * @param startTime The time when the booking starts.
-     * @param endTime The time when the booking ends.
-     */
-    public Booking(Instant startTime, Instant endTime) {
-        this.start = startTime;
-        this.end = endTime;
-    }
-
+public record Booking(Instant startTime, Instant endTime) {
     /**
      * Parses a given JSON to a Booking object.
+     *
      * @param obj A JSON object representing the booking
      * @return A Booking object from the parsed JSON
      */

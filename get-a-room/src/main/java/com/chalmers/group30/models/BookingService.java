@@ -1,5 +1,6 @@
 package com.chalmers.group30.models;
 
+import com.chalmers.group30.models.objects.Booking;
 import com.chalmers.group30.models.objects.Room;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class RoomService implements RoomServiceInterface{
+public class BookingService implements BookingServiceInterface{
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
@@ -27,7 +29,7 @@ public class RoomService implements RoomServiceInterface{
     private ChalmersMapsAPIInterface chalmersMapsAPI;
 
     @Autowired
-    public RoomService(ChalmersMapsAPIInterface chalmersMapsAPI){
+    public BookingService(ChalmersMapsAPIInterface chalmersMapsAPI){
         this.chalmersMapsAPI = chalmersMapsAPI;
     }
 
@@ -51,4 +53,14 @@ public class RoomService implements RoomServiceInterface{
         return rooms;
     }
 
+    @Override
+    public List<Booking> getBookings(Room room, Instant startTime) throws IOException {
+//        List<Booking> bookings;
+//        startTime.get()
+//        int year = startTime.;
+//        bookings = chalmersMapsAPI.getBookings(room, startTime);
+//                chalmersMapsAPI.timeEditSchedule(room.uuid(), , startTime.plusSeconds(24 * 7 * 4 * 3600));
+//
+        return null;
+    }
 }
