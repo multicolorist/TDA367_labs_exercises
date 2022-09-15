@@ -28,8 +28,18 @@ public record Room(String name, String building, String timeEditId, UUID uuid, L
         UUID uuid = UUID.fromString(obj.get("id").getAsString());
         double longitude = obj.get("longitude").getAsDouble();
         double latitude = obj.get("latitude").getAsDouble();
-        double entranceLongitude = obj.get("entrance_longitude").getAsDouble();
-        double entranceLatitude = obj.get("entrance_latitude").getAsDouble();
+        double entranceLongitude;
+        double entranceLatitude;
+        if(obj.has("entrance_longitude") && obj.has("entrance_latitude")){
+            entranceLongitude = obj.get("entrance_longitude").getAsDouble();
+            entranceLatitude = obj.get("entrance_latitude").getAsDouble();
+        }else {
+            //Fallback to "normal" location
+            entranceLongitude = longitude;
+            entranceLatitude = latitude;
+        }
+
+
         return new Room(name, building, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));
     }
 }
