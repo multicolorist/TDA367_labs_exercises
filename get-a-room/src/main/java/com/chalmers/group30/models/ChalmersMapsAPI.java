@@ -75,6 +75,16 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
+    /**
+     * Get GeoJson object for relevant buildings
+     * @return A GeoJson object representing different locations
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    public JsonObject geoJson() throws IOException {
+        final String requestUrl = baseUrl + "geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity&scopes%5B%5D=chalmers";
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+    }
+
 
     /** Get a JsonElement from a URL endpoint
      *

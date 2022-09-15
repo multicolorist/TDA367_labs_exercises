@@ -1,5 +1,6 @@
 package com.chalmers.group30.views.map;
 
+import com.chalmers.group30.models.ChalmersMapsAPI;
 import com.chalmers.group30.views.LeafletMap;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -7,8 +8,8 @@ import com.vaadin.flow.router.Route;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
 import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
 
-@PageTitle("About")
-@Route(value = "about")
+@PageTitle("Map")
+@Route(value = "map")
 public class MapView extends VerticalLayout {
 
     public MapView() {
@@ -19,7 +20,12 @@ public class MapView extends VerticalLayout {
         map.setZoom(17);
         map.setTileLayer(LTileLayer.DEFAULT_OPENSTREETMAP_TILE);
         map.setSizeFull();
-        //map.setGeoJson();
+        try{
+            map.setGeoJson(new ChalmersMapsAPI().geoJson());
+        } catch(Exception e) {
+            // Failed to add GeoJSON
+        }
+
         add(map);
 
         setSizeFull();

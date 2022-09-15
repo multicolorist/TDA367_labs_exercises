@@ -6,7 +6,8 @@ import software.xdev.vaadin.maps.leaflet.flow.LMap;
 
 public class LeafletMap extends LMap {
     public void setGeoJson(JsonObject obj) {
-        this.getElement().executeJs("L.geoJSON(" + obj.getAsString() + ").addTo(this.map);");
+        String setObj = "var geoJsonString = " + obj.toString() + ";";
+        this.getElement().executeJs(setObj + "L.geoJSON(geoJsonString).addTo(this.map);");
     }
 
 }
