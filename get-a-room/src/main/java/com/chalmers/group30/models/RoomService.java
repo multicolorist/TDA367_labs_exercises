@@ -63,13 +63,14 @@ public class RoomService implements RoomServiceInterface{
                 if(elementTypes.contains(room.getAsJsonObject().get("element_type").getAsString())){
                     // Get info about specific room from API
                     JsonObject roomInfo = chalmersMapsAPI.getInfo(UUID.fromString(room.getAsJsonObject().get("data").getAsString()));
-                    rooms.add(Room.fromJSON(roomInfo.get("properties").getAsJsonObject()));
+                    JsonObject roomProperties = roomInfo.get("properties").getAsJsonObject();
+                    if (roomProperties.has("timeedit_id")){
+                        rooms.add(Room.fromJSON(roomProperties));
+                    }
+
                 }
             }
         }
-
-
-
         return rooms;
     }
 
