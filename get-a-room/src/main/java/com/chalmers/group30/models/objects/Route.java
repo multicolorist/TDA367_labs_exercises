@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 public record Route(double distance) {
     /**
      * Parses a given JSON to a Route object.
-     *
      * @param obj A JSON object representing the route
      * @return A Route object from the parsed JSON
      */

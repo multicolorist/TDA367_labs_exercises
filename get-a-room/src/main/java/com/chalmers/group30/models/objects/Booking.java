@@ -13,6 +13,8 @@ import java.util.TimeZone;
 
 /**
  * Represents a booking in for a Room in TimeEdit.
+ * @param startTime The time at which the booking starts
+ * @param endTime   The time at which the booking ends
  */
 public record Booking(LocalDateTime startTime, LocalDateTime endTime) {
     /**

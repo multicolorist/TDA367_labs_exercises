@@ -7,10 +7,12 @@ import java.util.UUID;
 /**
  * Represents a room in Campus Maps.
  *
- * @param name     The name of the room
- * @param building The building the room is in
- * @param uuid     The unique identifier of the room
- * @param location The rooms location
+ * @param name             The name of the room
+ * @param building         The building the room is in
+ * @param timeEditId       The ID given to TimeEdit when checking schedule
+ * @param uuid             The unique identifier of the room
+ * @param location         The rooms location
+ * @param entranceLocation The location for the entrance
  * */
 public record Room(String name, String building, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
     /**
