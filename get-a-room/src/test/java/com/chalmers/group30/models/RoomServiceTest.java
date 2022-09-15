@@ -205,8 +205,8 @@ public class RoomServiceTest {
 
         try {
             List<Room> rooms = service.getRooms();
-            assertEquals(rooms.size(), 1);
-            assertEquals(rooms.get(0).uuid(), UUID.fromString("02d2ad33-1be9-4389-9882-e8c52e5a54f4"));
+            assertEquals(1, rooms.size());
+            assertEquals(UUID.fromString("02d2ad33-1be9-4389-9882-e8c52e5a54f4"), rooms.get(0).uuid());
         } catch (IOException e) {
             fail(e);
         }
