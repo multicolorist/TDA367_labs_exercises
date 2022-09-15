@@ -42,7 +42,6 @@ public class RouteService implements RouteServiceInterface {
      */
     public double getWalkingDistance(Location origin, Location destination) throws IOException {
         Route route = getRoute(origin, destination);
-        //TODO: Take decision on which distance to use, currently walking distance
         return route.distance();
     }
 
