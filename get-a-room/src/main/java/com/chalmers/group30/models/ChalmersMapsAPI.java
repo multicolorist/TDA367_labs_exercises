@@ -81,7 +81,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject geoJson() throws IOException {
-        final String requestUrl = baseUrl + "geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity&scopes%5B%5D=chalmers";
+        final String requestUrl = baseUrl + "geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity";
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
