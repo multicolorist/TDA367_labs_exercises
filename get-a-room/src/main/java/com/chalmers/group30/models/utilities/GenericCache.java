@@ -1,5 +1,6 @@
 package com.chalmers.group30.models.utilities;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -24,7 +25,7 @@ public class GenericCache<T> implements GenericCacheInterface {
     /**
      * Causes a refresh of the cached data. Thread safe.
      */
-    public void RefreshCache(){
+    public void RefreshCache() throws IOException {
         if (cacheRefreshInProgressLock.tryLock()){
             try{
                 cacheRefreshSucceeded = false;
@@ -57,7 +58,7 @@ public class GenericCache<T> implements GenericCacheInterface {
      * Get the data from the cache. If cache is empty, will cause a cache refresh.
      * @return The cached data
      */
-    public List<T> getData(){
+    public List<T> getData() throws IOException {
         if (cache == null){
             RefreshCache();
         }
