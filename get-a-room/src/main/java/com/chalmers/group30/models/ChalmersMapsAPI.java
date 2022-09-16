@@ -59,7 +59,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject route(Location origin, Location destination) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f",
+        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%s/%s/to/%s/%s",
                 origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
