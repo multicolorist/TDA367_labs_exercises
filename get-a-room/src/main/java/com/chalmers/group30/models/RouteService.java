@@ -1,13 +1,25 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.objects.Route;
 import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+@Service
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class RouteService implements RouteServiceInterface {
 
-public class RouteService {
+    private ChalmersMapsAPIInterface chalmersMapsAPI;
+
+    @Autowired
+    public RouteService(ChalmersMapsAPIInterface chalmersMapsAPI){
+        this.chalmersMapsAPI = chalmersMapsAPI;
+    }
 
     /**
      * Gets the route between two locations
@@ -16,8 +28,8 @@ public class RouteService {
      * @return A Route object representing the route
      * @throws IOException If an API request failed for some reason.
      */
-    public static Route getRoute(Location origin, Location destination) throws IOException {
-        JsonObject routeJson = ChalmersMapsAPI.route(origin, destination);
+    public Route getRoute(Location origin, Location destination) throws IOException {
+        JsonObject routeJson = chalmersMapsAPI.route(origin, destination);
         return Route.fromJSON(routeJson);
     }
 
@@ -30,8 +42,7 @@ public class RouteService {
      */
     public double getWalkingDistance(Location origin, Location destination) throws IOException {
         Route route = getRoute(origin, destination);
-        //TODO: Take decision on which distance to use, currently walking distance
-        return route.getDistance();
+        return route.distance();
     }
 
     /**

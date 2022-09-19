@@ -1,99 +1,45 @@
 package com.chalmers.group30.models.objects;
 
-import com.chalmers.group30.models.ChalmersMapsAPI;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a room in Campus Maps.
- */
-public class Room {
-    //TODO: Discuss visibility for fields
-    List<Booking> bookings;
-    String name;
-    String building;
-    String uid;
-    double longitude;
-    double latitude;
-
-
-    /**
-     * Initialises a new Room object.
-     * @param name The name of the room
-     * @param building The building the room is in
-     * @param uid The unique identifier of the room
-     * @param longitude The longitude of the room
-     * @param latitude The latitude of the room
-     */
-    public Room(String name, String building, String uid, double longitude, double latitude) {
-        this.name = name;
-        this.building = building;
-        this.uid = uid;
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
-
+ *
+ * @param name             The name of the room
+ * @param building         The building the room is in
+ * @param timeEditId       The ID given to TimeEdit when checking schedule
+ * @param uuid             The unique identifier of the room
+ * @param location         The rooms location
+ * @param entranceLocation The location for the entrance
+ * */
+public record Room(String name, String building, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
     /**
      * Parses a given JSON to a Room object.
+     *
      * @param obj A JSON object representing the room
      * @return A Room object from the parsed JSON
      */
     public static Room fromJSON(JsonObject obj) {
-        String name = obj.get("title").getAsString();
-        String building = obj.get("subtitle").getAsString();
-        String uid = obj.get("data").getAsString();
+        String name = obj.get("name").getAsString();
+        String building = obj.get("building_name").getAsString();
+        String timeEditId = obj.get("timeedit_id").getAsString();
+        UUID uuid = UUID.fromString(obj.get("id").getAsString());
         double longitude = obj.get("longitude").getAsDouble();
         double latitude = obj.get("latitude").getAsDouble();
-        return new Room(name, building, uid, longitude, latitude);
-    }
-
-    /**
-     * Gets all bookings for the current room.
-     * @return A list of Bookings for the given room
-     * @throws IOException If the API request failed for some reason.
-     */
-    public List<Booking> getBookings() throws IOException {
-        // Get all bookings for room
-        // TODO: Remove hardcoded year and week parameters
-        JsonArray bookingsJson = ChalmersMapsAPI.timeEditSchedule(this.uid, 2022, 16);
-
-        // Parse all bookings from JSON to objects
-        List<Booking> bookings = new ArrayList<>();
-        for(JsonElement e : bookingsJson) {
-            bookings.add(Booking.fromJSON(e.getAsJsonObject()));
+        double entranceLongitude;
+        double entranceLatitude;
+        if(obj.has("entrance_longitude") && obj.has("entrance_latitude")){
+            entranceLongitude = obj.get("entrance_longitude").getAsDouble();
+            entranceLatitude = obj.get("entrance_latitude").getAsDouble();
+        }else {
+            //Fallback to "normal" location
+            entranceLongitude = longitude;
+            entranceLatitude = latitude;
         }
 
-        // Update cached bookings and return newly fetched bookings
-        this.bookings = bookings;
-        return bookings;
-    }
 
-    /**
-     * Gets the unique identifier of the room.
-     * @return uid The unique identifier of the room
-     */
-    public String getUid() {
-        return uid;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getBuilding() {
-        return building;
+        return new Room(name, building, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));
     }
 }
