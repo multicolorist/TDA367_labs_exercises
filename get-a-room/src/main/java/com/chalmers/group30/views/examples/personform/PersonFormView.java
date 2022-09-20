@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.personform;
+package com.chalmers.group30.views.examples.personform;
 
 import com.chalmers.group30.data.entity.SamplePerson;
 import com.chalmers.group30.data.service.SamplePersonService;

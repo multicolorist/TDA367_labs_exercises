@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.imagelist;
+package com.chalmers.group30.views.examples.imagelist;
 
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;

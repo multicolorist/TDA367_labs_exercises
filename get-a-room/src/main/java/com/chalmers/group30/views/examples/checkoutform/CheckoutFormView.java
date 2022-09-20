@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.checkoutform;
+package com.chalmers.group30.views.examples.checkoutform;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;

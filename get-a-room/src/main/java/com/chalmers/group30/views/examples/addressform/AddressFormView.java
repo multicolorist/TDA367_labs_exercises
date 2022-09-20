@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.addressform;
+package com.chalmers.group30.views.examples.addressform;
 
 import com.chalmers.group30.data.entity.SampleAddress;
 import com.chalmers.group30.data.service.SampleAddressService;
