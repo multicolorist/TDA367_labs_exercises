@@ -1,17 +1,16 @@
 package com.chalmers.group30.views.main;
 
-import com.chalmers.group30.models.RoomServiceInterface;
+import com.chalmers.group30.controllers.DarkLightModeButtonController;
+import com.chalmers.group30.controllers.FilterButtonController;
 import com.chalmers.group30.models.objects.Room;
+import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
+import com.chalmers.group30.views.components.buttons.FilterButton;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Main;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,21 +21,21 @@ import com.vaadin.flow.dom.ElementFactory;
 import java.io.IOException;
 import java.util.List;
 
-import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("GetARoom")
 @Route(value = "")
 public class MainView extends Main implements HasComponents, HasStyle {
 
-    private List<Room> rooms;
-    private RoomServiceInterface roomServiceInterface;
+    // UI
+    DarkLightModeButtonController darkLightModeButtonController;
+    DarkLightModeButton darkLightModeButton;
+    FilterButtonController filterButtonController;
+    FilterButton filterButton;
 
-
-    private ComponentRenderer<Component, Room> roomCardRenderer = new ComponentRenderer<>(room -> {
+    private final ComponentRenderer<Component, Room> roomCardRenderer = new ComponentRenderer<>(room -> {
         HorizontalLayout cardLayout = new HorizontalLayout();
         cardLayout.setMargin(true);
 
@@ -63,49 +62,30 @@ public class MainView extends Main implements HasComponents, HasStyle {
     });
 
 
-    Button createDarkLightModeButton() {
-        Button darkLightModeButton = new Button(new Icon(VaadinIcon.SUN_O));
-        Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
-        Icon darkModeIcon = new Icon(VaadinIcon.MOON_O);
-        ThemeList themeList = UI.getCurrent().getElement().getThemeList();
-
-        darkLightModeButton.addClickListener(e -> {
-            if (themeList.contains(Lumo.DARK)) {
-                themeList.remove(Lumo.DARK);
-                darkLightModeButton.setIcon(lightModeIcon);
-            } else {
-                themeList.add(Lumo.DARK);
-                darkLightModeButton.setIcon(darkModeIcon);
-            }
-        });
-        darkLightModeButton.setIcon(lightModeIcon);
-
-        return darkLightModeButton;
-    }
-
-    Button createFilterButton() {
-        Button filterButton = new Button(new Icon(VaadinIcon.FILTER));
-
-        filterButton.addClickListener(e -> {
-            Notification.show("You've just filtered the rooms! Almost.");
-        });
-
-        return filterButton;
-    }
-
-
     @Autowired
-    public MainView(RoomServiceInterface roomService) throws IOException {
-        // Add styling for main view
+    public MainView(
+            DarkLightModeButtonController darkLightModeButtonController,
+            DarkLightModeButton darkLightModeButton,
+            FilterButtonController filterButtonController,
+            FilterButton filterButton) throws IOException {
+
+        // Init fields from dependency injection
+        this.darkLightModeButtonController = darkLightModeButtonController;
+        this.darkLightModeButton = darkLightModeButton;
+        this.filterButtonController = filterButtonController;
+        this.filterButton = filterButton;
+
+        // Add additional styling for main view
         // TODO: Is this best-practice in Vaadin?
         addClassNames("main-view", "max-w-screen-lg", "mx-auto", "pb-l", "px-l");
 
         // Get rooms
-        this.rooms = roomService.getRooms();
+        // Data
+        List<Room> rooms = darkLightModeButtonController.getRooms();
 
         // Init filter and dark/light mode button
-        Button filterButton = createFilterButton();
-        Button darkLightModeButton = createDarkLightModeButton();
+        filterButton.addClickListener(filterButtonController.getListener());
+        darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
 
         // Container
         VerticalLayout container = new VerticalLayout();
@@ -118,14 +98,14 @@ public class MainView extends Main implements HasComponents, HasStyle {
         HorizontalLayout headerContainer = new HorizontalLayout();
         headerContainer.setAlignItems(FlexComponent.Alignment.CENTER);
         headerContainer.setAlignSelf(FlexComponent.Alignment.END,
-                filterButton,
-                darkLightModeButton
+                this.filterButton,
+                this.darkLightModeButton
         );
         headerContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         headerContainer.add(
-                filterButton,
+                this.filterButton,
                 header,
-                darkLightModeButton
+                this.darkLightModeButton
         );
 
         // Room card list
