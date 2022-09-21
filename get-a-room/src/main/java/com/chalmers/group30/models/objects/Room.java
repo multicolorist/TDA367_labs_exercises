@@ -27,12 +27,17 @@ public record Room(String name, String building, String floor, String streetAddr
         String name = obj.get("name").getAsString();
         String building = obj.get("building_name").getAsString();
         String floor;
+        String streetAddress;
         if (obj.has("floor_level")) {
             floor = obj.get("floor_level").getAsString();
         } else {
             floor = "";
         }
-        String streetAddress = obj.get("street_address").getAsString();
+        if (obj.has("street_address")) {
+            streetAddress = obj.get("street_address").getAsString();
+        } else {
+            streetAddress = "";
+        }
         String timeEditId = obj.get("timeedit_id").getAsString();
         UUID uuid = UUID.fromString(obj.get("id").getAsString());
         double longitude = obj.get("longitude").getAsDouble();
