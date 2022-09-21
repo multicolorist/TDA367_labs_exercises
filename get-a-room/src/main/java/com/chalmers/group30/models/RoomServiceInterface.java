@@ -6,5 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface RoomServiceInterface {
+    void RefreshRoomCache() throws IOException;
     List<Room> getRooms() throws IOException;
 }

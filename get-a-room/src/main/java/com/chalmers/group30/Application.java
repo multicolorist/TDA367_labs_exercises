@@ -8,6 +8,7 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * The entry point of the Spring Boot application.
@@ -22,6 +23,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @PWA(name = "Get A Room", shortName = "Get A Room", offlineResources = {})
 @Push
 @NpmPackage(value = "line-awesome", version = "1.3.0")
+@EnableScheduling
 public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
