@@ -27,15 +27,15 @@ public class RoomService implements RoomServiceInterface{
     private final static UUID areaUuid = UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
 
     private final List<String> elementTypes = Arrays.asList(
-            "breakout_room",
-            "reading_room'",
-            "quiet_reading_room",
-            "computer_room",
-            "meeting_room",
-            "conference_room",
-            "multifunctional_room",
-            "practice_room",
-            "conversation_room"
+            "breakout_room"
+            // "reading_room'",
+            // "quiet_reading_room",
+            // "computer_room",
+            // "meeting_room",
+            // "conference_room",
+            // "multifunctional_room",
+            // "practice_room",
+            // "conversation_room"
     );
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
@@ -66,8 +66,16 @@ public class RoomService implements RoomServiceInterface{
                     JsonObject roomProperties = roomInfo.get("properties").getAsJsonObject();
                     if (roomProperties.has("timeedit_id")){
                         rooms.add(Room.fromJSON(roomProperties));
-                    }
 
+                        // TODO: Add logging like below but print to logger instead of terminal
+                        // try {
+                        //     rooms.add(Room.fromJSON(roomProperties));
+                        // } catch (Exception e) {
+                        //     System.out.println("Error here: " + e.getMessage());
+                        //     System.out.println("roomProperties: " + roomProperties);
+                        // }
+                    }
+                // if (rooms.size() > 20) { return rooms; } // Runs too slowly without cache
                 }
             }
         }
