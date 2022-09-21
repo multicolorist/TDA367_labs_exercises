@@ -36,7 +36,6 @@ public class DarkLightModeButtonController {
         private final Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
         private final Icon darkModeIcon = new Icon(VaadinIcon.MOON_O);
         private final ThemeList themeList = UI.getCurrent().getElement().getThemeList();
-        // private final Element element = UI.getCurrent().getElement().getElement()
 
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
@@ -44,6 +43,8 @@ public class DarkLightModeButtonController {
             // So shadows disappear in dark mode. See for ex.:
             // https://github.com/vaadin/vaadin-lumo-styles/issues/4765
             // Still persists in Vaadin23
+            // TODO: Fix this by changing the HTML attribute, likely pure JS as it doesn't exist as a component?
+            // getElement() only ever seems to return <body>
             if (themeList.contains(Lumo.DARK)) {
                 themeList.remove(Lumo.DARK);
                 e.getSource().setIcon(lightModeIcon);

@@ -8,11 +8,11 @@ import java.util.UUID;
 /**
  * A button for showing a specific room on the map
  */
-public class showOnMapButton extends Button implements ButtonHasUUID {
+public class ShowOnMapButton extends Button implements ButtonHasUUID {
     UUID uuid;
     Icon icon = new Icon(VaadinIcon.MAP_MARKER);
 
-    public showOnMapButton(UUID uuid) {
+    public ShowOnMapButton(UUID uuid) {
         this.uuid = uuid;
         this.setIcon(icon);
         this.setText("Show on map");

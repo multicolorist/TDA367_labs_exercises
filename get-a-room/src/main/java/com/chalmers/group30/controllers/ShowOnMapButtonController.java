@@ -25,6 +25,7 @@ public class ShowOnMapButtonController {
     private static class showOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
+            // TODO: Is there a way of using Java generics to ensure that it gets an event source with getUUID()?
             ButtonHasUUID btn = (ButtonHasUUID) e.getSource();
             Notification.show("This makes the map slide up and marks UUID: " + btn.getUUID());
         }

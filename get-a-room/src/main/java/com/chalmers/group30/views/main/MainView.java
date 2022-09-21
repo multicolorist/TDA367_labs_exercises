@@ -6,13 +6,12 @@ import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
 import com.chalmers.group30.views.components.buttons.FilterButton;
-import com.chalmers.group30.views.components.buttons.showOnMapButton;
+import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.chalmers.group30.views.components.controls.DateTimeControls;
 import com.chalmers.group30.views.components.controls.IntegerUnlabeledStepper;
 import com.chalmers.group30.views.components.displays.DistancePill;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
@@ -49,7 +48,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         // Buttons
         Button bookButton = new BookButton(room.uuid());
         bookButton.addClickListener(BookButtonController.getListener());
-        Button showMapButton = new showOnMapButton(room.uuid());
+        Button showMapButton = new ShowOnMapButton(room.uuid());
         showMapButton.addClickListener(ShowOnMapButtonController.getListener());
 
         // Layouts
@@ -78,8 +77,9 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
                 );
 
         VerticalLayout topLayoutLeft = new VerticalLayout();
-        topLayoutLeft.getElement().appendChild(ElementFactory.createStrong(room.name()));
-        topLayoutLeft.add(new Div(new Text(distanceToRoom + " meters away")));
+        topLayoutLeft.getElement().appendChild(ElementFactory.createStrong("Until X"));
+        topLayoutLeft.add(new Div(new Text(room.name())));
+        //topLayoutLeft.add(new Div(new Text(distanceToRoom + " meters away")));
 
         // VerticalLayout topSpacer = new VerticalLayout();
 

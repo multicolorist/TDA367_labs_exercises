@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @UIScope
 public class DarkLightModeButton extends Button {
     Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
-    // Icon darkModeIcon = new Icon(VaadinIcon.MOON_O);
 
     @Autowired
     public DarkLightModeButton() {
