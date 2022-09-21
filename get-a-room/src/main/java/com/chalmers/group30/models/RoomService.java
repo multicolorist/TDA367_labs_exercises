@@ -34,7 +34,7 @@ public class RoomService implements RoomServiceInterface{
         this.roomCache = new GenericCache<Room>(roomCacheUpdateProvider);
     }
 
-    @Scheduled(cron = "0 4 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     public void RefreshRoomCache() throws IOException{
         roomCache.RefreshCache();
     }
