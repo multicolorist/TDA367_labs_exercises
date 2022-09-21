@@ -34,7 +34,7 @@ public class RouteService implements RouteServiceInterface {
     }
 
     /**
-     * Calculates the walking distance in meters between a given position and a room.
+     * Calculates the walking distance in meters between two positions
      * @param origin The origin location
      * @param destination The destination location
      * @return The distance to the room in meters
