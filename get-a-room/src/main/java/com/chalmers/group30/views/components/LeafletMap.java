@@ -1,4 +1,4 @@
-package com.chalmers.group30.views;
+package com.chalmers.group30.views.components;
 
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Route;

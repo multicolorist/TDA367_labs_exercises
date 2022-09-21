@@ -3,7 +3,7 @@ package com.chalmers.group30.views.map;
 import com.chalmers.group30.models.ChalmersMapsAPI;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Route;
-import com.chalmers.group30.views.LeafletMap;
+import com.chalmers.group30.views.components.LeafletMap;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
