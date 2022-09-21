@@ -59,7 +59,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject route(Location origin, Location destination) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%f/%f/to/%f/%f",
+        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%s/%s/to/%s/%s",
                 origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
@@ -72,6 +72,16 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject getInfo(UUID uuid) throws IOException {
         final String requestUrl = baseUrl + String.format("info/%s/json", uuid.toString());
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+    }
+
+    /**
+     * Get GeoJson object for relevant buildings
+     * @return A GeoJson object representing different locations
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    public JsonObject geoJson() throws IOException {
+        final String requestUrl = baseUrl + "geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity";
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
