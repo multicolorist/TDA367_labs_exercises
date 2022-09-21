@@ -18,9 +18,16 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller for the darkmode<->lightmode button
+ */
 @Component
 @UIScope
 public class DarkLightModeButtonController {
+    /**
+     * Gets a listener for the corresponding button
+     * @return The distance in meters between the position and the room
+     */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
         return new DarkLightModeButtonListener();
     }

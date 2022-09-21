@@ -9,11 +9,13 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-// @Service
-// @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+/**
+ * Controller for the filter button to filter rooms according to specific criteria
+ */
 @Component
 @UIScope
 public class FilterButtonController {
+    // TODO: Add filtering logic
     private final RoomServiceInterface roomService;
 
     @Autowired
@@ -21,6 +23,10 @@ public class FilterButtonController {
         this.roomService = roomService;
     }
 
+    /**
+     * Gets a listener for the corresponding button
+     * @return The distance in meters between the position and the room
+     */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
         return new FilterButtonListener();
     }
