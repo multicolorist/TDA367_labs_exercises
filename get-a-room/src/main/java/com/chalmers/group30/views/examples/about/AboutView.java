@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.about;
+package com.chalmers.group30.views.examples.about;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
