@@ -9,12 +9,14 @@ import java.util.UUID;
  *
  * @param name             The name of the room
  * @param building         The building the room is in
+ * @param floor            The floor the room is on
+ * @param streetAddress    The address of the building the room is in
  * @param timeEditId       The ID given to TimeEdit when checking schedule
  * @param uuid             The unique identifier of the room
  * @param location         The rooms location
  * @param entranceLocation The location for the entrance
  * */
-public record Room(String name, String building, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
+public record Room(String name, String building, String floor, String streetAddress, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
     /**
      * Parses a given JSON to a Room object.
      *
@@ -24,6 +26,18 @@ public record Room(String name, String building, String timeEditId, UUID uuid, L
     public static Room fromJSON(JsonObject obj) {
         String name = obj.get("name").getAsString();
         String building = obj.get("building_name").getAsString();
+        String floor;
+        String streetAddress;
+        if (obj.has("floor_level")) {
+            floor = obj.get("floor_level").getAsString();
+        } else {
+            floor = "";
+        }
+        if (obj.has("street_address")) {
+            streetAddress = obj.get("street_address").getAsString();
+        } else {
+            streetAddress = "";
+        }
         String timeEditId = obj.get("timeedit_id").getAsString();
         UUID uuid = UUID.fromString(obj.get("id").getAsString());
         double longitude = obj.get("longitude").getAsDouble();
@@ -40,6 +54,6 @@ public record Room(String name, String building, String timeEditId, UUID uuid, L
         }
 
 
-        return new Room(name, building, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));
+        return new Room(name, building, floor, streetAddress, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));
     }
 }

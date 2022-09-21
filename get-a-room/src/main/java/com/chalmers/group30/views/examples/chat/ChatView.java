@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.chat;
+package com.chalmers.group30.views.examples.chat;
 
 import com.vaadin.collaborationengine.CollaborationMessageInput;
 import com.vaadin.collaborationengine.CollaborationMessageList;

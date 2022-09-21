@@ -65,4 +65,19 @@ public class ChalmersMapsAPITest {
             fail(e);
         }
     }
+
+    @Test
+    public void geoJson_shouldGiveProperJsonAndIsNotEmpty() {
+        ChalmersMapsAPIInterface api = new ChalmersMapsAPI();
+
+        try {
+            // Get standard GeoJSON from API
+            JsonObject geoJson = api.geoJson();
+            assertNotEquals(geoJson.get("features").getAsJsonArray().size(), 0);
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+
 }

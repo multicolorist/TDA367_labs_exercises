@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.imagelist;
+package com.chalmers.group30.views.examples.imagelist;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;

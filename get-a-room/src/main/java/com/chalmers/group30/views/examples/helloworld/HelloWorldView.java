@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.helloworld;
+package com.chalmers.group30.views.examples.helloworld;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;

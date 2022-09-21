@@ -1,4 +1,4 @@
-package com.chalmers.group30.views.main;
+package com.chalmers.group30.views.examples.cardlist;
 
 public class Person {
 
