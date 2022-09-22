@@ -25,7 +25,7 @@ public class GenericCache<T> implements GenericCacheInterface {
     /**
      * Causes a refresh of the cached data. Thread safe.
      */
-    public void RefreshCache() throws IOException {
+    public void refreshCache() throws IOException {
         if (cacheRefreshInProgressLock.tryLock()){
             try{
                 cacheRefreshSucceeded = false;
@@ -41,7 +41,7 @@ public class GenericCache<T> implements GenericCacheInterface {
             cacheRefreshInProgressLock.unlock();
             if (!cacheRefreshSucceeded){
                 //Cache update appears to have failed. Trying again
-                RefreshCache();
+                refreshCache();
             }
         }
     }
@@ -50,7 +50,7 @@ public class GenericCache<T> implements GenericCacheInterface {
      * Gets the last instant the cache was refreshed
      * @return The last refresh instant
      */
-    public Instant GetLastCacheRefreshInstant(){
+    public Instant getLastCacheRefreshInstant(){
         return lastRefresh;
     }
 
@@ -60,7 +60,7 @@ public class GenericCache<T> implements GenericCacheInterface {
      */
     public List<T> getData() throws IOException {
         if (cache == null){
-            RefreshCache();
+            refreshCache();
         }
 
         return cache;

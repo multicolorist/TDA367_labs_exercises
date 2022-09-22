@@ -9,13 +9,13 @@ public interface GenericCacheInterface<T> {
     /**
      * Causes a refresh of the cached data. Thread safe.
      */
-    void RefreshCache() throws IOException;
+    void refreshCache() throws IOException;
 
     /**
      * Gets the last instant the cache was refreshed
      * @return The last refresh instant
      */
-    Instant GetLastCacheRefreshInstant();
+    Instant getLastCacheRefreshInstant();
 
     /**
      * Get the data from the cache. If cache is empty, will cause a cache refresh.
