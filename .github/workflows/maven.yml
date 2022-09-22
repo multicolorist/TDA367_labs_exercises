@@ -27,5 +27,5 @@ jobs:
     - run: mkdir staging && cp get-a-room/target/*.jar staging
     - uses: actions/upload-artifact@v3
       with:
-        name: Package
+        name: getaroom-jar
         path: staging
