@@ -19,7 +19,7 @@ class GenericCacheTest {
 
         GenericCacheInterface<Integer> genericCacheInterface = new GenericCache<Integer>(cacheUpdateProvider);
 
-        genericCacheInterface.RefreshCache();
+        genericCacheInterface.refreshCache();
 
         List<Integer> result = genericCacheInterface.getData();
 
@@ -35,9 +35,9 @@ class GenericCacheTest {
 
         GenericCacheInterface<Integer> genericCacheInterface = new GenericCache<Integer>(cacheUpdateProvider);
 
-        genericCacheInterface.RefreshCache();
+        genericCacheInterface.refreshCache();
 
-        assertNotNull(genericCacheInterface.GetLastCacheRefreshInstant());
+        assertNotNull(genericCacheInterface.getLastCacheRefreshInstant());
     }
 
     @Test
