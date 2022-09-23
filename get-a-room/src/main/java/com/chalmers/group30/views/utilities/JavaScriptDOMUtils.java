@@ -3,7 +3,7 @@ package com.chalmers.group30.views.utilities;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.page.Page;
 
-public class JavascriptUtils {
+public class JavaScriptDOMUtils {
     /**
      * Set the attribute to the value for the given HTML tag. Note that this changes every tag.
      * To change a specific tag, use another method that targets for example id.

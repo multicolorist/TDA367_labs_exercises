@@ -11,7 +11,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.stereotype.Component;
 
-import static com.chalmers.group30.views.utilities.JavascriptUtils.setDOMTagAttribute;
+import static com.chalmers.group30.views.utilities.JavaScriptDOMUtils.setDOMTagAttribute;
 
 /**
  * Controller for the darkmode<->lightmode button
