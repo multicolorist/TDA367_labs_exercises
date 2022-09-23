@@ -41,17 +41,18 @@ public class DarkLightModeButtonController {
             // TODO: Fix this by changing the HTML attribute, likely pure JS as it doesn't exist as a component?
             // getElement() only ever seems to return <body>
             if (themeList.contains(Lumo.DARK)) {
+                // Modify html tag
                 setDOMTagAttribute("html", "theme", "light");
-                // Page page = UI.getCurrent().getPage();
-                // page.executeJs("document.documentElement.setAttribute(\"theme\", \"light\");");
 
+                // Modify body tag
                 themeList.remove(Lumo.DARK);
                 themeList.add(Lumo.LIGHT);
                 e.getSource().setIcon(lightModeIcon);
             } else {
+                // Modify html tag
                 setDOMTagAttribute("html", "theme", "dark");
-                // Page page = UI.getCurrent().getPage();
-                // page.executeJs("document.documentElement.setAttribute(\"theme\", \"dark\");");
+
+                // Modify body tag
                 themeList.remove(Lumo.LIGHT);
                 themeList.add(Lumo.DARK);
                 e.getSource().setIcon(darkModeIcon);
