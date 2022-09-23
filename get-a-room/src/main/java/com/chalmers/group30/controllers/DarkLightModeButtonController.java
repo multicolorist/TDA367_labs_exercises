@@ -34,12 +34,6 @@ public class DarkLightModeButtonController {
 
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
-            // TODO: There's a bug in Vaadin that it only sets the theme on the body-tag, not the html tag
-            // So shadows disappear in dark mode. See for ex.:
-            // https://github.com/vaadin/vaadin-lumo-styles/issues/4765
-            // Still persists in Vaadin23
-            // TODO: Fix this by changing the HTML attribute, likely pure JS as it doesn't exist as a component?
-            // getElement() only ever seems to return <body>
             if (themeList.contains(Lumo.DARK)) {
                 // Modify html tag
                 setDOMTagAttribute("html", "theme", "light");
@@ -47,6 +41,8 @@ public class DarkLightModeButtonController {
                 // Modify body tag
                 themeList.remove(Lumo.DARK);
                 themeList.add(Lumo.LIGHT);
+
+                // Update icon
                 e.getSource().setIcon(lightModeIcon);
             } else {
                 // Modify html tag
@@ -55,6 +51,8 @@ public class DarkLightModeButtonController {
                 // Modify body tag
                 themeList.remove(Lumo.LIGHT);
                 themeList.add(Lumo.DARK);
+
+                // Update icon
                 e.getSource().setIcon(darkModeIcon);
             }
         }
