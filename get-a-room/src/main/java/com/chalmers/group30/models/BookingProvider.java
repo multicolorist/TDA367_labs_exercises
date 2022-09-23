@@ -62,6 +62,11 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
         return bookings;
     }
 
+    /**
+     * Gets all bookings for the current week and the next for all rooms
+     * @return A dictionary with rooms as keys and a list of bookings as values
+     * @throws IOException If the underlying API call fails
+     */
     @Override
     public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
         Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
