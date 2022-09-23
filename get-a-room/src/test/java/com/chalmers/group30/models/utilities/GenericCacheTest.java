@@ -13,11 +13,11 @@ class GenericCacheTest {
 
     @Test
     void refreshCache() throws IOException {
-        CacheUpdateProvider<Integer> cacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Integer>> cacheUpdateProvider = mock(CacheUpdateProvider.class);
 
         when(cacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Integer[]{1,2,3,4,5}));
 
-        GenericCacheInterface<Integer> genericCacheInterface = new GenericCache<Integer>(cacheUpdateProvider);
+        GenericCacheInterface<List<Integer>> genericCacheInterface = new GenericCache<List<Integer>>(cacheUpdateProvider);
 
         genericCacheInterface.refreshCache();
 
@@ -29,11 +29,11 @@ class GenericCacheTest {
 
     @Test
     void getLastCacheRefreshInstant() throws IOException {
-        CacheUpdateProvider<Integer> cacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Integer>> cacheUpdateProvider = mock(CacheUpdateProvider.class);
 
         when(cacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Integer[]{1,2,3,4,5}));
 
-        GenericCacheInterface<Integer> genericCacheInterface = new GenericCache<Integer>(cacheUpdateProvider);
+        GenericCacheInterface<List<Integer>> genericCacheInterface = new GenericCache<List<Integer>>(cacheUpdateProvider);
 
         genericCacheInterface.refreshCache();
 
@@ -42,11 +42,11 @@ class GenericCacheTest {
 
     @Test
     void getData() throws IOException {
-        CacheUpdateProvider<Integer> cacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Integer>> cacheUpdateProvider = mock(CacheUpdateProvider.class);
 
         when(cacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Integer[]{1,2,3,4,5}));
 
-        GenericCacheInterface<Integer> genericCacheInterface = new GenericCache<Integer>(cacheUpdateProvider);
+        GenericCacheInterface<List<Integer>> genericCacheInterface = new GenericCache<List<Integer>>(cacheUpdateProvider);
 
         List<Integer> result = genericCacheInterface.getData();
 

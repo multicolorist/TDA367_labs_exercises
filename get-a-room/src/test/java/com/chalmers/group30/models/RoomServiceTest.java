@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 public class RoomServiceTest {
     @Test
     public void getRooms_shouldReturnProperRooms() throws IOException {
-        CacheUpdateProvider<Room> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
         when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 
@@ -32,7 +32,7 @@ public class RoomServiceTest {
 
     @Test
     public void refreshRoomCache() throws IOException {
-        CacheUpdateProvider<Room> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
         when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 

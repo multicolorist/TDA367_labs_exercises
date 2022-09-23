@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class RoomProvider implements CacheUpdateProvider<Room> {
+public class RoomProvider implements CacheUpdateProvider<List<Room>> {
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
