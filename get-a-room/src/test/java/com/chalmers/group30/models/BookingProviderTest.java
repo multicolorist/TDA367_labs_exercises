@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class BookingProviderTest {
 
     @Test
-    void getBookings() throws IOException {
+    void getBookings_fromApi() throws IOException {
         Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         ChalmersMapsAPIInterface api = mock(ChalmersMapsAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
@@ -38,7 +38,7 @@ class BookingProviderTest {
     }
 
     @Test
-    void getNewDataToCache() throws IOException {
+    void getNewDataToCache_bookingsForRoom() throws IOException {
         Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         ChalmersMapsAPIInterface api = mock(ChalmersMapsAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
