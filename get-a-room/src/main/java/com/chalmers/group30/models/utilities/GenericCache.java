@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class GenericCache<T> implements GenericCacheInterface {
 
-    private List<T> cache = null;
+    private T cache = null;
     private CacheUpdateProvider<T> updateProvider;
     private Instant lastRefresh = null;
     private Lock cacheRefreshInProgressLock = new ReentrantLock();
@@ -58,7 +58,7 @@ public class GenericCache<T> implements GenericCacheInterface {
      * Get the data from the cache. If cache is empty, will cause a cache refresh.
      * @return The cached data
      */
-    public List<T> getData() throws IOException {
+    public T getData() throws IOException {
         if (cache == null){
             refreshCache();
         }

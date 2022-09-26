@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CacheUpdateProvider<T> {
     @NotNull
-    List<T> getNewDataToCache() throws IOException;
+    T getNewDataToCache() throws IOException;
 }

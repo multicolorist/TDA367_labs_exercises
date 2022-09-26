@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -21,11 +23,16 @@ import java.util.List;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RoomService implements RoomServiceInterface{
 
-    private GenericCacheInterface<Room> roomCache;
+    private GenericCacheInterface<List<Room>> roomCache;
 
     @Autowired
-    public RoomService(CacheUpdateProvider<Room> roomCacheUpdateProvider){
-        this.roomCache = new GenericCache<Room>(roomCacheUpdateProvider);
+    public RoomService(CacheUpdateProvider<List<Room>> roomCacheUpdateProvider){
+        this.roomCache = new GenericCache<List<Room>>(roomCacheUpdateProvider);
+        try {
+            refreshRoomCache();
+        }catch (Exception e){
+
+        }
     }
 
     @Scheduled(cron = "0 0 4 * * *")

@@ -21,5 +21,5 @@ public interface GenericCacheInterface<T> {
      * Get the data from the cache. If cache is empty, will cause a cache refresh.
      * @return The cached data
      */
-    List<T> getData() throws IOException;
+    T getData() throws IOException;
 }
