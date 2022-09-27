@@ -1,14 +1,14 @@
 package com.chalmers.group30.views.main;
 
 import com.chalmers.group30.controllers.*;
+import com.chalmers.group30.models.objects.SearchRecord;
+import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
 import com.chalmers.group30.views.components.buttons.FilterButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
-import com.chalmers.group30.views.components.controls.DateTimeControls;
-import com.chalmers.group30.views.components.controls.IntegerUnlabeledStepper;
 import com.chalmers.group30.views.components.displays.DistancePill;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -17,6 +17,8 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Hr;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -48,8 +50,10 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
     FilterButtonController filterButtonController;
     FilterButton filterButton;
     RoomListController roomListController;
+    // QueryContainerController queryContainerController;
 
     // Class rendering the room list
+    // TODO: Change this to rendering a list of SearchRecords instead when available, also name accordingly
     private final ComponentRenderer<Component, Room> roomListEntryRenderer = new ComponentRenderer<>(room -> {
         // Buttons
         Button bookButton = new BookButton(room.uuid());
@@ -80,12 +84,13 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         HorizontalLayout topLayout = new HorizontalLayout();
         topLayout.addClassNames(
                 LumoUtility.Width.FULL
-                );
+        );
 
         VerticalLayout topLayoutLeft = new VerticalLayout();
         topLayoutLeft.getElement().appendChild(ElementFactory.createStrong("Until X"));
         topLayoutLeft.add(new Div(new Text(room.name())));
-        //topLayoutLeft.add(new Div(new Text(distanceToRoom + " meters away")));
+        topLayoutLeft.add(new Div(distanceIndicator));
+        // topLayoutLeft.add(new Div(new Text(distanceToRoom + " meters away")));
 
         // VerticalLayout topSpacer = new VerticalLayout();
 
@@ -97,39 +102,49 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         // topLayout.add(topLayoutLeft, topSpacer, topLayoutRight);
         topLayout.add(topLayoutLeft, topLayoutRight);
 
-        // Bottom part of the card, seen only when unfolded
-        VerticalLayout bottomLayout = new VerticalLayout();
         // HorizontalLayout textRow = new HorizontalLayout();
         // textRow.addClassNames(
         //         LumoUtility.AlignSelf.CENTER
         // );
         // textRow.add(new Div(new Text(room.streetAddress())));
-        HorizontalLayout buttonRow = new HorizontalLayout(); // Lower row for buttons
 
-        buttonRow.add(showMapButton, bookButton);
-        buttonRow.addClassNames(
-                // LumoUtility.Display.FLEX,
-                LumoUtility.AlignSelf.CENTER
+        // Bottom part of the card, seen only when unfolded
+        VerticalLayout bottomLayout = new VerticalLayout();
+        Span listButtonContainer = new Span(); // Lower row for buttons
+
+        listButtonContainer.add(
+                showMapButton,
+                bookButton
         );
-        // bottomLayout.add(textRow,buttonRow);
-        bottomLayout.add(buttonRow);
+        listButtonContainer.addClassNames(
+                // LumoUtility.Display.FLEX,
+                LumoUtility.AlignSelf.CENTER,
+                LumoUtility.TextAlignment.RIGHT
+        );
+        // bottomLayout.add(textRow,listButtonContainer);
+        bottomLayout.addClassNames(
+                LumoUtility.Padding.Top.NONE
+        );
+        bottomLayout.add(
+                new Hr(),
+                listButtonContainer
+        );
 
-        // Add the content to the card
-        listEntryLayout.add(distanceIndicator, topLayout);
+        // Add the content to the list
+        // listEntryLayout.add(distanceIndicator, topLayout);
+        listEntryLayout.add(topLayout);
 
         // Make a foldable panel of the entry
-        // https://vaadin.com/api/platform/23.2.1/com/vaadin/flow/component/accordion/AccordionPanel.html or
-        // https://vaadin.com/docs/latest/components/details
-        // TODO: Figure out how to add shadow DOM CSS of summary-content part to width: 100%
         Details foldablePanel = new Details(listEntryLayout, bottomLayout);
         // foldablePanel.addThemeVariants(DetailsVariant.FILLED);
         foldablePanel.addClassNames(
                 "custom-full-width",
-                LumoUtility.Padding.MEDIUM,
-                LumoUtility.BoxShadow.SMALL // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
+                LumoUtility.Padding.Vertical.NONE, // Perhaps too little? Important to weigh legibility vs. compactness
+                LumoUtility.Padding.Horizontal.MEDIUM,
+                LumoUtility.BoxShadow.SMALL, // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
+                LumoUtility.BorderRadius.SMALL
         );
         return foldablePanel;
-        // return listEntryLayout;
     });
 
 
@@ -147,6 +162,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         this.filterButtonController = filterButtonController;
         this.filterButton = filterButton;
         this.roomListController = roomListController;
+        // this.queryContainerController = queryContainerController;
 
         // Add additional styling for main view
         // TODO: Is this best-practice in Vaadin?
@@ -156,11 +172,12 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
                 // LumoUtility.MaxWidth.SCREEN_XLARGE,
                 LumoUtility.Margin.Horizontal.AUTO,
                 LumoUtility.Padding.Bottom.LARGE,
-                LumoUtility.Padding.Horizontal.LARGE
+                LumoUtility.Padding.Horizontal.SMALL
         );
 
-        // Get rooms
+        // Get initial search results
         // Data
+        // TODO: Change this to the query below
         List<Room> rooms = roomListController.getRooms();
 
         // Init filter and dark/light mode button
@@ -195,37 +212,26 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
                 this.darkLightModeButton
         );
 
-        // Query container
-        Div queryContainer = new Div();
-        queryContainer.addClassNames(
+        // Record list
+        // TODO: Change this to virtuallist of SearchRecord
+        VirtualList<Room> recordList = new VirtualList<>();
+        recordList.addClassNames(
                 LumoUtility.Padding.Horizontal.MEDIUM,
-                LumoUtility.JustifyContent.CENTER,
-                LumoUtility.AlignItems.CENTER,
-                LumoUtility.AlignSelf.CENTER,
-                LumoUtility.Background.BASE,
-                LumoUtility.FontSize.LARGE,
-                LumoUtility.FontWeight.SEMIBOLD
+                LumoUtility.Padding.Top.MEDIUM,
+                LumoUtility.Padding.Bottom.XLARGE
         );
-        HorizontalLayout roomQueryRow = new HorizontalLayout();
-        roomQueryRow.add(
-                new Div(new Text("Rooms for ")),
-                new IntegerUnlabeledStepper(1, 12, 4),
-                new Div(new Text(" people from "))
-        );
-        roomQueryRow.addClassNames(
-                LumoUtility.Padding.Horizontal.MEDIUM,
-                LumoUtility.JustifyContent.CENTER,
-                LumoUtility.AlignItems.CENTER,
-                LumoUtility.AlignSelf.CENTER,
-                LumoUtility.Background.BASE,
-                LumoUtility.FontSize.LARGE,
-                LumoUtility.FontWeight.SEMIBOLD
-        );
+        recordList.setItems(rooms);
+        recordList.setRenderer(roomListEntryRenderer);
+        recordList.setHeight("95%");
 
-        queryContainer.add(
-                roomQueryRow,
-                new DateTimeControls()
-        );
+        // Query container
+        // TODO: Change this when the search query results is implemented
+        QueryContainer queryContainer = new QueryContainer();
+        // QueryContainerController queryContainerController = new QueryContainerController(searchService, recordList, queryContainer);
+        QueryContainerController queryContainerController = new QueryContainerController(recordList, queryContainer);
+        // List<SearchRecord> currentSearchResult = queryContainerController.getSearchResult();
+        queryContainer.executeSearchButton.addClickListener(queryContainerController.getExecuteSearchButtonListener());
+        int currentSearchResult = queryContainerController.getSearchResult();
 
         // Navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
@@ -237,26 +243,17 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
                 LumoUtility.AlignSelf.CENTER,  // vertical
                 LumoUtility.Background.BASE
         );
-        navbarContainer.add(headerContainer, queryContainer);
-
+        navbarContainer.add(
+                headerContainer,
+                queryContainer
+        );
         addToNavbar(navbarContainer);
 
-
-        // Room list
-        VirtualList<Room> roomList = new VirtualList<>();
-        roomList.addClassNames(
-                LumoUtility.Padding.Horizontal.MEDIUM,
-                LumoUtility.Padding.Top.MEDIUM,
-                LumoUtility.Padding.Bottom.XLARGE
-        );
-        roomList.setItems(rooms);
-        roomList.setRenderer(roomListEntryRenderer);
-        roomList.setHeight("85%");
 
 
         // Main view composition (header in navbar which is already a child)
         add(
-                roomList
+                recordList
         );
 
         // setSizeFull();
