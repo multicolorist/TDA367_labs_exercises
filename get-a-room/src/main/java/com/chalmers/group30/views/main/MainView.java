@@ -13,6 +13,7 @@ import com.chalmers.group30.views.components.displays.DistancePill;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -30,6 +31,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+// Fix for Vaadin bug-ish that detail summary does not expand
+// see for ex. https://vaadin.com/forum/thread/18151243/expanding-details-component
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
 
 @PageTitle("GetARoom")
 @Route(value = "")
@@ -118,6 +124,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         Details foldablePanel = new Details(listEntryLayout, bottomLayout);
         // foldablePanel.addThemeVariants(DetailsVariant.FILLED);
         foldablePanel.addClassNames(
+                "custom-full-width",
                 LumoUtility.Padding.MEDIUM,
                 LumoUtility.BoxShadow.SMALL // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
         );
