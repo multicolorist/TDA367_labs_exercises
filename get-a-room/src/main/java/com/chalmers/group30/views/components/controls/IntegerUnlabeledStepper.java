@@ -1,19 +1,27 @@
 package com.chalmers.group30.views.components.controls;
 
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 
 /**
  * A component that contains an integer-stepper without label
  * Min, max and default value can be set
  */
-public class IntegerUnlabeledStepper extends Div {
-        public IntegerUnlabeledStepper(int minPersons, int maxPersons, int defaultValue) {
-            IntegerField integerField = new IntegerField();
+public class IntegerUnlabeledStepper extends Span {
+        IntegerField integerField = new IntegerField();
+        public IntegerUnlabeledStepper(int minValue, int maxValue, int defaultValue) {
             integerField.setValue(defaultValue);
             integerField.setHasControls(true);
-            integerField.setMin(minPersons);
-            integerField.setMax(maxPersons); // TODO: See what's the max number of people in a room in the API
+            integerField.setMin(minValue);
+            integerField.setMax(maxValue); // TODO: See what's the max number of people in a room in the API
+            integerField.addClassNames(
+                    LumoUtility.Display.INLINE_FLEX
+            );
             add(integerField);
+        }
+
+        public int getValue() {
+            return integerField.getValue();
         }
 }
