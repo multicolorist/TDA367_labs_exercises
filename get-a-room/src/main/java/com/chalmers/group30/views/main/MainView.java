@@ -222,7 +222,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         );
         recordList.setItems(rooms);
         recordList.setRenderer(roomListEntryRenderer);
-        recordList.setHeight("95%");
+        recordList.setHeight("100%");
 
         // Query container
         // TODO: Change this when the search query results is implemented
@@ -252,7 +252,8 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
 
 
         // Main view composition (header in navbar which is already a child)
-        add(
+        getElement().getStyle().set("height", "auto");
+        setContent(
                 recordList
         );
 
