@@ -25,7 +25,6 @@ hs_err_pid*
 # Mac specific
 *.DS_Store
 
-/target/
 .idea/
 .vscode/
 .settings
@@ -35,10 +34,10 @@ hs_err_pid*
 *.iml
 
 # The following files are generated/updated by vaadin-maven-plugin
-node_modules/
-frontend/generated/
-pnpmfile.js
-vite.generated.ts
+get-a-room/node_modules/
+get-a-room/frontend/generated/
+get-a-room/pnpmfile.js
+get-a-room/vite.generated.ts
 
 # Browser drivers for local integration tests
 drivers/
@@ -47,3 +46,4 @@ error-screenshots/
 webpack.generated.js
 get-a-room/target
 get-a-room/package-lock.json
+*.cache

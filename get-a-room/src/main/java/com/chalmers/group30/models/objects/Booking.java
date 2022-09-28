@@ -2,6 +2,7 @@ package com.chalmers.group30.models.objects;
 
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -16,7 +17,7 @@ import java.util.TimeZone;
  * @param startTime The time at which the booking starts
  * @param endTime   The time at which the booking ends
  */
-public record Booking(LocalDateTime startTime, LocalDateTime endTime) {
+public record Booking(LocalDateTime startTime, LocalDateTime endTime) implements Serializable {
     /**
      * Parses a given JSON to a Booking object.
      *
