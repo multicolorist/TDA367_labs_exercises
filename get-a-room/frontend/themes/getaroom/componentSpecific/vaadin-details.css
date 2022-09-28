@@ -1,0 +1,4 @@
+/*Fix for Vaadin bug-ish that detail summary does not expand, see for ex. https://vaadin.com/forum/thread/18151243/expanding-details-component*/
+:host(.custom-full-width) span[part="summary-content"] {
+    flex-grow: 1;
+}
