@@ -1,14 +1,8 @@
 package com.chalmers.group30.views.map;
 
-import com.chalmers.group30.models.ChalmersMapsAPI;
-import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Route;
-import com.chalmers.group30.views.components.LeafletMap;
-import com.chalmers.group30.views.components.MapLibre;
+import com.chalmers.group30.views.components.MapLibreContainer;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
-import software.xdev.vaadin.maps.leaflet.flow.data.LCenter;
-import software.xdev.vaadin.maps.leaflet.flow.data.LTileLayer;
 
 @PageTitle("Map")
 @com.vaadin.flow.router.Route(value = "map")
@@ -38,7 +32,13 @@ public class MapView extends VerticalLayout {
         //
         //add(map);
 
-        MapLibre map = new MapLibre();
+        MapLibreContainer map = new MapLibreContainer();
+        //try {
+        //    map.addGeoJSON("buildings", new ChalmersMapsAPI().geoJson());
+        //    map.addExtrusionLayer("buildings_extrude", "buildings");
+        //} catch (Exception e) {
+        //    // Failed to add GeoJSON
+        //}
         map.setSizeFull();
         add(map);
 
