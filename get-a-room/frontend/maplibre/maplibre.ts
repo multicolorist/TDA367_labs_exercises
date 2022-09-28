@@ -2,16 +2,19 @@ import { LitElement, html } from 'lit-element';
 import "https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js";
 
 class MapLibre extends LitElement {
+  map: maplibregl.Map;
   private $server?: MapLibreServerInterface;
   static get properties() {
     return {
       name: { type: String }
     }
   }
-  addGeoJSON(id, source) {
+
+  addGeoJSON(id: string, source: any) {
      this.map.addSource(id, {type: "geojson", data: source});
   }
-  addExtrudedLayer(id, source) {
+
+  addExtrudedLayer(id: string, source: any) {
      this.map.addLayer({
                 'id': id,
                 'type': 'fill-extrusion',
@@ -44,6 +47,7 @@ class MapLibre extends LitElement {
                 }
             });
   }
+
   render() {
     return html`
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"/>
@@ -66,7 +70,7 @@ class MapLibre extends LitElement {
     `;
   }
 
-  firstUpdated(changedProperties) {
+  firstUpdated(changedProperties: any) {
     this.map = new maplibregl.Map({
             container: this.renderRoot.getElementById('divMap'),
             style: {
