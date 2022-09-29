@@ -67,7 +67,7 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
-    public void geoJson_shouldGiveProperJsonAndIsNotEmpty() {
+    public void geoJsonBuildings_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI();
 
         try {
@@ -77,6 +77,11 @@ public class ChalmersMapsAPITest {
         } catch (Exception e) {
             fail(e);
         }
+    }
+
+    @Test
+    public void geoJsonPOI_shouldGiveProperJsonAndIsNotEmpty() {
+        ChalmersMapsAPIInterface api = new ChalmersMapsAPI();
 
         try {
             // Get buildings GeoJSON from API
