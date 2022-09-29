@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.CssImport.Container;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Tag("maplibre-gl-js")
+@NpmPackage(value = "maplibre-gl", version = "2.4.0")
 @JsModule("./maplibre/maplibre.ts")
 //@StyleSheet("https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css")
 public class MapLibreContainer extends Component implements HasSize, HasStyle, HasComponents {
