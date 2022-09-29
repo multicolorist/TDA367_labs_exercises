@@ -46,3 +46,4 @@ drivers/
 get-a-room/error-screenshots/
 get-a-room/webpack.generated.js
 get-a-room/package-lock.json
+*.cache

@@ -2,6 +2,7 @@ package com.chalmers.group30.models.objects;
 
 import com.google.gson.JsonObject;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -16,7 +17,7 @@ import java.util.UUID;
  * @param location         The rooms location
  * @param entranceLocation The location for the entrance
  * */
-public record Room(String name, String building, String floor, String streetAddress, String timeEditId, UUID uuid, Location location, Location entranceLocation) {
+public record Room(String name, String building, String floor, String streetAddress, String timeEditId, UUID uuid, Location location, Location entranceLocation) implements Serializable {
     /**
      * Parses a given JSON to a Room object.
      *

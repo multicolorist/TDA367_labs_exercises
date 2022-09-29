@@ -29,7 +29,7 @@ public class RoomService implements RoomServiceInterface{
     public RoomService(CacheUpdateProvider<List<Room>> roomCacheUpdateProvider){
         this.roomCache = new GenericCache<List<Room>>(roomCacheUpdateProvider);
         try {
-            refreshRoomCache();
+            //refreshRoomCache();
         }catch (Exception e){
 
         }
