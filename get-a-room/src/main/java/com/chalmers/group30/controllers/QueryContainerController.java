@@ -1,22 +1,11 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.models.BookingServiceInterface;
-import com.chalmers.group30.models.RoomServiceInterface;
-import com.chalmers.group30.models.RouteServiceInterface;
-import com.chalmers.group30.models.objects.*;
 import com.chalmers.group30.views.components.QueryContainer;
-import com.chalmers.group30.views.utilities.TimeUtils;
+import com.chalmers.group30.views.components.RecordList;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.virtuallist.VirtualList;
-import com.vaadin.flow.spring.annotation.UIScope;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller for the search query - relays the query to the model and returns the result
@@ -28,7 +17,7 @@ public class QueryContainerController {
     // private List<SearchRecord> searchResult;
     int searchResult; // TODO: Remove this and use the above instead
     private final QueryContainer queryContainer;
-    private final VirtualList<Room> recordList;
+    private final RecordList recordList;
 
     // TODO: Add the below also
     // private final SearchServiceInterface searchService;
@@ -52,7 +41,7 @@ public class QueryContainerController {
     //     return searchService(searchQuery);
     // }
 
-    public QueryContainerController(VirtualList<Room> recordList, QueryContainer queryContainer) {
+    public QueryContainerController(RecordList recordList, QueryContainer queryContainer) {
         this.queryContainer = queryContainer;
         this.recordList = recordList;
     }
