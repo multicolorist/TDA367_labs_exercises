@@ -30,6 +30,8 @@ class MapLibre extends LitElement {
           14,
           0,
           20.05,
+          // Ignore type error that works anyway
+          // @ts-ignore
           ["get", "height"],
         ],
         "fill-extrusion-base": [
@@ -39,6 +41,8 @@ class MapLibre extends LitElement {
           14,
           0,
           20.05,
+          // Ignore type error that works anyway
+          // @ts-ignore
           ["get", "min_height"],
         ],
         "fill-extrusion-opacity": 0.95,
