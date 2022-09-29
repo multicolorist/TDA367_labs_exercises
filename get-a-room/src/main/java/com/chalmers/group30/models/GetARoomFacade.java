@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,14 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
     private final BookingServiceInterface bookingService;
     private final RoomServiceInterface roomService;
+    private final RouteServiceInterface routeService;
 
     @Autowired
-    public GetARoomFacade(BookingServiceInterface bookingService, RoomServiceInterface roomService) {
+    public GetARoomFacade(BookingServiceInterface bookingService, RoomServiceInterface roomService, RouteServiceInterface routeService) {
 
         this.bookingService = bookingService;
         this.roomService = roomService;
+        this.routeService = routeService;
     }
 
     //todo missing room size
@@ -54,6 +57,20 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
             }
 
         }
+
+        List<SearchRecord> results = new ArrayList<>();
+        for (Room room : matchingRooms) {
+
+            try {
+                results.add(new SearchRecord(room, bookingService.getBookings(room),
+                        userLocation != null ? routeService.getBirdsDistance(userLocation, room.location()) : -1));
+            } catch (ParseException e) {
+
+            }
+        }
+
+        return results;
+
     }
 }
 
