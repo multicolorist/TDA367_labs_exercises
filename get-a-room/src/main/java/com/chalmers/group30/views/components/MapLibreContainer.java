@@ -19,7 +19,9 @@ import java.util.UUID;
 @Tag("maplibre-gl-js")
 @NpmPackage(value = "maplibre-gl", version = "2.4.0")
 @JsModule("./maplibre/maplibre.ts")
-//@StyleSheet("https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css")
+/**
+ * Represents a MapLibre component to be used in Vaadin
+ */
 public class MapLibreContainer extends Component implements HasSize, HasStyle, HasComponents {
 
     /**
@@ -58,9 +60,8 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
                 .append(",").append(finalLoc.latitude())
                 .append("]},\"properties\": {}}]}");
 
+        // Show route on the map
         getElement().executeJs("this.showRoute("+locationArrayString.toString()+");");
-        //getElement().executeJs("this.map.addLayer({'id': 'route-layer-"+uuid+"','type': 'line','source': 'route-"+uuid+"','layout': {'line-join': 'round','line-cap': 'round'},'paint': {'line-color': '#314ccd','line-width': 8}});");
-        //getElement().executeJs("this.map.addLayer({'id': 'route-dest-layer-"+uuid+"-end','type': 'circle','source': 'route-"+uuid+"','paint': {'circle-radius': 10,'circle-color': '#f4347c'}, 'filter': ['==', '$type', 'Point']});");
     }
 
     /**
