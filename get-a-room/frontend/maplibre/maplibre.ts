@@ -2,12 +2,13 @@ import { LitElement, html } from "lit-element";
 //import "https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js";
 import { Map as MapLibreComponent, GeolocateControl } from "maplibre-gl";
 
-  const routeID = "route";
-  const routePathID = "route-path";
-  const routeDestID = "route-dest";
+const routeID = "route";
+const routePathID = "route-path";
+const routeDestID = "route-dest";
 
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
+
   private $server?: MapLibreServerInterface;
   static get properties() {
     return {
@@ -15,6 +16,9 @@ class MapLibre extends LitElement {
     };
   };
 
+  /**
+   * Removes the currently displayed route from the map.
+   */
   removeRoute() {
     if (this.map.getLayer(routePathID)) {
         this.map.removeLayer(routePathID);
@@ -29,6 +33,10 @@ class MapLibre extends LitElement {
     }
   }
 
+  /**
+   * Shows a route given by GeoJSON data.
+   * @param route GeoJSON data of the route to show.
+   */
   showRoute(source: any) {
     this.removeRoute();
     this.map.addSource(routeID, { type: "geojson", data: source });
@@ -36,20 +44,38 @@ class MapLibre extends LitElement {
     this.map.addLayer({'id': routeDestID,'type': 'circle','source': routeID,'paint': {'circle-radius': 10,'circle-color': '#f4347c'}, 'filter': ['==', '$type', 'Point']});
   }
 
+  /**
+   * Removes a room from the map.
+   * @param roomID UUID of the room to remove.
+   */
   removeRoom(id: String) {
     this.map.removeLayer("room-layer-"+id);
     this.map.removeSource("room-"+id);
   }
 
+  /**
+   * Display a room on the map.
+   * @param room Room to display.
+   */
   addRoom(id: string, name: string, latitude: number, longitude: number) {
     this.map.addSource("room-"+id, {type: "geojson", data: {"type":"Feature","geometry":{"type":"Point","coordinates":[longitude, latitude]},"properties":{ "name":name }}});
     this.map.addLayer({'id': 'room-layer-'+id,'type': 'circle','source': 'room-'+id,'paint': {'circle-radius': 10,'circle-color': '#a3446a'}});
   }
 
+  /**
+   * Adds a GeoJSON source to the map.
+   * @param id ID of the source.
+   * @param source GeoJSON source to add.
+   */
   addGeoJSON(id: string, source: any) {
     this.map.addSource(id, { type: "geojson", data: source });
   }
 
+  /**
+   * Adds a fill-extrusion layer with given source that contains polygons
+   * @param id ID of the layer.
+   * @param source ID of the source.
+   */
   addExtrudedLayer(id: string, source: any) {
     this.map.addLayer({
       id: id,
