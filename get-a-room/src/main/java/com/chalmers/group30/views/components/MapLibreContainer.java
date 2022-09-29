@@ -46,22 +46,19 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
      */
     public void showRoute(Route r) {
         // Generate JS object of locations
-        StringBuilder locationArrayString = new StringBuilder("{\"type\": \"FeatureCollection\",\"features\":[{\"type\": \"Feature\",\"properties\": {},\"geometry\": {\"type\": \"LineString\",\"coordinates\": [");
+        StringBuilder locationArrayString = new StringBuilder("[");
         for(Location point : r.maneuvers()){
             locationArrayString.append("[").append(point.longitude()).append(",").append(point.latitude()).append("],");
         }
         // Remove final stray comma
         locationArrayString.deleteCharAt(locationArrayString.length()-1);
+        locationArrayString.append("]");
 
         // Add a point representing the route destination
         Location finalLoc = r.maneuvers().get(r.maneuvers().size() - 1);
-        locationArrayString.append("]}}, {\"type\": \"Feature\",\"geometry\": {\"type\": \"Point\",\"coordinates\": [")
-                .append(finalLoc.longitude())
-                .append(",").append(finalLoc.latitude())
-                .append("]},\"properties\": {}}]}");
 
         // Show route on the map
-        getElement().executeJs("this.showRoute("+locationArrayString.toString()+");");
+        getElement().executeJs("this.showRoute("+locationArrayString.toString()+", ["+finalLoc.longitude()+", "+finalLoc.latitude()+"]);");
     }
 
     /**
@@ -77,7 +74,7 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
      * @param obj The GeoJSON object
      */
     public void addGeoJSON(String id, JsonObject obj) {
-        getElement().executeJs("var geojson = "+obj.toString()+"; this.addGeoJSON('"+ id +"', geojson);");
+        getElement().executeJs("this.addGeoJSON('"+ id +"', "+obj.toString()+");");
     }
 
     /**
