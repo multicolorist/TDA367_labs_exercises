@@ -69,7 +69,6 @@ class MapLibre extends LitElement {
   onReady = new CustomEvent("ready");
   ready = false;
 
-  private $server?: MapLibreServerInterface;
   static get properties() {
     return {
       name: { type: String },
@@ -253,7 +252,6 @@ class MapLibre extends LitElement {
     });
 
     this.map.once("load", () => {
-      this.$server!.onReady();
       this.ready = true;
       this.dispatchEvent(this.onReady);
     });
@@ -269,8 +267,5 @@ class MapLibre extends LitElement {
 
   }
 
-}
-interface MapLibreServerInterface {
-  onReady(): void;
 }
 customElements.define("maplibre-gl-js", MapLibre);
