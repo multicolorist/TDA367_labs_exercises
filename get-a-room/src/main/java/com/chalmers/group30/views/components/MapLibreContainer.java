@@ -56,9 +56,10 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
 
         // Add a point representing the route destination
         Location finalLoc = r.maneuvers().get(r.maneuvers().size() - 1);
+        String finalLocationArrayString = "[" + finalLoc.longitude() + "," + finalLoc.latitude() + "]";
 
         // Show route on the map
-        getElement().executeJs("this.showRoute("+locationArrayString.toString()+", ["+finalLoc.longitude()+", "+finalLoc.latitude()+"]);");
+        getElement().executeJs("this.showRoute("+locationArrayString.toString()+", "+finalLocationArrayString+");");
     }
 
     /**
