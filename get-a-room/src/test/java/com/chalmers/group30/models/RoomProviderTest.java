@@ -201,6 +201,13 @@ class RoomProviderTest {
 
         when(api.getInfo(UUID.fromString("02d2ad33-1be9-4389-9882-e8c52e5a54f4"))).thenReturn(jObj4);
 
+        JsonObject jObj5 = JsonParser.parseString("{\n" +
+                "  \"seats\": \"4\",\n" +
+                "  \"equipment\": \"Whiteboard\"\n" +
+                "}").getAsJsonObject();
+
+        when(api.getTimeEditInfo("chalmers:_te_205254")).thenReturn(jObj5);
+
         RoomProvider roomProvider = new RoomProvider(api);
 
         try {
