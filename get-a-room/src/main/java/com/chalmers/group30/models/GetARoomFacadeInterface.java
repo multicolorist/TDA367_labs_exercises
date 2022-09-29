@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface GetARoomFacadeInterface {
     List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException;
-    Route getWalingRoute(Location userLocation, Location destinationLocation) throws IOException;
+    Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException;
 }
