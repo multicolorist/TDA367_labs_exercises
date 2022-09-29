@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -48,6 +45,7 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
         // Get all buildings and facilities
         JsonObject buildings = chalmersMapsAPI.informationBoard(areaUuid);
 
+        HashSet<UUID> existingRooms = new HashSet<>();
         // Get all rooms in buildings and facilities
         List<Room> rooms = new ArrayList<>();
         for(JsonElement building : buildings.get("suggestions").getAsJsonArray()) {
@@ -55,11 +53,16 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
             for(JsonElement room : buildingRooms.get("suggestions").getAsJsonArray()){
                 // Add room to list if it matches one of the given categories
                 if(elementTypes.contains(room.getAsJsonObject().get("element_type").getAsString())){
+                    UUID roomUUID = UUID.fromString(room.getAsJsonObject().get("data").getAsString());
+                    if(existingRooms.contains(roomUUID)){
+                        continue;
+                    }
                     // Get info about specific room from API
-                    JsonObject roomInfo = chalmersMapsAPI.getInfo(UUID.fromString(room.getAsJsonObject().get("data").getAsString()));
+                    JsonObject roomInfo = chalmersMapsAPI.getInfo(roomUUID);
                     JsonObject roomProperties = roomInfo.get("properties").getAsJsonObject();
                     if (roomProperties.has("timeedit_id")){
                         rooms.add(Room.fromJSON(roomProperties));
+                        existingRooms.add(roomUUID);
                     }
 
                 }
