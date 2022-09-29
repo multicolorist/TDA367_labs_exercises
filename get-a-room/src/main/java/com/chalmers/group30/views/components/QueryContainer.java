@@ -18,8 +18,6 @@ import java.time.LocalTime;
 // @Component
 // @UIScope
 public class QueryContainer extends Div {
-    // public QueryContainerController queryContainerController;
-    // VirtualList<Room> recordList;
     public ExecuteSearchButton executeSearchButton;
     private final TimePickerControl fromTimePicker;
     private final TimePickerControl untilTimePicker;
@@ -62,18 +60,13 @@ public class QueryContainer extends Div {
     public int getGroupSize() {
         return groupSizeStepper.getValue();
     }
-
     public LocalTime getFromTime() {
         return fromTimePicker.getValue();
     }
-
     public LocalTime getUntilTime() {
         return untilTimePicker.getValue();
     }
-
     public LocalDate getDate() {
         return datePicker.getValue();
     }
-
-
 }
