@@ -1,9 +1,6 @@
 package com.chalmers.group30.models;
 
-import com.chalmers.group30.models.objects.Booking;
-import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
-import com.chalmers.group30.models.objects.SearchRecord;
+import com.chalmers.group30.models.objects.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -53,6 +50,23 @@ class GetARoomFacadeTest {
     }
 
     @Test
-    void getWalkingRoute() {
+    void getWalkingRoute() throws IOException {
+        RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
+        BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
+        RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
+
+        Location userLocation = new Location(1,1);
+        Location destinationLocation = new Location(2,2);
+
+        Route route = new Route(1000.0, Arrays.asList(new Location(1,1), new Location(2,2)));
+
+        when(routeServiceInterface.getRoute(userLocation, destinationLocation)).thenReturn(route);
+
+        GetARoomFacade getARoomFacade = new GetARoomFacade(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
+
+        Route result = getARoomFacade.getWalkingRoute(userLocation, destinationLocation);
+
+        assertEquals(route, result);
+
     }
 }
