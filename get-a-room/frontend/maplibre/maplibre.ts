@@ -6,6 +6,64 @@ const routeID = "route";
 const routePathID = "route-path";
 const routeDestID = "route-dest";
 
+/**
+ * The style that is used for displaying OpenStreetMap tiles on the map.
+ */
+const openStreetMapStyle = {
+  version: 8,
+  sources: {
+    osm: {
+      type: "raster",
+      tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize: 256,
+      attribution: "&copy; OpenStreetMap Contributors",
+      maxzoom: 19,
+    },
+  },
+  layers: [
+    {
+      id: "osm",
+      type: "raster",
+      source: "osm", // This must match the source key above
+    },
+  ],
+  glyphs: "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+};
+
+/**
+ * The paint style that is used for determining the color and extrusion height of buildings.
+ */
+const buildingExtrusionPaint = {
+  "fill-extrusion-color": "#aaa",
+  "fill-extrusion-height": [
+    "interpolate",
+    ["linear"],
+    ["zoom"],
+    14,
+    0,
+    20.05,
+    // Ignore type error that works anyway
+    // @ts-ignore
+    ["get", "height"],
+  ],
+  "fill-extrusion-base": [
+    "interpolate",
+    ["linear"],
+    ["zoom"],
+    14,
+    0,
+    20.05,
+    // Ignore type error that works anyway
+    // @ts-ignore
+    ["get", "min_height"],
+  ],
+  "fill-extrusion-opacity": 0.95,
+};
+
+const routePathPaint = { "line-color": "#314ccd", "line-width": 8 };
+const routeDestPaint = { "circle-radius": 10, "circle-color": "#f4347c" };
+const roomPinPaint = { "circle-radius": 10, "circle-color": "#a3446a" };
+
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
 
@@ -14,22 +72,22 @@ class MapLibre extends LitElement {
     return {
       name: { type: String },
     };
-  };
+  }
 
   /**
    * Removes the currently displayed route from the map.
    */
   removeRoute() {
     if (this.map.getLayer(routePathID)) {
-        this.map.removeLayer(routePathID);
+      this.map.removeLayer(routePathID);
     }
 
     if (this.map.getLayer(routeDestID)) {
-        this.map.removeLayer(routeDestID);
+      this.map.removeLayer(routeDestID);
     }
 
     if (this.map.getSource(routeID)) {
-        this.map.removeSource(routeID);
+      this.map.removeSource(routeID);
     }
   }
 
@@ -40,8 +98,20 @@ class MapLibre extends LitElement {
   showRoute(source: any) {
     this.removeRoute();
     this.map.addSource(routeID, { type: "geojson", data: source });
-    this.map.addLayer({'id': routePathID,'type': 'line','source': routeID,'layout': {'line-join': 'round','line-cap': 'round'},'paint': {'line-color': '#314ccd','line-width': 8}});
-    this.map.addLayer({'id': routeDestID,'type': 'circle','source': routeID,'paint': {'circle-radius': 10,'circle-color': '#f4347c'}, 'filter': ['==', '$type', 'Point']});
+    this.map.addLayer({
+      id: routePathID,
+      type: "line",
+      source: routeID,
+      layout: { "line-join": "round", "line-cap": "round" },
+      paint: routePathPaint,
+    });
+    this.map.addLayer({
+      id: routeDestID,
+      type: "circle",
+      source: routeID,
+      paint: routeDestPaint,
+      filter: ["==", "$type", "Point"],
+    });
   }
 
   /**
@@ -49,8 +119,8 @@ class MapLibre extends LitElement {
    * @param roomID UUID of the room to remove.
    */
   removeRoom(id: String) {
-    this.map.removeLayer("room-layer-"+id);
-    this.map.removeSource("room-"+id);
+    this.map.removeLayer("room-layer-" + id);
+    this.map.removeSource("room-" + id);
   }
 
   /**
@@ -58,8 +128,20 @@ class MapLibre extends LitElement {
    * @param room Room to display.
    */
   addRoom(id: string, name: string, latitude: number, longitude: number) {
-    this.map.addSource("room-"+id, {type: "geojson", data: {"type":"Feature","geometry":{"type":"Point","coordinates":[longitude, latitude]},"properties":{ "name":name }}});
-    this.map.addLayer({'id': 'room-layer-'+id,'type': 'circle','source': 'room-'+id,'paint': {'circle-radius': 10,'circle-color': '#a3446a'}});
+    this.map.addSource("room-" + id, {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [longitude, latitude] },
+        properties: { name: name },
+      },
+    });
+    this.map.addLayer({
+      id: "room-layer-" + id,
+      type: "circle",
+      source: "room-" + id,
+      paint: roomPinPaint,
+    });
   }
 
   /**
@@ -82,32 +164,9 @@ class MapLibre extends LitElement {
       type: "fill-extrusion",
       source: source,
       layout: {},
-      paint: {
-        "fill-extrusion-color": "#aaa",
-        "fill-extrusion-height": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          14,
-          0,
-          20.05,
-          // Ignore type error that works anyway
-          // @ts-ignore
-          ["get", "height"],
-        ],
-        "fill-extrusion-base": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          14,
-          0,
-          20.05,
-          // Ignore type error that works anyway
-          // @ts-ignore
-          ["get", "min_height"],
-        ],
-        "fill-extrusion-opacity": 0.95,
-      },
+      // Suppress typing error that works anyway
+      // @ts-ignore
+      paint: buildingExtrusionPaint,
     });
   }
 
@@ -137,26 +196,9 @@ class MapLibre extends LitElement {
     if (this.renderRoot.querySelector("#divMap") === null) return;
     this.map = new MapLibreComponent({
       container: <HTMLElement>this.renderRoot.querySelector("#divMap"),
-      style: {
-        version: 8,
-        sources: {
-          osm: {
-            type: "raster",
-            tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
-            tileSize: 256,
-            attribution: "&copy; OpenStreetMap Contributors",
-            maxzoom: 19,
-          },
-        },
-        layers: [
-          {
-            id: "osm",
-            type: "raster",
-            source: "osm", // This must match the source key above
-          },
-        ],
-        glyphs: "http://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
-      }, // stylesheet location
+      // Suppress typing error that works anyway
+      // @ts-ignore
+      style: openStreetMapStyle, // stylesheet location
       center: [11.9736852, 57.689798], // starting position [lng, lat]
       zoom: 17, // starting zoom
     });
