@@ -20,6 +20,8 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
     public GenericCache(CacheUpdateProvider<T> updateProvider){
 
         this.updateProvider = updateProvider;
+
+        //todo Remove disk cache later
         FileInputStream fileIn = null;
         ObjectInputStream ois = null;
         try {
@@ -48,6 +50,7 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
 
             }
         }
+        //End of disk cache
     }
 
     /**
@@ -60,7 +63,7 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
                 cache = updateProvider.getNewDataToCache();
                 lastRefresh = Instant.now();
                 cacheRefreshSucceeded = true;
-
+                //todo Remove disk cache later
                 saveCacheToFile();
 
             }finally {
@@ -77,6 +80,7 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
         }
     }
 
+    //todo Remove later
     private void saveCacheToFile() {
         FileOutputStream fileOut = null;
         ObjectOutputStream oos = null;
