@@ -2,6 +2,7 @@ package com.chalmers.group30.views.components;
 
 import com.chalmers.group30.models.ChalmersMapsAPI;
 import com.chalmers.group30.models.objects.Location;
+import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.objects.Route;
 import com.google.gson.JsonObject;
 import com.vaadin.flow.component.*;
@@ -21,7 +22,27 @@ import java.util.UUID;
 //@StyleSheet("https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css")
 public class MapLibreContainer extends Component implements HasSize, HasStyle, HasComponents {
 
-    public void addRoute(Route r) {
+    /**
+     * Add and display a room on the map
+     * @param r the room to be displayed
+     */
+    public void addRoom(Room r) {
+        getElement().executeJs("this.addRoom('"+r.uuid()+"', '"+r.name()+"', "+r.location().latitude()+", "+r.location().longitude()+");");
+    }
+
+    /**
+     * Remove a room from the map
+     * @param r the room to be removed
+     */
+    public void removeRoom(Room r) {
+        getElement().executeJs("this.removeRoom('"+r.uuid()+"');");
+    }
+
+    /**
+     * Display a route on the map. Only allows one route at a time. Showing a new route will remove the old.
+     * @param r the route to be displayed
+     */
+    public void showRoute(Route r) {
         // Generate JS object of locations
         StringBuilder locationArrayString = new StringBuilder("{\"type\": \"FeatureCollection\",\"features\":[{\"type\": \"Feature\",\"properties\": {},\"geometry\": {\"type\": \"LineString\",\"coordinates\": [");
         for(Location point : r.maneuvers()){
@@ -37,22 +58,32 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
                 .append(",").append(finalLoc.latitude())
                 .append("]},\"properties\": {}}]}");
 
-
-        UUID uuid = UUID.randomUUID();
-
-        addGeoJSON("route-"+uuid, locationArrayString.toString());
-        getElement().executeJs("this.map.addLayer({'id': 'route-layer-"+uuid+"','type': 'line','source': 'route-"+uuid+"','layout': {'line-join': 'round','line-cap': 'round'},'paint': {'line-color': '#314ccd','line-width': 8}});");
-        getElement().executeJs("this.map.addLayer({'id': 'route-dest-layer-"+uuid+"-end','type': 'circle','source': 'route-"+uuid+"','paint': {'circle-radius': 10,'circle-color': '#f4347c'}, 'filter': ['==', '$type', 'Point']});");
+        getElement().executeJs("this.showRoute("+locationArrayString.toString()+");");
+        //getElement().executeJs("this.map.addLayer({'id': 'route-layer-"+uuid+"','type': 'line','source': 'route-"+uuid+"','layout': {'line-join': 'round','line-cap': 'round'},'paint': {'line-color': '#314ccd','line-width': 8}});");
+        //getElement().executeJs("this.map.addLayer({'id': 'route-dest-layer-"+uuid+"-end','type': 'circle','source': 'route-"+uuid+"','paint': {'circle-radius': 10,'circle-color': '#f4347c'}, 'filter': ['==', '$type', 'Point']});");
     }
 
+    /**
+     * Remove any route if it's currently visible
+     */
+    public void removeRoute() {
+        getElement().executeJs("this.removeRoute();");
+    }
+
+    /**
+     * Add a GeoJSON source to the map
+     * @param id The identifier of the source
+     * @param obj The GeoJSON object
+     */
     public void addGeoJSON(String id, JsonObject obj) {
         getElement().executeJs("var geojson = "+obj.toString()+"; this.addGeoJSON('"+ id +"', geojson);");
     }
 
-    public void addGeoJSON(String id, String obj) {
-        getElement().executeJs("var geojson = "+obj+"; this.addGeoJSON('"+ id +"', geojson);");
-    }
-
+    /**
+     * Add an extruded polygon layer to the map
+     * @param id The identifier of the layer
+     * @param source The GeoJSON source ID
+     */
     public void addExtrusionLayer(String id, String source) {
         getElement().executeJs("this.addExtrudedLayer('"+ id +"', '"+ source +"');");
     }
@@ -69,10 +100,17 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
         }
         try {
             Route r =  Route.fromJSON(new ChalmersMapsAPI().route(new Location(57.696484034673915, 11.975264592149706), new Location(57.700295142972465, 11.965737593691228)));
-            addRoute(r);
+            showRoute(r);
+            removeRoute();
         } catch (Exception e) {
             // Failed!
         }
-        //getElement().executeJs("this.map.showCollisionBoxes = true;");
+        try {
+            Room r = new Room("Svea 238", "", "", "", "", UUID.fromString("0067a767-c15f-4671-96dc-03792222d446"), new Location(57.706195, 11.936761), new Location(57.706195, 11.936761));
+            addRoom(r);
+            removeRoom(r);
+        } catch (Exception e) {
+
+        }
     }
 }
