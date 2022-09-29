@@ -88,30 +88,4 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
     public void addExtrusionLayer(String id, String source) {
         getElement().executeJs("this.addExtrudedLayer('"+ id +"', '"+ source +"');");
     }
-
-    @ClientCallable
-    private void onReady() {
-        try {
-            addGeoJSON("buildings", new ChalmersMapsAPI().geoJsonBuildings());
-            addGeoJSON("poi", new ChalmersMapsAPI().geoJsonPOI());
-            addExtrusionLayer("buildings_extrude", "buildings");
-            addExtrusionLayer("poi_extrude", "buildings");
-        } catch (Exception e) {
-            // Failed to add GeoJSON
-        }
-        try {
-            Route r =  Route.fromJSON(new ChalmersMapsAPI().route(new Location(57.696484034673915, 11.975264592149706), new Location(57.700295142972465, 11.965737593691228)));
-            showRoute(r);
-            removeRoute();
-        } catch (Exception e) {
-            // Failed!
-        }
-        try {
-            Room r = new Room("Svea 238", "", "", "", "", UUID.fromString("0067a767-c15f-4671-96dc-03792222d446"), new Location(57.706195, 11.936761), new Location(57.706195, 11.936761));
-            addRoom(r);
-            removeRoom(r);
-        } catch (Exception e) {
-
-        }
-    }
 }
