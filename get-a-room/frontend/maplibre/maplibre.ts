@@ -66,6 +66,8 @@ const roomPinPaint = { "circle-radius": 10, "circle-color": "#a3446a" };
 
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
+  onReady = new CustomEvent("ready");
+  ready = false;
 
   private $server?: MapLibreServerInterface;
   static get properties() {
@@ -78,6 +80,14 @@ class MapLibre extends LitElement {
    * Removes the currently displayed route from the map.
    */
   removeRoute() {
+    if(this.ready) {
+       this._removeRoute();
+    } else {
+       this.addEventListener("ready", () => this._removeRoute(), { once: true });
+    }
+  }
+
+  private _removeRoute() {
     if (this.map.getLayer(routePathID)) {
       this.map.removeLayer(routePathID);
     }
@@ -96,29 +106,45 @@ class MapLibre extends LitElement {
    * @param route GeoJSON data of the route to show.
    */
   showRoute(source: any) {
-    this.removeRoute();
-    this.map.addSource(routeID, { type: "geojson", data: source });
-    this.map.addLayer({
-      id: routePathID,
-      type: "line",
-      source: routeID,
-      layout: { "line-join": "round", "line-cap": "round" },
-      paint: routePathPaint,
-    });
-    this.map.addLayer({
-      id: routeDestID,
-      type: "circle",
-      source: routeID,
-      paint: routeDestPaint,
-      filter: ["==", "$type", "Point"],
-    });
+    if(this.ready) {
+        this._showRoute(source);
+    } else {
+        this.addEventListener("ready", () => this._showRoute(source), { once: true });
+    }
   }
+
+  private _showRoute(source: any) {
+              this.removeRoute();
+              this.map.addSource(routeID, { type: "geojson", data: source });
+              this.map.addLayer({
+                id: routePathID,
+                type: "line",
+                source: routeID,
+                layout: { "line-join": "round", "line-cap": "round" },
+                paint: routePathPaint,
+              });
+              this.map.addLayer({
+                id: routeDestID,
+                type: "circle",
+                source: routeID,
+                paint: routeDestPaint,
+                filter: ["==", "$type", "Point"],
+              });
+            }
 
   /**
    * Removes a room from the map.
    * @param roomID UUID of the room to remove.
    */
   removeRoom(id: String) {
+    if(this.ready){
+        this._removeRoom(id)
+     } else {
+        this.addEventListener("ready", () => this._removeRoom(id), { once: true });
+     }
+  }
+
+  private _removeRoom(id: String) {
     this.map.removeLayer("room-layer-" + id);
     this.map.removeSource("room-" + id);
   }
@@ -128,20 +154,27 @@ class MapLibre extends LitElement {
    * @param room Room to display.
    */
   addRoom(id: string, name: string, latitude: number, longitude: number) {
-    this.map.addSource("room-" + id, {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [longitude, latitude] },
-        properties: { name: name },
-      },
-    });
-    this.map.addLayer({
-      id: "room-layer-" + id,
-      type: "circle",
-      source: "room-" + id,
-      paint: roomPinPaint,
-    });
+    if(this.ready) {
+        this._addRoom(id, name, latitude, longitude);
+    } else {
+        this.addEventListener("ready", () => this._addRoom(id, name, latitude, longitude), { once: true });
+    }
+  }
+
+  private _addRoom(id: string, name: string, latitude: number, longitude: number) {
+      this.map.addSource("room-" + id, {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [longitude, latitude] },
+          properties: { name: name }
+      }});
+      this.map.addLayer({
+        id: "room-layer-" + id,
+        type: "circle",
+        source: "room-" + id,
+        paint: roomPinPaint,
+      });
   }
 
   /**
@@ -150,6 +183,14 @@ class MapLibre extends LitElement {
    * @param source GeoJSON source to add.
    */
   addGeoJSON(id: string, source: any) {
+    if(this.ready) {
+        this._addGeoJSON(id, source);
+    } else {
+        this.addEventListener("ready", () => this._addGeoJSON(id, source), { once: true });
+    }
+  }
+
+  private _addGeoJSON(id: string, source: any) {
     this.map.addSource(id, { type: "geojson", data: source });
   }
 
@@ -159,6 +200,14 @@ class MapLibre extends LitElement {
    * @param source ID of the source.
    */
   addExtrudedLayer(id: string, source: any) {
+    if(this.ready) {
+        this._addExtrudedLayer(id, source);
+    } else {
+        this.addEventListener("ready", () => this._addExtrudedLayer(id, source), { once: true });
+    }
+  }
+
+  private _addExtrudedLayer(id: string, source: any) {
     this.map.addLayer({
       id: id,
       type: "fill-extrusion",
@@ -205,6 +254,8 @@ class MapLibre extends LitElement {
 
     this.map.once("load", () => {
       this.$server!.onReady();
+      this.ready = true;
+      this.dispatchEvent(this.onReady);
     });
 
     this.map.addControl(
@@ -215,8 +266,9 @@ class MapLibre extends LitElement {
         trackUserLocation: true,
       })
     );
-    //this.map.addSource('buildings', {type="geojson", data: "https://maps.chalmers.se/v2/geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity"});
+
   }
+
 }
 interface MapLibreServerInterface {
   onReady(): void;
