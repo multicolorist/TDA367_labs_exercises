@@ -85,7 +85,7 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
     }
 
     @Override
-    public Route getWalingRoute(Location userLocation, Location destinationLocation) throws IOException {
+    public Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException {
         return routeService.getRoute(userLocation, destinationLocation);
     }
 }
