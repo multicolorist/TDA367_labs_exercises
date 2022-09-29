@@ -1,9 +1,6 @@
 package com.chalmers.group30.models;
 
-import com.chalmers.group30.models.objects.Booking;
-import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
-import com.chalmers.group30.models.objects.SearchRecord;
+import com.chalmers.group30.models.objects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -32,13 +29,27 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
         this.routeService = routeService;
     }
 
-    //todo missing room size
+    /**
+     * Search for matching rooms that are free at the given time
+     * @param userLocation The user location, can be null
+     * @param groupSize The group size
+     * @param startTime The desired start time
+     * @param endTime The desired end time
+     * @return A list of matching rooms with a distance from the user and all existing bookings for the room
+     * @throws IOException If the API request failed for some reason.
+     */
     @Override
     public List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException {
         List<Room> candidateRooms = roomService.getRooms();
         List<Room> matchingRooms = new ArrayList<>();
         roomLoop:
         for (Room room : candidateRooms) {
+
+            //todo Include the rooms with unknown size? (marked with -1)
+            if (room.seats() < groupSize) {
+                continue;
+            }
+
             try {
                 List<Booking> bookings = bookingService.getBookings(room);
 
@@ -71,6 +82,11 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
         return results;
 
+    }
+
+    @Override
+    public Route getWalingRoute(Location userLocation, Location destinationLocation) throws IOException {
+        return routeService.getRoute(userLocation, destinationLocation);
     }
 }
 
