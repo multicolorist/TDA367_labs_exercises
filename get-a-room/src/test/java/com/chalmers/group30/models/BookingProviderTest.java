@@ -22,7 +22,7 @@ class BookingProviderTest {
 
     @Test
     void getBookings_fromApi() throws IOException {
-        Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
+        Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         ChalmersMapsAPIInterface api = mock(ChalmersMapsAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
 
@@ -39,7 +39,7 @@ class BookingProviderTest {
 
     @Test
     void getNewDataToCache_bookingsForRoom() throws IOException {
-        Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
+        Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         ChalmersMapsAPIInterface api = mock(ChalmersMapsAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         when(roomServiceInterface.getRooms()).thenReturn(Arrays.asList(new Room[]{mockRoom}));

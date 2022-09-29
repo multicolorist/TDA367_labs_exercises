@@ -61,7 +61,15 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
                     JsonObject roomInfo = chalmersMapsAPI.getInfo(roomUUID);
                     JsonObject roomProperties = roomInfo.get("properties").getAsJsonObject();
                     if (roomProperties.has("timeedit_id")){
-                        rooms.add(Room.fromJSON(roomProperties));
+                        String timeeditId = roomProperties.get("timeedit_id").getAsString();
+                        JsonObject timeEditInfo = null;
+                        try{
+                            timeEditInfo = chalmersMapsAPI.getTimeEditInfo(timeeditId);
+                        }catch (Exception e){
+                            //Failed to get timeedit info
+                        }
+
+                        rooms.add(Room.fromJSON(roomProperties, timeEditInfo));
                         existingRooms.add(roomUUID);
                     }
 
