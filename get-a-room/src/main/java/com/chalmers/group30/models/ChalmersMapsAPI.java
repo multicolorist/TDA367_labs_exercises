@@ -76,6 +76,17 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
     }
 
     /**
+     * Get information about a TimeEdit object identified by its identifier.
+     * @param identifier The TimeEdit identifier of the object
+     * @return JSON object representing information about the object
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    public JsonObject getTimeEditInfo(String identifier) throws IOException {
+        final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", identifier);
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+    }
+
+    /**
      * Get GeoJson object for relevant buildings
      * @return A GeoJson object representing different locations
      * @throws IOException If the underlying API request failed for some reason
