@@ -53,6 +53,6 @@ class GetARoomFacadeTest {
     }
 
     @Test
-    void getWalingRoute() {
+    void getWalkingRoute() {
     }
 }
