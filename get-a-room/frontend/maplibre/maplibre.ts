@@ -222,21 +222,12 @@ class MapLibre extends LitElement {
     return html`
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"/>
     <style>
-            #divMap {
-              width: 100%;
-              height: 100%;
-            }
-            .div-icon {
-            	background: #fff;
-            	border: 1px solid #666;
-            	height: auto;
-            	width: auto;
-            	padding-left: 5px;
-            	padding-right: 5px;
-            	white-space: nowrap;
-            }
-          </style>
-          <div id="divMap"></div>
+      #divMap {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <div id="divMap"></div>
     `;
   }
 
