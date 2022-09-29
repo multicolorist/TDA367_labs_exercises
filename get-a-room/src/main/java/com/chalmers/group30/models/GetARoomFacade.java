@@ -84,6 +84,13 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
     }
 
+    /**
+     * Get the walking route between two locations
+     * @param userLocation The user location
+     * @param destinationLocation The destination location
+     * @return The walking route
+     * @throws IOException If the API request failed for some reason.
+     */
     @Override
     public Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException {
         return routeService.getRoute(userLocation, destinationLocation);
