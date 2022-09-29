@@ -37,9 +37,19 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
      * @param endTime The desired end time
      * @return A list of matching rooms with a distance from the user and all existing bookings for the room
      * @throws IOException If the API request failed for some reason.
+     * @throws IllegalArgumentException If ether the group size is less than 1 or the start time is after the end time
      */
     @Override
-    public List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException {
+    public List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException, IllegalArgumentException {
+
+        if (groupSize < 1) {
+            throw new IllegalArgumentException("Group size must be at least 1");
+        }
+
+        if (startTime.isAfter(endTime)) {
+            throw new IllegalArgumentException("Start time must be before end time");
+        }
+
         List<Room> candidateRooms = roomService.getRooms();
         List<Room> matchingRooms = new ArrayList<>();
         roomLoop:

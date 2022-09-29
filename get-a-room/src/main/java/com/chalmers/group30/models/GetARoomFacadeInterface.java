@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface GetARoomFacadeInterface {
-    List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException;
+    List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException, IllegalArgumentException;
     Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException;
 }
