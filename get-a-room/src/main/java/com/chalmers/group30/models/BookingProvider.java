@@ -68,7 +68,7 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
      * @throws IOException If the underlying API call fails
      */
     @Override
-    public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
+        public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
         Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
 
         for (Room room : roomServiceInterface.getRooms()) {
