@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookingServiceTest {
     @Test
     public void getBookings_roomIsInCache() throws IOException, ParseException {
-        Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
+        Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         BookingProviderInterface bookingProviderInterface = mock(BookingProviderInterface.class);
         CacheUpdateProvider<Dictionary<Room, List<Booking>>> cacheUpdateProvider = mock(CacheUpdateProvider.class);
 
@@ -40,7 +40,7 @@ public class BookingServiceTest {
 
     @Test
     public void getBookings_roomIsNotInCache() throws IOException, ParseException {
-        Room mockRoom = new Room("Chalmers Test", "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
+        Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         BookingProviderInterface bookingProviderInterface = mock(BookingProviderInterface.class);
         CacheUpdateProvider<Dictionary<Room, List<Booking>>> cacheUpdateProvider = mock(CacheUpdateProvider.class);
 

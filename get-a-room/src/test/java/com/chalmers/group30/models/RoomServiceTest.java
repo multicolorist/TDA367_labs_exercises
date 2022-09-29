@@ -19,7 +19,7 @@ public class RoomServiceTest {
     public void getRooms_shouldReturnProperRooms() throws IOException {
         CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
-        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
+        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", 1, "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 
         RoomServiceInterface roomServiceInterface = new RoomService(roomCacheUpdateProvider);
 
@@ -34,7 +34,7 @@ public class RoomServiceTest {
     public void refreshRoomCache() throws IOException {
         CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
-        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
+        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", 1, "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 
         RoomServiceInterface roomServiceInterface = new RoomService(roomCacheUpdateProvider);
 
