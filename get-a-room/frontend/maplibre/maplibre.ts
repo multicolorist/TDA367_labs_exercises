@@ -283,21 +283,28 @@ class MapLibre extends LitElement {
       zoom: 17, // starting zoom
     });
 
+    // Add geolocation control
+    let geoTracker = new GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      trackUserLocation: true,
+    });
+    this.map.addControl(geoTracker);
+
     // Make sure sources and layers are loaded after map is loaded
     this.map.once("load", () => {
       this.ready = true;
       this.dispatchEvent(this.onReady);
+      geoTracker.trigger();
+      this.map.loadImage("/icons/map-pin.png", (error, image) => {
+        if (error) throw error;
+        // Suppress typing error that works anyway
+        // @ts-ignore
+        this.map.addImage("pin", image);
+      });
+      this.dispatchEvent(this.onPinReady);
     });
-
-    // Add geolocation control
-    this.map.addControl(
-      new GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        trackUserLocation: true,
-      })
-    );
   }
 }
 customElements.define("maplibre-gl-js", MapLibre);
