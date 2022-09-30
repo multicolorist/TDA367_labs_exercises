@@ -31,15 +31,21 @@ public class MapView extends VerticalLayout {
         try {
             Route r =  Route.fromJSON(new ChalmersMapsAPI().route(new Location(57.696484034673915, 11.975264592149706), new Location(57.700295142972465, 11.965737593691228)));
             map.showRoute(r);
+            map.removeRoute();
+            map.showRoute(r);
         } catch (Exception e) {
             // Failed!
         }
         try {
             Room r = new Room("Svea 238", "", "", "", "", UUID.fromString("0067a767-c15f-4671-96dc-03792222d446"), new Location(57.706195, 11.936761), new Location(57.706195, 11.936761));
             map.addRoom(r);
+            map.removeRoom();
+            map.addRoom(r);
         } catch (Exception e) {
             // Failure to add room
         }
+
+        map.flyTo(57.696484034673915, 11.975264592149706);
 
         add(map);
 
