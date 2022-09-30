@@ -7,9 +7,9 @@ import com.vaadin.flow.component.html.Span;
  */
 public class DistancePill extends Span {
     public DistancePill(int distance) {
-        Span distanceCounter = new Span(String.valueOf(distance) + "m");
+        Span distanceCounter = new Span(distance + "m");
             distanceCounter.getElement().getThemeList().add("badge pill small success");
-            distanceCounter.getStyle().set("margin-inline-start", "var(--lumo-space-s)");
+            // distanceCounter.getStyle().set("margin-inline-start", "var(--lumo-space-s)");
             distanceCounter.getStyle().set("font-size", "var(--lumo-font-size-m)");
         // Accessibility
         String distanceCounterLabel = String.format("%d meters to the room from your location", distance);

@@ -19,10 +19,10 @@ public class ShowOnMapButtonController {
      * @return The distance in meters between the position and the room
      */
     public static ComponentEventListener<ClickEvent<Button>> getListener() {
-        return new showOnMapButtonListener();
+        return new ShowOnMapButtonListener();
     }
 
-    private static class showOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
+    private static class ShowOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
             // TODO: Is there a way of using Java generics to ensure that it gets an event source with getUUID()?

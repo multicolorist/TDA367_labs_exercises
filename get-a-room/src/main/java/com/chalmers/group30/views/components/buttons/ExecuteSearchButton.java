@@ -4,30 +4,26 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-
-import java.util.UUID;
+import org.springframework.stereotype.Component;
 
 /**
  * A button for booking a room
  */
-public class BookButton extends Button implements ButtonHasUUID {
-    UUID uuid;
-    Icon icon = new Icon(VaadinIcon.CALENDAR_CLOCK);
+@Component
+@UIScope
+public class ExecuteSearchButton extends Button {
+    Icon icon = new Icon(VaadinIcon.SEARCH);
 
-    public BookButton(UUID uuid) {
+    public ExecuteSearchButton() {
         addClassNames(
                 LumoUtility.Display.INLINE_FLEX,
                 LumoUtility.BoxShadow.SMALL
         );
-        addThemeVariants(ButtonVariant.LUMO_SMALL);
-        this.uuid = uuid;
+        this.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         this.setIcon(icon);
-        this.setText("Book");
-    }
+        this.setText("Search! ");
 
-    @Override
-    public UUID getUUID() {
-        return this.uuid;
     }
 }
