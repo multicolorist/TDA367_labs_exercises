@@ -1,20 +1,11 @@
 package com.chalmers.group30.views.components;
 
-import com.chalmers.group30.models.ChalmersMapsAPI;
-import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
-import com.chalmers.group30.models.objects.Route;
 import com.google.gson.JsonObject;
 import com.vaadin.flow.component.*;
-import com.vaadin.flow.component.dependency.CssImport.Container;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.dependency.StyleSheet;
-import com.vaadin.flow.component.html.Div;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.List;
 
 @Tag("maplibre-gl-js")
 @NpmPackage(value = "maplibre-gl", version = "2.4.0")
@@ -22,14 +13,15 @@ import java.util.UUID;
 /**
  * Represents a MapLibre component to be used in Vaadin
  */
-public class MapLibreContainer extends Component implements HasSize, HasStyle, HasComponents {
-
+public class MapView extends Component implements HasSize, HasStyle, HasComponents {
     /**
      * Add and display a room on the map
-     * @param r the room to be displayed
+     * @param name the name to be displayed
+     * @param latitude the latitude to display the room
+     * @param longitude the longitude to display the room
      */
-    public void addRoom(Room r) {
-        getElement().executeJs("this.addRoom('"+r.uuid()+"', '"+r.name()+"', "+r.location().latitude()+", "+r.location().longitude()+");");
+    public void addRoom(String name, double latitude, double longitude) {
+        getElement().executeJs("this.addRoom('"+name+"', "+latitude+", "+longitude+");");
     }
 
     /**
@@ -41,21 +33,21 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
 
     /**
      * Display a route on the map. Only allows one route at a time. Showing a new route will remove the old.
-     * @param r the route to be displayed
+     * @param maneuvers A list of latitude-longitude pairs
      */
-    public void showRoute(Route r) {
+    public void showRoute(List<List<Double>> maneuvers) {
         // Generate JS object of locations
         StringBuilder locationArrayString = new StringBuilder("[");
-        for(Location point : r.maneuvers()){
-            locationArrayString.append("[").append(point.longitude()).append(",").append(point.latitude()).append("],");
+        for(int i = 0; i < maneuvers.size(); i++){
+            locationArrayString.append("[").append(maneuvers.get(i).get(1)).append(",").append(maneuvers.get(i).get(0)).append("],");
         }
         // Remove final stray comma
         locationArrayString.deleteCharAt(locationArrayString.length()-1);
         locationArrayString.append("]");
 
         // Add a point representing the route destination
-        Location finalLoc = r.maneuvers().get(r.maneuvers().size() - 1);
-        String finalLocationArrayString = "[" + finalLoc.longitude() + "," + finalLoc.latitude() + "]";
+        List<Double> finalLoc = maneuvers.get(maneuvers.size() - 1);
+        String finalLocationArrayString = "[" + finalLoc.get(1) + "," + finalLoc.get(0) + "]";
 
         // Show route on the map
         getElement().executeJs("this.showRoute("+locationArrayString.toString()+", "+finalLocationArrayString+");");

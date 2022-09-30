@@ -175,25 +175,24 @@ class MapLibre extends LitElement {
    * Display a room on the map.
    * @param room Room to display.
    */
-  addRoom(id: string, name: string, latitude: number, longitude: number) {
+  addRoom(name: string, latitude: number, longitude: number) {
     if (this.ready) {
-      this._addRoom(id, name, latitude, longitude);
+      this._addRoom(name, latitude, longitude);
     } else {
       this.addEventListener(
         "ready",
-        () => this._addRoom(id, name, latitude, longitude),
+        () => this._addRoom(name, latitude, longitude),
         { once: true }
       );
     }
   }
 
   private _addRoom(
-    id: string,
     name: string,
     latitude: number,
     longitude: number
   ) {
-    this.addPin("room", "", longitude, latitude);
+    this.addPin("room", name, longitude, latitude);
   }
 
   /**
