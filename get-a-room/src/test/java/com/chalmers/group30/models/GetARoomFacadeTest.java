@@ -41,12 +41,15 @@ class GetARoomFacadeTest {
 
         GetARoomFacade getARoomFacade = new GetARoomFacade(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        List<SearchRecord> searchRecords = getARoomFacade.search(new Location(1,1), 2, LocalDateTime.of(2022,01,01,12,15), LocalDateTime.of(2022,01,01,13,00));
+        SearchQuery query = new SearchQuery(new Location(1,1), 2, LocalDateTime.of(2022,01,01,12,15), LocalDateTime.of(2022,01,01,13,00));
 
-        assertEquals(1, searchRecords.size());
-        assertEquals(rooms.get(4) ,searchRecords.get(0).room());
-        assertEquals(1000.0, searchRecords.get(0).birdsDistance());
-        assertNotEquals(0, searchRecords.get(0).bookings().size());
+        SearchResult searchResult = getARoomFacade.search(query);
+
+        assertEquals(query, searchResult.searchQuery());
+        assertEquals(1, searchResult.results().size());
+        assertEquals(rooms.get(4) ,searchResult.results().get(0).room());
+        assertEquals(1000.0, searchResult.results().get(0).birdsDistance());
+        assertNotEquals(0, searchResult.results().get(0).bookings().size());
     }
 
     @Test

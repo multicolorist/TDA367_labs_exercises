@@ -31,22 +31,19 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
     /**
      * Search for matching rooms that are free at the given time
-     * @param userLocation The user location, can be null
-     * @param groupSize The group size
-     * @param startTime The desired start time
-     * @param endTime The desired end time
+     * @param searchQuery The search query
      * @return A list of matching rooms with a distance from the user and all existing bookings for the room
      * @throws IOException If the API request failed for some reason.
      * @throws IllegalArgumentException If ether the group size is less than 1 or the start time is after the end time
      */
     @Override
-    public List<SearchRecord> search(Location userLocation, int groupSize, LocalDateTime startTime, LocalDateTime endTime) throws IOException, IllegalArgumentException {
+    public SearchResult search(SearchQuery searchQuery) throws IOException, IllegalArgumentException {
 
-        if (groupSize < 1) {
+        if (searchQuery.groupSize() < 1) {
             throw new IllegalArgumentException("Group size must be at least 1");
         }
 
-        if (startTime.isAfter(endTime)) {
+        if (searchQuery.startTime().isAfter(searchQuery.endTime())) {
             throw new IllegalArgumentException("Start time must be before end time");
         }
 
@@ -56,7 +53,7 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
         for (Room room : candidateRooms) {
 
             //todo Include the rooms with unknown size? (marked with -1)
-            if (room.seats() < groupSize) {
+            if (room.seats() < searchQuery.groupSize()) {
                 continue;
             }
 
@@ -65,9 +62,9 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
                 for (Booking booking : bookings) {
                     //Booking start time is within the search time
-                    if (((booking.startTime().isAfter(startTime) || booking.startTime().isEqual(startTime)) && booking.startTime().isBefore(endTime))
+                    if (((booking.startTime().isAfter(searchQuery.startTime()) || booking.startTime().isEqual(searchQuery.startTime())) && booking.startTime().isBefore(searchQuery.endTime()))
                             //or Booking end time is within the search time
-                            || (booking.endTime().isAfter(startTime) && (booking.endTime().isBefore(endTime) || booking.endTime().isEqual(endTime)))) {
+                            || (booking.endTime().isAfter(searchQuery.startTime()) && (booking.endTime().isBefore(searchQuery.endTime()) || booking.endTime().isEqual(searchQuery.endTime())))) {
                         continue roomLoop;
                     }
                 }
@@ -84,13 +81,13 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
 
             try {
                 results.add(new SearchRecord(room, bookingService.getBookings(room),
-                        userLocation != null ? routeService.getBirdsDistance(userLocation, room.location()) : -1));
+                        searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : -1));
             } catch (ParseException e) {
 
             }
         }
 
-        return results;
+        return new SearchResult(searchQuery, results);
 
     }
 
