@@ -1,6 +1,5 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.models.RoomServiceInterface;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -16,11 +15,10 @@ import org.springframework.stereotype.Component;
 @UIScope
 public class FilterButtonController {
     // TODO: Add filtering logic
-    private final RoomServiceInterface roomService;
 
     @Autowired
-    public FilterButtonController(RoomServiceInterface roomService) {
-        this.roomService = roomService;
+    public FilterButtonController() {
+
     }
 
     /**
