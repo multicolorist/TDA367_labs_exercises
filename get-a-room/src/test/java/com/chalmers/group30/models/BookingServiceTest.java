@@ -46,7 +46,7 @@ public class BookingServiceTest {
 
         when(cacheUpdateProvider.getNewDataToCache()).thenReturn(new Hashtable<>());
 
-        when(bookingProviderInterface.getBookings(eq(mockRoom), any(Instant.class), anyInt())).thenReturn(Arrays.asList(new Booking[]{new Booking(LocalDateTime.MIN, LocalDateTime.MAX)}));
+        when(bookingProviderInterface.getBookings(eq(mockRoom), any(LocalDateTime.class), anyInt())).thenReturn(Arrays.asList(new Booking[]{new Booking(LocalDateTime.MIN, LocalDateTime.MAX)}));
 
         BookingServiceInterface bookingService = new BookingService(cacheUpdateProvider, bookingProviderInterface);
 

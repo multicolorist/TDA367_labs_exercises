@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
@@ -31,7 +33,7 @@ class BookingProviderTest {
         BookingProvider service = new BookingProvider(roomServiceInterface, api);
 
         try {
-            List<Booking> bookings = service.getBookings(mockRoom, Instant.ofEpochSecond(1650283200), 1);
+            List<Booking> bookings = service.getBookings(mockRoom, LocalDateTime.ofInstant(Instant.ofEpochSecond(1650283200), ZoneId.of("Europe/Paris")), 1);
         } catch (Exception e) {
             fail(e);
         }

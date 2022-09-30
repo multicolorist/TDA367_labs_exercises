@@ -15,6 +15,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -52,7 +54,7 @@ public class BookingService implements BookingServiceInterface{
         List<Booking> bookings = bookingCache.getData().get(room);
 
         if (bookings == null) {
-            bookings = bookingProvider.getBookings(room, Instant.now(), 2);
+            bookings = bookingProvider.getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris")), 2);
         }
 
         return bookings;

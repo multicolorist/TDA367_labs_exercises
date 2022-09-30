@@ -13,9 +13,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.*;
 
 @Service
@@ -40,13 +38,13 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
      * @throws IOException If the underlying API call fails
      * @throws IllegalArgumentException If weeksForward is too small, or too big (Must be >0 and <=10)
      */
-    public List<Booking> getBookings(Room room, Instant startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException {
+    public List<Booking> getBookings(Room room, LocalDateTime startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException {
         List<Booking> bookings = new ArrayList<>();
         if (weeksForward <= 0 || weeksForward > 10){
             throw new IllegalArgumentException();
         }
 
-        ZonedDateTime zdt = ZonedDateTime.ofInstant(startTime, ZoneId.of("Europe/Paris"));
+        ZonedDateTime zdt = ZonedDateTime.ofLocal(startTime, ZoneId.of("Europe/Paris"), ZoneOffset.ofHours(1));
         Calendar startTimeCal = GregorianCalendar.from(zdt);
 
         for(int i = 0; i < weeksForward; i++){
@@ -73,7 +71,7 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
 
         for (Room room : roomServiceInterface.getRooms()) {
             try {
-                bookings.put(room, getBookings(room, Instant.now(), 2));
+                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris")), 2));
             } catch (ParseException e) {
                 e.printStackTrace();
             }catch (IOException e){

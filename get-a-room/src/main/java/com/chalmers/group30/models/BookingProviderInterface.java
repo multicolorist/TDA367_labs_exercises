@@ -6,6 +6,7 @@ import com.chalmers.group30.models.objects.Room;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingProviderInterface {
@@ -18,5 +19,5 @@ public interface BookingProviderInterface {
      * @throws IOException If the underlying API call fails
      * @throws IllegalArgumentException If weeksForward is too small, or too big (Must be >0 and <=10)
      */
-    List<Booking> getBookings(Room room, Instant startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException;
+    List<Booking> getBookings(Room room, LocalDateTime startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException;
 }
