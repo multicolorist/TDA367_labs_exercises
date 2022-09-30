@@ -33,11 +33,10 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
     }
 
     /**
-     * Remove a room from the map
-     * @param r the room to be removed
+     * Remove the currently displayed room from the map
      */
-    public void removeRoom(Room r) {
-        getElement().executeJs("this.removeRoom('"+r.uuid()+"');");
+    public void removeRoom() {
+        getElement().executeJs("this.removeRoom();");
     }
 
     /**
@@ -67,6 +66,22 @@ public class MapLibreContainer extends Component implements HasSize, HasStyle, H
      */
     public void removeRoute() {
         getElement().executeJs("this.removeRoute();");
+    }
+
+    /**
+     * Remove currently displayed rooms and routes on the map.
+     */
+    public void clearRoomsAndRoutes() {
+        getElement().executeJs("this.clearRoomsAndRoutes();");
+    }
+
+    /**
+     * Fly to the coordinates given
+     * @param latitude the latitude to fly to
+     * @param longitude the longitude to fly to
+     */
+    public void flyTo(double latitude, double longitude) {
+        getElement().executeJs("this.flyTo("+latitude+", "+longitude+");");
     }
 
     /**
