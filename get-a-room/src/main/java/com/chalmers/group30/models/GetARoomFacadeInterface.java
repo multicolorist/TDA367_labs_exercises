@@ -5,7 +5,6 @@ import com.chalmers.group30.models.objects.Route;
 import com.chalmers.group30.models.objects.SearchRecord;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
