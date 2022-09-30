@@ -60,16 +60,23 @@ const buildingExtrusionPaint = {
   "fill-extrusion-opacity": 0.95,
 };
 
-const routePathPaint = { "line-color": "#314ccd", "line-width": 8 };
-const routeDestPaint = { "circle-radius": 10, "circle-color": "#f4347c" };
-const roomPinPaint = { "circle-radius": 10, "circle-color": "#a3446a" };
+/**
+ * The paint style that is used for determining the color and width of a route.
+ */
+const routePathPaint = { "line-color": "#0050ff", "line-width": 8 };
 
+/**
+ * Lit element class used for containing a MapLibre map.
+ */
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
 
   // Must be used because map cannot initialized in constructor
   onReady: Event = new CustomEvent("ready");
   ready: boolean = false;
+
+  onPinReady: Event = new CustomEvent("pinReady");
+  pinReady: boolean = false;
 
   /**
    * Removes the currently displayed route from the map.
@@ -94,6 +101,8 @@ class MapLibre extends LitElement {
     if (this.map.getSource(routeID)) {
       this.map.removeSource(routeID);
     }
+
+    this.removePin("route");
   }
 
   /**
@@ -141,33 +150,25 @@ class MapLibre extends LitElement {
       layout: { "line-join": "round", "line-cap": "round" },
       paint: routePathPaint,
     });
-    // Add layer with destination point
-    this.map.addLayer({
-      id: routeDestID,
-      type: "circle",
-      source: routeID,
-      paint: routeDestPaint,
-      filter: ["==", "$type", "Point"],
-    });
+    this.addPin("route", "", finalDestination[0], finalDestination[1]);
   }
 
   /**
    * Removes a room from the map.
    * @param roomID UUID of the room to remove.
    */
-  removeRoom(id: String) {
+  removeRoom() {
     if (this.ready) {
-      this._removeRoom(id);
+      this._removeRoom();
     } else {
-      this.addEventListener("ready", () => this._removeRoom(id), {
+      this.addEventListener("ready", () => this._removeRoom(), {
         once: true,
       });
     }
   }
 
-  private _removeRoom(id: String) {
-    this.map.removeLayer("room-layer-" + id);
-    this.map.removeSource("room-" + id);
+  private _removeRoom() {
+    this.removePin("room");
   }
 
   /**
@@ -192,22 +193,7 @@ class MapLibre extends LitElement {
     latitude: number,
     longitude: number
   ) {
-    // Add GeoJSON source with room point
-    this.map.addSource("room-" + id, {
-      type: "geojson",
-      data: {
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [longitude, latitude] },
-        properties: { name: name },
-      },
-    });
-    // Add layer with room point
-    this.map.addLayer({
-      id: "room-layer-" + id,
-      type: "circle",
-      source: "room-" + id,
-      paint: roomPinPaint,
-    });
+    this.addPin("room", "", longitude, latitude);
   }
 
   /**
@@ -253,6 +239,114 @@ class MapLibre extends LitElement {
       // Suppress typing error that works anyway
       // @ts-ignore
       paint: buildingExtrusionPaint,
+    });
+  }
+
+  /**
+   * Adds a fill layer with given source that contains polygons.
+   * If duplicate ID is given, old pin will be overwritten.
+   * @param latitude Latitude of the pin.
+   * @param longitude Longitude of the pin.
+   */
+  addPin(id: string, text: string, latitude: number, longitude: number) {
+    if (this.pinReady) {
+      this._addPin(id, text, latitude, longitude);
+    } else {
+      this.addEventListener("pinReady", () => this._addPin(id, text, latitude, longitude), {
+        once: true,
+      });
+    }
+  }
+
+  private _addPin(id: string, text:string, latitude: number, longitude: number) {
+    if(this.map.getLayer(id+"-pin-layer")) {
+      this.map.removeLayer(id+"-pin-layer");
+    }
+    if(this.map.getSource(id+"-pin")) {
+      this.map.removeSource(id+"-pin");
+    }
+    this.map.addSource(id+"-pin", {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [latitude, longitude],
+            },
+          },
+        ],
+      },
+    });
+    this.map.addLayer({
+      id: id+"-pin-layer",
+      type: "symbol",
+      source: id+"-pin",
+      layout: {
+        "icon-image": "pin",
+        "icon-size": 0.08,
+        "icon-offset": [0, -250],
+      },
+    });
+  }
+
+  /**
+   * Removes a pin from the map.
+   * @param id ID of the pin to remove.
+   */
+  removePin(id: string) {
+    if(this.pinReady) {
+      this._removePin(id);
+    } else {
+      this.addEventListener("pinReady", () => this._removePin(id), {
+        once: true,
+      });
+    }
+  }
+
+  private _removePin(id: string) {
+    if(this.map.getLayer(id+"-pin-layer")) {
+      this.map.removeLayer(id+"-pin-layer");
+    }
+    if(this.map.getSource(id+"-pin")) {
+      this.map.removeSource(id+"-pin");
+    }
+  }
+
+  clearRoomsAndRoutes() {
+    if(this.ready) {
+      this._clearRoomsAndRoutes();
+    } else {
+      this.addEventListener("ready", () => this._clearRoomsAndRoutes(), {
+        once: true,
+      });
+    }
+  }
+
+  private _clearRoomsAndRoutes() {
+    this.removeRoute();
+    this.removeRoom();
+  }
+
+  /**
+   * Fly to a certain location on the map
+   */
+  flyTo(latitude: number, longitude: number) {
+    if(this.ready) {
+      this._flyTo(latitude, longitude);
+    } else {
+      this.addEventListener("loaded", () => this._flyTo(latitude, longitude), {
+        once: true,
+      });
+    }
+  }
+
+  private _flyTo(latitude: number, longitude: number) {
+    this.map.flyTo({
+      center: [latitude, longitude],
+      zoom: 15
     });
   }
 
