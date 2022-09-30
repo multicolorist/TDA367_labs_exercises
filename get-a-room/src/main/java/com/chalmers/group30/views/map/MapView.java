@@ -37,7 +37,7 @@ public class MapView extends VerticalLayout {
             // Failed!
         }
         try {
-            Room r = new Room("Svea 238", "", "", "", "", UUID.fromString("0067a767-c15f-4671-96dc-03792222d446"), new Location(57.706195, 11.936761), new Location(57.706195, 11.936761));
+            Room r = new Room("Svea 238", 4, "", "", "", "", UUID.fromString("0067a767-c15f-4671-96dc-03792222d446"), new Location(57.706195, 11.936761), new Location(57.706195, 11.936761));
             map.addRoom(r);
             map.removeRoom();
             map.addRoom(r);
