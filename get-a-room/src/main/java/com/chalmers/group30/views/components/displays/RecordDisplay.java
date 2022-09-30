@@ -1,10 +1,8 @@
-package com.chalmers.group30.views.components;
+package com.chalmers.group30.views.components.displays;
 
 import com.chalmers.group30.controllers.BookButtonController;
-import com.chalmers.group30.controllers.RecordListController;
 import com.chalmers.group30.controllers.ShowOnMapButtonController;
-import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
+import com.chalmers.group30.models.objects.SearchRecord;
 import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
@@ -22,25 +20,22 @@ import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * A component that displays a list of SearchRecords
+ *
  * Note that Vaadin has a bug with loading duplicated results:
  * https://github.com/vaadin/flow-components/issues/3547
  * The solution is to not allow duplicates in the list, or to
  * use a Grid instead to display the records.
  */
-public class RecordList extends VirtualList<Room> {
+public class RecordDisplay extends VirtualList<SearchRecord> {
+    private LocalDate currentSearchQueryDate;
 
-    RecordListController recordListController;
-    BookButtonController bookButtonController;
-
-    public RecordList(RecordListController recordListController) throws IOException {
-        // Init fields
-        this.recordListController = recordListController; // TODO: Remove once facade arrives, no need
-
+    public RecordDisplay() throws IOException {
         // Style
         addClassNames(
                 LumoUtility.Padding.Horizontal.MEDIUM,
@@ -49,25 +44,25 @@ public class RecordList extends VirtualList<Room> {
                 LumoUtility.Height.FULL
         );
 
-        // Get data
-        // TODO: Do not set data here when facade comes, from QueryContainerController makes more sense instead
-        List<Room> rooms = recordListController.getRooms();
-
-        // Set data
-        setItems(rooms);
+        // Set renderer
         setRenderer(new ComponentRenderer<>(this::listEntryProvider));
+    }
+
+    public void setCurrentSearchQueryDate(LocalDate date) {
+        this.currentSearchQueryDate = date;
     }
 
     /**
      * Creates a list entry for each room it's given
-     * @param room The room to create a list entry for
-     * @return A component that represents the room in the list
+     *
+     * @param searchRecord The search record to create a list entry for
+     * @return A component that represents the search record in the list
      */
-    Component listEntryProvider(Room room) {
+    Component listEntryProvider(SearchRecord searchRecord) {
         // Buttons
-        Button bookButton = new BookButton(room.uuid());
-        bookButton.addClickListener(bookButtonController.getListener());
-        Button showMapButton = new ShowOnMapButton(room.uuid());
+        Button bookButton = new BookButton(searchRecord.room().uuid());
+        bookButton.addClickListener(BookButtonController.getListener());
+        Button showMapButton = new ShowOnMapButton(searchRecord.room().uuid());
         showMapButton.addClickListener(ShowOnMapButtonController.getListener());
 
         // Top of the entry
@@ -80,21 +75,19 @@ public class RecordList extends VirtualList<Room> {
         topLayoutLeft.addClassNames(
                 LumoUtility.Gap.SMALL
         );
-        topLayoutLeft.getElement().appendChild(ElementFactory.createStrong(room.name()));
-        Location userLocation = new Location(57.696484034673915, 11.975264592149706); // TODO: Change this to the user's location from a controller
-        int distanceToRoom = (int) Math.round(recordListController.getBirdsDistance(userLocation, room.location()));// TODO: Change this to the user's location from a controller
-        //TODO: Change this distance to the one delivered in the SearchRecord, so RecordListController can be removed entirely
+        topLayoutLeft.getElement().appendChild(ElementFactory.createStrong(searchRecord.room().name()));
+        int distanceToRoom = (int) Math.round(searchRecord.birdsDistance());
         topLayoutLeft.add(new Div(new Text(String.format("%s meters away", distanceToRoom))));
         // Top right part of the entry, seen both folded and unfolded
         VerticalLayout topLayoutRight = new VerticalLayout();
         topLayoutRight.addClassNames(
                 LumoUtility.Gap.SMALL
         );
-        topLayoutRight.add(new Div(new Text(room.building())));
-        if (Objects.equals(room.floor(), "")) { // floor is optional
+        topLayoutRight.add(new Div(new Text(searchRecord.room().building())));
+        if (Objects.equals(searchRecord.room().floor(), "")) { // floor is optional
             topLayoutRight.add(new Div(new Text("")));
         } else {
-            topLayoutRight.add(new Div(new Text("Floor " + room.floor())));
+            topLayoutRight.add(new Div(new Text("Floor " + searchRecord.room().floor())));
         }
         topLayout.add(topLayoutLeft, topLayoutRight);
 
@@ -111,14 +104,38 @@ public class RecordList extends VirtualList<Room> {
                 LumoUtility.TextAlignment.RIGHT
         );
         String bottomInfo = "";
-        if (!Objects.equals(room.streetAddress(), "")) {
-            bottomInfo += room.streetAddress();
+        if (!Objects.equals(searchRecord.room().streetAddress(), "")) {
+            bottomInfo += searchRecord.room().streetAddress();
         }
-        if (room.seats() != -1) { // seats is optional
-            bottomInfo = bottomInfo + ", " + room.seats() + " seats";
+        if (searchRecord.room().seats() != -1) { // seats is optional
+            bottomInfo = bottomInfo + ", " + searchRecord.room().seats() + " seats";
         }
+
+        // Add booking info
+        // TODO: Should this be in a controller? Maybe a bit too much logic for a view?
+        // TODO: Verify the logic once we have updated the booking cache to be more current
+        String bookingInfo = "";
+        if (currentSearchQueryDate != null) { // Has not been set, should be a bug if it happens but just to make sure
+            boolean isBookedOnQueryDate = false;
+            if (searchRecord.bookings().size() > 0) {
+                LocalDateTime firstBooking = searchRecord.bookings().get(0).startTime();
+                if (firstBooking.toLocalDate().isEqual(currentSearchQueryDate)) {
+                    isBookedOnQueryDate = true;
+                }
+                if (isBookedOnQueryDate) {
+                    // Must be during the same day
+                    String firstBookingString = firstBooking.getHour() + ":" + firstBooking.getMinute();
+                    bottomInfo = String.format("Free until %s", firstBookingString);
+                } else {
+                    bookingInfo = "Free the rest of the day";
+                }
+            }
+        }
+
+        // Container that wraps (helps with mobile)
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),
+                new Div(new Text(bookingInfo)),
                 showMapButton,
                 bookButton
         );

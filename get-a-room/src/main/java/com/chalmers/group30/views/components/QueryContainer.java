@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
@@ -19,8 +20,8 @@ import java.time.LocalTime;
 // @UIScope
 public class QueryContainer extends Div {
     public ExecuteSearchButton executeSearchButton;
-    private final TimePickerControl fromTimePicker;
-    private final TimePickerControl untilTimePicker;
+    private final TimePickerControl startTimePicker;
+    private final TimePickerControl endTimePicker;
     private final DatePickerControl datePicker;
     private final IntegerUnlabeledStepper groupSizeStepper;
     public QueryContainer() {
@@ -36,8 +37,8 @@ public class QueryContainer extends Div {
         );
 
         // Initialize components
-        fromTimePicker = new TimePickerControl(0);
-        untilTimePicker = new TimePickerControl(2);
+        startTimePicker = new TimePickerControl(0);
+        endTimePicker = new TimePickerControl(2);
         datePicker = new DatePickerControl();
         groupSizeStepper = new IntegerUnlabeledStepper(1, 12, 4);
         executeSearchButton = new ExecuteSearchButton();
@@ -47,9 +48,9 @@ public class QueryContainer extends Div {
                 new Span(new Text("Rooms for ")),
                 groupSizeStepper,
                 new Span(new Text(" people from ")),
-                fromTimePicker,
+                startTimePicker,
                 new Span(new Text(" until ")),
-                untilTimePicker,
+                endTimePicker,
                 new Span(new Text(" at ")),
                 datePicker,
                 new Span(new Text(" and ")),
@@ -60,13 +61,13 @@ public class QueryContainer extends Div {
     public int getGroupSize() {
         return groupSizeStepper.getValue();
     }
-    public LocalTime getFromTime() {
-        return fromTimePicker.getValue();
+    public LocalDateTime getStartDateTime() {
+        return startTimePicker.getValue().atDate(getDate());
     }
-    public LocalTime getUntilTime() {
-        return untilTimePicker.getValue();
+    public LocalDateTime getEndDateTime() {
+        return endTimePicker.getValue().atDate(getDate());
     }
     public LocalDate getDate() {
         return datePicker.getValue();
-    }
+    } // TODO: Make private?
 }

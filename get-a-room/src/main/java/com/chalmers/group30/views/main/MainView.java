@@ -1,8 +1,9 @@
 package com.chalmers.group30.views.main;
 
 import com.chalmers.group30.controllers.*;
+import com.chalmers.group30.models.GetARoomFacadeInterface;
 import com.chalmers.group30.views.components.QueryContainer;
-import com.chalmers.group30.views.components.RecordList;
+import com.chalmers.group30.views.components.displays.RecordDisplay;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
 import com.chalmers.group30.views.components.buttons.FilterButton;
 import com.vaadin.flow.component.*;
@@ -31,28 +32,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MainView extends AppLayout implements HasComponents, HasStyle {
 
     // UI
+    GetARoomFacadeInterface getARoomFacade;
     DarkLightModeButtonController darkLightModeButtonController;
     DarkLightModeButton darkLightModeButton;
     FilterButtonController filterButtonController;
     FilterButton filterButton;
-    RecordListController recordListController;
     // QueryContainerController queryContainerController;
 
 
     @Autowired
     public MainView(
+            GetARoomFacadeInterface getARoomFacade,
             DarkLightModeButtonController darkLightModeButtonController,
             DarkLightModeButton darkLightModeButton,
             FilterButtonController filterButtonController,
-            FilterButton filterButton,
-            RecordListController recordListController) throws IOException {
+            FilterButton filterButton) throws IOException {
 
         // Init fields from dependency injection
+        this.getARoomFacade = getARoomFacade;
         this.darkLightModeButtonController = darkLightModeButtonController;
         this.darkLightModeButton = darkLightModeButton;
         this.filterButtonController = filterButtonController;
         this.filterButton = filterButton;
-        this.recordListController = recordListController;
         // this.queryContainerController = queryContainerController;
 
         // Add styling for main view
@@ -90,14 +91,12 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         );
 
         // Record list - needed for the QueryContainerController to be able to update the list with new results
-        // TODO: Remove the dependency on the controller, RecordListController can be removed entirely
-        RecordList recordList = new RecordList(recordListController);
+        RecordDisplay recordDisplay = new RecordDisplay();
 
         // Query container
-        // TODO: Change this when the search query results is implemented
         QueryContainer queryContainer = new QueryContainer();
-        // QueryContainerController queryContainerController = new QueryContainerController(searchService, recordList, queryContainer);
-        QueryContainerController queryContainerController = new QueryContainerController(recordList, queryContainer);
+        // QueryContainerController queryContainerController = new QueryContainerController(searchService, recordDisplay, queryContainer);
+        QueryContainerController queryContainerController = new QueryContainerController(getARoomFacade, recordDisplay, queryContainer);
         // List<SearchRecord> currentSearchResult = queryContainerController.getSearchResult();
         queryContainer.executeSearchButton.addClickListener(queryContainerController.getExecuteSearchButtonListener());
         //TODO: Do first search to populate list
@@ -121,7 +120,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");
         setContent(
-                recordList
+                recordDisplay
         );
     }
 }
