@@ -67,12 +67,25 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
-    public void geoJson_shouldGiveProperJsonAndIsNotEmpty() {
+    public void geoJsonBuildings_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI();
 
         try {
-            // Get standard GeoJSON from API
-            JsonObject geoJson = api.geoJson();
+            // Get POI GeoJSON from API
+            JsonObject geoJson = api.geoJsonPOI();
+            assertNotEquals(geoJson.get("features").getAsJsonArray().size(), 0);
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
+
+    @Test
+    public void geoJsonPOI_shouldGiveProperJsonAndIsNotEmpty() {
+        ChalmersMapsAPIInterface api = new ChalmersMapsAPI();
+
+        try {
+            // Get buildings GeoJSON from API
+            JsonObject geoJson = api.geoJsonBuildings();
             assertNotEquals(geoJson.get("features").getAsJsonArray().size(), 0);
         } catch (Exception e) {
             fail(e);

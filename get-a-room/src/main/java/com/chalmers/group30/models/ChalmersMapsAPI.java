@@ -88,11 +88,21 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     /**
      * Get GeoJson object for relevant buildings
-     * @return A GeoJson object representing different locations
+     * @return A GeoJson object representing different buildings
      * @throws IOException If the underlying API request failed for some reason
      */
-    public JsonObject geoJson() throws IOException {
-        final String requestUrl = baseUrl + "geojson?types%5B%5D=facility%3Aadministrative_office&types%5B%5D=building%3Auniversity";
+    public JsonObject geoJsonBuildings() throws IOException {
+        final String requestUrl = baseUrl + "geojson?types[]=building:*&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
+        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+    }
+
+    /**
+     * Get GeoJson object for relevant buildings
+     * @return A GeoJson object representing different Points of Interest
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    public JsonObject geoJsonPOI() throws IOException {
+        final String requestUrl = baseUrl + "geojson?poi=true&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
         return readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
