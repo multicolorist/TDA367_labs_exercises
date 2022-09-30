@@ -66,14 +66,10 @@ const roomPinPaint = { "circle-radius": 10, "circle-color": "#a3446a" };
 
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
-  onReady = new CustomEvent("ready");
-  ready = false;
 
-  static get properties() {
-    return {
-      name: { type: String },
-    };
-  }
+  // Must be used because map cannot initialized in constructor
+  onReady: Event = new CustomEvent("ready");
+  ready: boolean = false;
 
   /**
    * Removes the currently displayed route from the map.
@@ -118,6 +114,7 @@ class MapLibre extends LitElement {
 
   private _showRoute(maneuvers: any, finalDestination: any) {
     this.removeRoute();
+    // Add GeoJSON source with route points and destination point
     this.map.addSource(routeID, {
       type: "geojson",
       data: {
@@ -136,6 +133,7 @@ class MapLibre extends LitElement {
         ],
       },
     });
+    // Add layer with route path line
     this.map.addLayer({
       id: routePathID,
       type: "line",
@@ -143,6 +141,7 @@ class MapLibre extends LitElement {
       layout: { "line-join": "round", "line-cap": "round" },
       paint: routePathPaint,
     });
+    // Add layer with destination point
     this.map.addLayer({
       id: routeDestID,
       type: "circle",
@@ -193,6 +192,7 @@ class MapLibre extends LitElement {
     latitude: number,
     longitude: number
   ) {
+    // Add GeoJSON source with room point
     this.map.addSource("room-" + id, {
       type: "geojson",
       data: {
@@ -201,6 +201,7 @@ class MapLibre extends LitElement {
         properties: { name: name },
       },
     });
+    // Add layer with room point
     this.map.addLayer({
       id: "room-layer-" + id,
       type: "circle",
@@ -269,7 +270,10 @@ class MapLibre extends LitElement {
   }
 
   firstUpdated(changedProperties: any) {
+    // If there is no div yet, don't load the map
     if (this.renderRoot.querySelector("#divMap") === null) return;
+
+    // Create map component
     this.map = new MapLibreComponent({
       container: <HTMLElement>this.renderRoot.querySelector("#divMap"),
       // Suppress typing error that works anyway
@@ -279,11 +283,13 @@ class MapLibre extends LitElement {
       zoom: 17, // starting zoom
     });
 
+    // Make sure sources and layers are loaded after map is loaded
     this.map.once("load", () => {
       this.ready = true;
       this.dispatchEvent(this.onReady);
     });
 
+    // Add geolocation control
     this.map.addControl(
       new GeolocateControl({
         positionOptions: {
