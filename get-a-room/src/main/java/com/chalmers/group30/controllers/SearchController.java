@@ -3,7 +3,6 @@ package com.chalmers.group30.controllers;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.SearchQuery;
-import com.chalmers.group30.models.objects.SearchRecord;
 import com.chalmers.group30.models.objects.SearchResult;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.displays.RecordDisplay;
@@ -13,14 +12,13 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller for the search query - relays the query to the model and returns the result
  */
 // @Component
 // @UIScope
-public class QueryContainerController {
+public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
@@ -32,14 +30,14 @@ public class QueryContainerController {
         return getARoomFacade.search(new SearchQuery(userLocation, queryContainer.getGroupSize(), queryContainer.getStartDateTime(), queryContainer.getEndDateTime()));
     }
 
-    public QueryContainerController(GetARoomFacadeInterface getARoomFacade, RecordDisplay recordDisplay, QueryContainer queryContainer) {
+    public SearchController(GetARoomFacadeInterface getARoomFacade, RecordDisplay recordDisplay, QueryContainer queryContainer) {
         this.getARoomFacade = getARoomFacade;
         this.queryContainer = queryContainer;
         this.recordDisplay = recordDisplay;
     }
 
     public ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
-        return new QueryContainerController.ExecuteSearchButtonListener();
+        return new SearchController.ExecuteSearchButtonListener();
     }
 
     public void updateResults() {
