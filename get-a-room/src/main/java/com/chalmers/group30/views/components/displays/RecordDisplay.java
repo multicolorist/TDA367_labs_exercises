@@ -104,11 +104,16 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.TextAlignment.RIGHT
         );
         String bottomInfo = "";
-        if (!Objects.equals(searchRecord.room().streetAddress(), "")) {
+        boolean hasAddress = !Objects.equals(searchRecord.room().streetAddress(), "");
+        boolean hasSeats = searchRecord.room().seats() != -1;
+        if (hasAddress) {
             bottomInfo += searchRecord.room().streetAddress();
         }
-        if (searchRecord.room().seats() != -1) { // seats is optional
-            bottomInfo = bottomInfo + ", " + searchRecord.room().seats() + " seats";
+        if (hasAddress && hasSeats) {
+            bottomInfo += ", ";
+        }
+        if (hasSeats) { // seats is optional
+            bottomInfo += searchRecord.room().seats() + " seats";
         }
 
         // Add booking info
