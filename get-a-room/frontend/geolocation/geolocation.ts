@@ -8,8 +8,9 @@ const geoOptions = {
 
 class GeoLocation extends LitElement {
 
-    @property( { type : Number }  ) latitude = 1.0;
-    @property( { type : Number }  ) longitude = 1.0;
+    private latitude: number;
+    private longitude: number;
+
     private $server?: GeoLocationServerInterface;
 
     render() {
@@ -34,7 +35,15 @@ class GeoLocation extends LitElement {
         navigator.geolocation.getCurrentPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
     }
 
+    getLatitude() {
+        console.log(this.latitude);
+        return this.latitude;
+    }
 
+    getLongitude() {
+        console.log(this.longitude);
+        return this.longitude;
+    }
 
     constructor() {
         super();
