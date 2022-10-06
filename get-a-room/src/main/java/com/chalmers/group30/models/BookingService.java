@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Facade for finding rooms to the user - the only front-facing interface
@@ -27,6 +28,7 @@ public class BookingService implements BookingServiceInterface{
 
     private GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;
     private BookingProviderInterface bookingProvider;
+    private final Logger logger = Logger.getLogger(BookingService.class.getName());
 
     @Autowired
     public BookingService(CacheUpdateProvider<Dictionary<Room, List<Booking>>> bookingCacheUpdateProvider, BookingProviderInterface bookingProvider){
@@ -39,7 +41,15 @@ public class BookingService implements BookingServiceInterface{
      * @throws IOException If the underlying API call fails
      */
     public void refreshBookingCache() throws IOException{
-        bookingCache.refreshCache();
+        logger.info("Refreshing booking cache...");
+        try {
+            bookingCache.refreshCache();
+            logger.info("Booking cache refreshed");
+        }catch (IOException e){
+            logger.log(java.util.logging.Level.SEVERE, "Failed to refresh booking cache", e);
+            throw e;
+        }
+
     }
 
     /**
@@ -53,6 +63,7 @@ public class BookingService implements BookingServiceInterface{
         List<Booking> bookings = bookingCache.getData().get(room);
 
         if (bookings == null) {
+            logger.warning("Room " + room.name() + " UUID " + room.uuid() + " was not found in booking cache. Getting directly from provider, this will be slow.");
             bookings = bookingProvider.getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris")));
         }
 
