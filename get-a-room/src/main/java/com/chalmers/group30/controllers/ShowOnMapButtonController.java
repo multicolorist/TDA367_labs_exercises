@@ -1,6 +1,6 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.views.components.buttons.ButtonHasUUID;
+import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -25,8 +25,7 @@ public class ShowOnMapButtonController {
     private static class ShowOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
-            // TODO: Is there a way of using Java generics to ensure that it gets an event source with getUUID()?
-            ButtonHasUUID btn = (ButtonHasUUID) e.getSource();
+            ShowOnMapButton btn = (ShowOnMapButton) e.getSource();
             Notification.show("This makes the map slide up and marks UUID: " + btn.getUUID());
         }
 
