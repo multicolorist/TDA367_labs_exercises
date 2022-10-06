@@ -13,8 +13,38 @@ class GeoLocation extends LitElement {
 
     private $server?: GeoLocationServerInterface;
 
+    constructor() {
+        super();
+        var id = navigator.geolocation.watchPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
+        this.latitude = null;
+        this.longitude = null;
+    }
+
     render() {
-        return html`<p>Test!</p>`;
+        return html``;
+    }
+
+    /**
+     * Attempts to get the user location
+     */
+    updateLocation() {
+        navigator.geolocation.getCurrentPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
+    }
+
+    /**
+     * Gets the latitude of the user
+     */
+    getLatitude() {
+        console.log(this.latitude);
+        return this.latitude;
+    }
+
+    /**
+     * Gets the longitude of the user
+     */
+    getLongitude() {
+        console.log(this.longitude);
+        return this.longitude;
     }
 
     private _geoSuccess(position: GeolocationPosition) {
@@ -31,29 +61,11 @@ class GeoLocation extends LitElement {
         this.longitude = null;
         this.$server!.onError();
     }
-
-    updateLocation() {
-        navigator.geolocation.getCurrentPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
-    }
-
-    getLatitude() {
-        console.log(this.latitude);
-        return this.latitude;
-    }
-
-    getLongitude() {
-        console.log(this.longitude);
-        return this.longitude;
-    }
-
-    constructor() {
-        super();
-        var id = navigator.geolocation.watchPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
-        this.latitude = null;
-        this.longitude = null;
-    }
 }
 
+/**
+ * Interface for calling server functions
+ */
 interface GeoLocationServerInterface {
     onUpdate(): void;
     onError(): void;
