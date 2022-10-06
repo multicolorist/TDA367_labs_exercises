@@ -21,24 +21,28 @@ public class GeolocationComponent extends Component {
     private Instant lastUpdated;
 
     public Double getLatitude() {
-        return latitude;
+        this.getElement().executeJs("return this.getLatitude();").then(Double.class, result -> {
+            this.latitude = result;
+        });
+        return this.latitude;
     }
 
     public Double getLongitude() {
-        return longitude;
+        this.getElement().executeJs("return this.getLongitude();").then(Double.class, result -> {
+            this.longitude = result;
+        });
+        return this.longitude;
     }
 
-    public List<Double> updateLocation() {
+    public void updateLocation() {
         this.getElement().executeJs("this.updateLocation();");
-        this.latitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("latitude")).orElse("0"));
-        this.longitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("longitude")).orElse("0"));
-        return List.of(latitude, longitude);
     }
 
     @ClientCallable
     private void onUpdate() {
-        this.latitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("latitude")).orElse("0"));
-        this.longitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("longitude")).orElse("0"));
+        getLatitude();
+        getLongitude();
+        logger.info("Updated location to: " + this.latitude + ", " + this.longitude);
         this.lastUpdated = Instant.now();
     }
 
