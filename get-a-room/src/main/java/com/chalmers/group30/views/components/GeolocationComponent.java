@@ -1,15 +1,17 @@
 package com.chalmers.group30.views.components;
 
+import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
-@Tag("geolocation")
-@JsModule("")
+@Tag("geoloc-custom")
+@JsModule("./geolocation/geolocation.ts")
 public class GeolocationComponent extends Component {
 
     Logger logger = Logger.getLogger(GeolocationComponent.class.getName());
@@ -28,19 +30,21 @@ public class GeolocationComponent extends Component {
 
     public List<Double> updateLocation() {
         this.getElement().executeJs("this.updateLocation();");
-        this.latitude = Double.valueOf(this.getElement().getProperty("latitude"));
-        this.longitude = Double.valueOf(this.getElement().getProperty("longitude"));
+        this.latitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("latitude")).orElse("0"));
+        this.longitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("longitude")).orElse("0"));
         return List.of(latitude, longitude);
     }
 
-    private void onUpdate(int latitude, int longitude) {
-        this.latitude = (double) latitude;
-        this.longitude = (double) longitude;
+    @ClientCallable
+    private void onUpdate() {
+        this.latitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("latitude")).orElse("0"));
+        this.longitude = Double.valueOf(Optional.ofNullable(this.getElement().getProperty("longitude")).orElse("0"));
         this.lastUpdated = Instant.now();
     }
 
-    private void onError(String message) {
-        logger.log(java.util.logging.Level.WARNING, "Geolocation failed: "+message);
+    @ClientCallable
+    private void onError() {
+        logger.log(java.util.logging.Level.WARNING, "Geolocation failed");
         latitude = Double.NaN;
         longitude = Double.NaN;
         this.lastUpdated = Instant.now();
