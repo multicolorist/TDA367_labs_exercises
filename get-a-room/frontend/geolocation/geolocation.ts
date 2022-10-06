@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit-element";
+import { LitElement, html, property } from "lit-element";
 
 const geoOptions = {
   enableHighAccuracy: false,
@@ -7,36 +7,46 @@ const geoOptions = {
 };
 
 class GeoLocation extends LitElement {
+
+    @property( { type : Number }  ) latitude = 1.0;
+    @property( { type : Number }  ) longitude = 1.0;
     private $server?: GeoLocationServerInterface;
 
     render() {
-        return html``;
+        return html`<p>Test!</p>`;
     }
 
-    private _geoSuccess(position) {
+    private _geoSuccess(position: GeolocationPosition) {
         // Set attribute
-        this.setAttribute("latitude", position.coords.latitude);
-        this.setAttribute("longitude", position.coords.longitude);
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        //this.longitude = position.coords.longitude;
         this.$server!.onUpdate();
     }
 
-    private _geoError(error) {
+    private _geoError(error: any) {
         // Set attribute
 
         this.$server!.onError();
     }
 
     updateLocation() {
-        navigator.geolocation.getCurrentPosition(this._geoSuccess, this._geoError, geoOptions);
+        navigator.geolocation.getCurrentPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
     }
 
-    function GeoLocation() {
-        var id = navigator.geolocation.watchPosition(this._geoSuccess, this._geoError, geoOptions);
+
+
+    constructor() {
+        super();
+        var id = navigator.geolocation.watchPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
+        this.latitude = 0.0;
+        this.longitude = 0.0;
     }
 }
 
 interface GeoLocationServerInterface {
     onUpdate(): void;
+    onError(): void;
 }
 
-customElements.define("geolocation", GeoLocation);
+customElements.define("geoloc-custom", GeoLocation);
