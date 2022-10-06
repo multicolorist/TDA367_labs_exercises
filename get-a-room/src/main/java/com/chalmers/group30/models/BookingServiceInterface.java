@@ -5,9 +5,20 @@ import com.chalmers.group30.models.objects.Room;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.Instant;
 import java.util.List;
 
 public interface BookingServiceInterface {
-    List<Booking> getBookings(Room room, Instant startTime, int weeksForward) throws IOException, IllegalArgumentException, ParseException;
+    /**
+     * Gets bookings for the desired room for the next 2 weeks
+     * @param room The room to get bookings for
+     * @return A list of bookings for the room
+     * @throws IOException If the underlying API call fails
+     */
+    List<Booking> getBookings(Room room) throws IOException, IllegalArgumentException, ParseException;
+
+    /**
+     * Refreshes the cache
+     * @throws IOException If the underlying API call fails
+     */
+    void refreshBookingCache() throws IOException;
 }

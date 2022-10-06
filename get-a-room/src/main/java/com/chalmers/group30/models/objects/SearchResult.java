@@ -1,14 +1,12 @@
 package com.chalmers.group30.models.objects;
 
-import java.time.Instant;
 import java.util.List;
 
 /**
- * Represents a complete result given a search.
- * @param searchRecords The collection of all items from the search.
+ * Contains the result of a search
+ * @param searchQuery The search query that created the result
+ * @param results A list of results
  */
-public record SearchResult(List<SearchRecord> searchRecords) {
-    public List<SearchRecord> getFilteredResults(Location userLocation, int groupSize, Instant startTime) {
-        return null;
-    }
+public record SearchResult(SearchQuery searchQuery, List<SearchRecord> results) {
 }
+

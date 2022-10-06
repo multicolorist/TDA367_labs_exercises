@@ -4,10 +4,7 @@ import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.utilities.CacheUpdateProvider;
 import com.chalmers.group30.models.utilities.GenericCache;
 import com.chalmers.group30.models.utilities.GenericCacheInterface;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,10 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Facade for finding rooms to the user - the only front-facing interface
@@ -27,16 +23,21 @@ import java.util.UUID;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RoomService implements RoomServiceInterface{
 
-    private GenericCacheInterface<Room> roomCache;
+    private GenericCacheInterface<List<Room>> roomCache;
 
     @Autowired
-    public RoomService(CacheUpdateProvider<Room> roomCacheUpdateProvider){
-        this.roomCache = new GenericCache<Room>(roomCacheUpdateProvider);
+    public RoomService(CacheUpdateProvider<List<Room>> roomCacheUpdateProvider){
+        this.roomCache = new GenericCache<List<Room>>(roomCacheUpdateProvider);
+        try {
+            //refreshRoomCache();
+        }catch (Exception e){
+
+        }
     }
 
     @Scheduled(cron = "0 0 4 * * *")
-    public void RefreshRoomCache() throws IOException{
-        roomCache.RefreshCache();
+    public void refreshRoomCache() throws IOException{
+        roomCache.refreshCache();
     }
 
     /**

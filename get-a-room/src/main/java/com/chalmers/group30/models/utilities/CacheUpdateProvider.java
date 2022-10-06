@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-public interface CacheUpdateProvider<T> {
+public interface    CacheUpdateProvider<T> {
     @NotNull
-    List<T> getNewDataToCache() throws IOException;
+    T getNewDataToCache() throws IOException;
 }

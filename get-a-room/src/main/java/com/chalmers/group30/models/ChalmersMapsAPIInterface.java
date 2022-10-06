@@ -12,6 +12,8 @@ public interface ChalmersMapsAPIInterface {
     JsonObject informationBoard(UUID uuid) throws IOException;
     JsonArray timeEditSchedule(String identifier, int year, int week) throws IOException;
     JsonObject route(Location origin, Location destination) throws IOException;
+    JsonObject getTimeEditInfo(String identifier) throws IOException;
     JsonObject getInfo(UUID uuid) throws IOException;
-    JsonObject geoJson() throws IOException;
+    JsonObject geoJsonBuildings() throws IOException;
+    JsonObject geoJsonPOI() throws IOException;
 }

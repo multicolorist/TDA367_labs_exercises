@@ -3,8 +3,6 @@ package com.chalmers.group30.models;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.utilities.CacheUpdateProvider;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,9 +17,9 @@ import static org.mockito.Mockito.*;
 public class RoomServiceTest {
     @Test
     public void getRooms_shouldReturnProperRooms() throws IOException {
-        CacheUpdateProvider<Room> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
-        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
+        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", 1, "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 
         RoomServiceInterface roomServiceInterface = new RoomService(roomCacheUpdateProvider);
 
@@ -34,13 +32,13 @@ public class RoomServiceTest {
 
     @Test
     public void refreshRoomCache() throws IOException {
-        CacheUpdateProvider<Room> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
+        CacheUpdateProvider<List<Room>> roomCacheUpdateProvider = mock(CacheUpdateProvider.class);
 
-        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", "Test building", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
+        when(roomCacheUpdateProvider.getNewDataToCache()).thenReturn(Arrays.asList(new Room[]{new Room("Test name", 1, "Test building", "Test floor", "Test streetAddress", "Test time edit id", new UUID(0,0),new Location(1,1), new Location(2,2))}));
 
         RoomServiceInterface roomServiceInterface = new RoomService(roomCacheUpdateProvider);
 
-        roomServiceInterface.RefreshRoomCache();
+        roomServiceInterface.refreshRoomCache();
 
         //Makes sure only the Refresh room cache call can get the test list
         reset(roomCacheUpdateProvider);
