@@ -7,12 +7,12 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 
 import java.util.List;
 
-@Tag("maplibre-gl-js")
-@NpmPackage(value = "maplibre-gl", version = "2.4.0")
-@JsModule("./maplibre/maplibre.ts")
 /**
  * Represents a MapLibre component to be used in Vaadin
  */
+@Tag("maplibre-gl-js")
+@NpmPackage(value = "maplibre-gl", version = "2.4.0")
+@JsModule("./maplibre/maplibre.ts")
 public class MapView extends Component implements HasSize, HasStyle, HasComponents {
     /**
      * Add and display a room on the map
