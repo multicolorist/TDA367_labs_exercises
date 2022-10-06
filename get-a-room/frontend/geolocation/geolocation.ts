@@ -8,8 +8,8 @@ const geoOptions = {
 
 class GeoLocation extends LitElement {
 
-    private latitude: number;
-    private longitude: number;
+    private latitude: number | null;
+    private longitude: number | null;
 
     private $server?: GeoLocationServerInterface;
 
@@ -27,7 +27,8 @@ class GeoLocation extends LitElement {
 
     private _geoError(error: any) {
         // Set attribute
-
+        this.latitude = null;
+        this.longitude = null;
         this.$server!.onError();
     }
 
@@ -48,8 +49,8 @@ class GeoLocation extends LitElement {
     constructor() {
         super();
         var id = navigator.geolocation.watchPosition((geo) => this._geoSuccess(geo), (err) => this._geoError(err), geoOptions);
-        this.latitude = 0.0;
-        this.longitude = 0.0;
+        this.latitude = null;
+        this.longitude = null;
     }
 }
 
