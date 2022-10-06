@@ -34,9 +34,10 @@ public class SearchController {
         this.getARoomFacade = getARoomFacade;
         this.queryContainer = queryContainer;
         this.recordDisplay = recordDisplay;
+        this.queryContainer.executeSearchButton.addClickListener(getExecuteSearchButtonListener());
     }
 
-    public ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
+    private ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
         return new SearchController.ExecuteSearchButtonListener();
     }
 

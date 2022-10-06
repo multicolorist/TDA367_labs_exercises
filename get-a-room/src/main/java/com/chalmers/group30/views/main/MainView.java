@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-
 // Fix for Vaadin bug-ish that detail summary does not expand
 // see for ex. https://vaadin.com/forum/thread/18151243/expanding-details-component
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
@@ -31,15 +30,6 @@ import java.io.IOException;
 @PageTitle("GetARoom")
 @Route(value = "")
 public class MainView extends AppLayout implements HasComponents, HasStyle {
-
-    // UI
-    GetARoomFacadeInterface getARoomFacade;
-    DarkLightModeButtonController darkLightModeButtonController;
-    DarkLightModeButton darkLightModeButton;
-    FilterButtonController filterButtonController;
-    FilterButton filterButton;
-
-
     @Autowired
     public MainView(
             GetARoomFacadeInterface getARoomFacade,
@@ -47,13 +37,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
             DarkLightModeButton darkLightModeButton,
             FilterButtonController filterButtonController,
             FilterButton filterButton) throws IOException {
-
-        // Init fields from dependency injection
-        this.getARoomFacade = getARoomFacade;
-        this.darkLightModeButtonController = darkLightModeButtonController;
-        this.darkLightModeButton = darkLightModeButton;
-        this.filterButtonController = filterButtonController;
-        this.filterButton = filterButton;
 
         // Add styling for main view
         addClassNames(
@@ -84,19 +67,18 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         );
         headerContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         headerContainer.add(
-                this.filterButton,
+                filterButton,
                 title,
-                this.darkLightModeButton
+                darkLightModeButton
         );
 
         // Record list - needed for the SearchController to be able to update the list with new results
         RecordDisplay recordDisplay = new RecordDisplay();
 
-        // Query container
+        // Query container - display results on site load
         QueryContainer queryContainer = new QueryContainer();
         SearchController searchController = new SearchController(getARoomFacade, recordDisplay, queryContainer);
-        queryContainer.executeSearchButton.addClickListener(searchController.getExecuteSearchButtonListener());
-        //TODO: Do first search to populate list
+        searchController.updateResults();
 
         // Navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
