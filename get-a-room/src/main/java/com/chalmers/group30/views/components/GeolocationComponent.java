@@ -22,14 +22,14 @@ public class GeolocationComponent extends Component {
 
     public Double getLatitude() {
         this.getElement().executeJs("return this.getLatitude();").then(Double.class, result -> {
-            this.latitude = result;
+            this.latitude = (result == null) ? Double.NaN : result;
         });
         return this.latitude;
     }
 
     public Double getLongitude() {
         this.getElement().executeJs("return this.getLongitude();").then(Double.class, result -> {
-            this.longitude = result;
+            this.longitude = (result == null) ? Double.NaN : result;
         });
         return this.longitude;
     }
