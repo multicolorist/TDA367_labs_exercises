@@ -2,6 +2,7 @@ package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Booking;
 import com.chalmers.group30.models.objects.Room;
+import net.fortuna.ical4j.data.ParserException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -14,7 +15,7 @@ public interface BookingServiceInterface {
      * @return A list of bookings for the room
      * @throws IOException If the underlying API call fails
      */
-    List<Booking> getBookings(Room room) throws IOException, IllegalArgumentException, ParseException;
+    List<Booking> getBookings(Room room) throws IOException, IllegalArgumentException, ParseException, ParserException;
 
     /**
      * Refreshes the cache

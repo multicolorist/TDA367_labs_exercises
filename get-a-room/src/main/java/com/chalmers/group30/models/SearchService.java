@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
+import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -81,7 +82,7 @@ public class SearchService implements SearchServiceInterface {
             try {
                 results.add(new SearchRecord(room, bookingService.getBookings(room),
                         searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : -1));
-            } catch (ParseException e) {
+            } catch (ParseException | ParserException e) {
 
             }
         }

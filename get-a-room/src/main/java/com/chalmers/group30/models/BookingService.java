@@ -5,6 +5,7 @@ import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.utilities.CacheUpdateProvider;
 import com.chalmers.group30.models.utilities.GenericCache;
 import com.chalmers.group30.models.utilities.GenericCacheInterface;
+import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -48,7 +49,7 @@ public class BookingService implements BookingServiceInterface{
      * @return A list of bookings for the room
      * @throws IOException If the underlying API call fails
      */
-    public List<Booking> getBookings(Room room) throws IOException, ParseException {
+    public List<Booking> getBookings(Room room) throws IOException, ParseException, ParserException {
 
         List<Booking> bookings = bookingCache.getData().get(room);
 
