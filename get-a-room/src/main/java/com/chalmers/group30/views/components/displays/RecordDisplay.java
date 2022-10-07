@@ -18,6 +18,7 @@ import com.vaadin.flow.component.virtuallist.VirtualList;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,9 +34,13 @@ import java.util.Objects;
  * use a Grid instead to display the records.
  */
 public class RecordDisplay extends VirtualList<SearchRecord> {
+    ShowOnMapButtonController showOnMapButtonController;
     private LocalDate currentSearchQueryDate;
 
-    public RecordDisplay() throws IOException {
+    public RecordDisplay(ShowOnMapButtonController showOnMapButtonController) throws IOException {
+        // Init fields
+        this.showOnMapButtonController = showOnMapButtonController;
+
         // Style
         addClassNames(
                 LumoUtility.Padding.Horizontal.MEDIUM,
@@ -44,10 +49,16 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.Height.FULL
         );
 
-        // Set renderer
+        // Set renderer to display each element
         setRenderer(new ComponentRenderer<>(this::listEntryProvider));
     }
 
+    /**
+     * Sets the date of the current search query.
+     * Used by the view to determined if when the room is free
+     * depending on the current time viewing the results.
+     * @param date the date of the current search query
+     */
     public void setCurrentSearchQueryDate(LocalDate date) {
         this.currentSearchQueryDate = date;
     }
@@ -62,8 +73,8 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         // Buttons
         Button bookButton = new BookButton(searchRecord.room().uuid());
         bookButton.addClickListener(BookButtonController.getListener());
-        Button showMapButton = new ShowOnMapButton(searchRecord.room().uuid());
-        showMapButton.addClickListener(ShowOnMapButtonController.getListener());
+        Button showMapButton = new ShowOnMapButton(searchRecord.room());
+        showMapButton.addClickListener(showOnMapButtonController.getListener());
 
         // Top of the entry
         HorizontalLayout topLayout = new HorizontalLayout();
@@ -91,7 +102,6 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         }
         topLayout.add(topLayoutLeft, topLayoutRight);
 
-
         // Bottom part of the entry, seen only when unfolded
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.addClassNames(
@@ -116,7 +126,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
             bottomInfo += searchRecord.room().seats() + " seats";
         }
 
-        // Add booking info
+        // Add booking info to foldout
         // TODO: Should this be in a controller? Maybe a bit too much logic for a view?
         // TODO: Verify the logic once we have updated the booking cache to be more current
         String bookingInfo = "";
@@ -136,8 +146,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 }
             }
         }
-
-        // Container that wraps (helps with mobile)
+        // Container that wraps (helps with mobile) for foldout
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),
                 new Div(new Text(bookingInfo)),
