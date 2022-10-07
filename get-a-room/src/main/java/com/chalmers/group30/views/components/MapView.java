@@ -73,7 +73,7 @@ public class MapView extends Component implements HasSize, HasStyle, HasComponen
      * @param longitude the longitude to fly to
      */
     public void flyTo(double latitude, double longitude) {
-        getElement().executeJs("this.flyTo("+latitude+", "+longitude+");");
+        getElement().executeJs("this.flyTo("+longitude+", "+latitude+");");
     }
 
     /**
