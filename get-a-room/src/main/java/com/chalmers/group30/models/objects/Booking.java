@@ -1,6 +1,7 @@
 package com.chalmers.group30.models.objects;
 
 import com.google.gson.JsonObject;
+import net.fortuna.ical4j.model.component.VEvent;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.TimeZone;
 
 /**
@@ -28,6 +30,21 @@ public record Booking(LocalDateTime startTime, LocalDateTime endTime) implements
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmss");
         LocalDateTime startTime = LocalDateTime.parse(obj.get("reservation_begin").getAsString(), formatter);
         LocalDateTime endTime = LocalDateTime.parse(obj.get("reservation_end").getAsString(), formatter);
+        return new Booking(startTime, endTime);
+    }
+
+    /**
+     * Parses an iCal VEvent to a Booking object.
+     * @param event The VEvent to parse
+     * @return A Booking object from the parsed VEvent
+     */
+    public static Booking fromVEvent(VEvent event) {
+        Temporal startTemporal = event.getStartDate().get().getDate();
+        LocalDateTime startTime = LocalDateTime.from(startTemporal);
+
+        Temporal endTemporal = event.getEndDate().get().getDate();
+        LocalDateTime endTime = LocalDateTime.from(endTemporal);
+
         return new Booking(startTime, endTime);
     }
 }
