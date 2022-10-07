@@ -12,6 +12,8 @@ import java.util.List;
 @Tag("maplibre-gl-js")
 @NpmPackage(value = "maplibre-gl", version = "2.4.0")
 @JsModule("./maplibre/maplibre.ts")
+@UIScope
+@org.springframework.stereotype.Component
 /**
  * Represents a MapLibre component to be used in Vaadin
  */
