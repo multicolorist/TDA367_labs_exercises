@@ -12,9 +12,8 @@ import com.vaadin.flow.component.notification.Notification;
 public class BookButtonController{
     /**
      * Gets a listener for the corresponding button
-     * @return The distance in meters between the position and the room
+     * @return Listener for the button
      */
-
     public static ComponentEventListener<ClickEvent<Button>> getListener() {
         return new BookButtonListener();
     }

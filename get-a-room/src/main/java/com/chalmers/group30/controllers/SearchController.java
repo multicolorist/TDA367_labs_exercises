@@ -14,7 +14,7 @@ import com.vaadin.flow.component.notification.Notification;
 import java.io.IOException;
 
 /**
- * Controller for the search query - relays the query to the model and returns the result
+ * Controller for the search query - relays the query to the model and displays the result
  */
 // @Component
 // @UIScope
@@ -22,7 +22,7 @@ public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
-    private SearchResult currentSearchResult;
+    private SearchResult currentSearchResult; // TODO: Decide if this will be used for sorting/filtering, else remove
 
     private SearchResult getSearchResults() throws IOException {
         // TODO: Add user location when available
@@ -37,10 +37,17 @@ public class SearchController {
         this.queryContainer.executeSearchButton.addClickListener(getExecuteSearchButtonListener());
     }
 
+    /**
+     * Gets a listener for the corresponding button
+     * @return Listener for the button
+     */
     private ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
         return new SearchController.ExecuteSearchButtonListener();
     }
 
+    /**
+     * Get search results and updates display accordingly
+     */
     public void updateResults() {
         try {
             currentSearchResult = getSearchResults();
