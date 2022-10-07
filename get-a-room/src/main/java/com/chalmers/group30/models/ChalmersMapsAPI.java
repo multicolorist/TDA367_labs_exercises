@@ -1,18 +1,13 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Location;
+import com.chalmers.group30.models.utilities.WebRequestsInterface;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.UUID;
 
-import com.google.gson.JsonParser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -26,6 +21,11 @@ import org.springframework.web.context.WebApplicationContext;
 public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     final String baseUrl = "https://maps.chalmers.se/v2/";
+    private WebRequestsInterface requests;
+
+    public ChalmersMapsAPI(WebRequestsInterface requests) {
+        this.requests = requests;
+    }
 
     /**
      * Gets information about objects inside a building or inside an area.
@@ -35,7 +35,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
     public JsonObject informationBoard(UUID uid) throws IOException {
         // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
         final String requestUrl = baseUrl + String.format("information_board/%s/json", uid.toString());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -48,7 +48,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonArray timeEditSchedule(String identifier, int year, int week) throws IOException {
         final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", identifier, year, week);
-        return readJsonElementFromUrl(requestUrl).getAsJsonArray();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonArray();
     }
 
     /**
@@ -61,7 +61,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
     public JsonObject route(Location origin, Location destination) throws IOException {
         final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%s/%s/to/%s/%s",
                 origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -72,7 +72,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject getInfo(UUID uuid) throws IOException {
         final String requestUrl = baseUrl + String.format("info/%s/json", uuid.toString());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -83,7 +83,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject getTimeEditInfo(String identifier) throws IOException {
         final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", identifier);
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -93,7 +93,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject geoJsonBuildings() throws IOException {
         final String requestUrl = baseUrl + "geojson?types[]=building:*&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 
     /**
@@ -103,23 +103,6 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject geoJsonPOI() throws IOException {
         final String requestUrl = baseUrl + "geojson?poi=true&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
-    }
-
-
-    /** Get a JsonElement from a URL endpoint
-     *
-     * @param sURL The URL to get the JSON from
-     * @return A JsonElement representing the JSON from the URL
-     * @throws IOException If the request failed for some reason
-     */
-    private JsonElement readJsonElementFromUrl(String sURL) throws IOException {
-        // Connect to the URL
-        URL url = new URL(sURL);
-        URLConnection request = url.openConnection();
-        request.connect();
-
-        // Convert to a JSON object
-        return JsonParser.parseReader(new InputStreamReader((InputStream) request.getContent()));
+        return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
     }
 }

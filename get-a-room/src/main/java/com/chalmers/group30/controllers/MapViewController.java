@@ -2,8 +2,8 @@ package com.chalmers.group30.controllers;
 
 import com.chalmers.group30.models.ChalmersMapsAPI;
 import com.chalmers.group30.models.objects.Location;
-import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.objects.Route;
+import com.chalmers.group30.models.utilities.WebRequests;
 import com.chalmers.group30.views.components.MapView;
 
 import java.io.IOException;
@@ -22,14 +22,14 @@ public class MapViewController {
         this.mapView = mapView;
 
         try {
-            mapView.addGeoJSON("buildings", new ChalmersMapsAPI().geoJsonBuildings());
+            mapView.addGeoJSON("buildings", new ChalmersMapsAPI(new WebRequests()).geoJsonBuildings());
             mapView.addExtrusionLayer("buildings_extrude", "buildings");
         } catch (IOException e) {
             //TODO: Add logging
         }
 
         try {
-            mapView.addGeoJSON("poi", new ChalmersMapsAPI().geoJsonPOI());
+            mapView.addGeoJSON("poi", new ChalmersMapsAPI(new WebRequests()).geoJsonPOI());
             mapView.addExtrusionLayer("poi_extrude", "poi");
         } catch (IOException e) {
             //TODO: Add logging
