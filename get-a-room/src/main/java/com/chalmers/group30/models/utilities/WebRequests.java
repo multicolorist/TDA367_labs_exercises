@@ -5,6 +5,10 @@ import com.google.gson.JsonParser;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +19,8 @@ import java.net.URLConnection;
 /**
  * Utility for reading data from the web
  */
+@Service
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class WebRequests implements WebRequestsInterface {
 
     /**
