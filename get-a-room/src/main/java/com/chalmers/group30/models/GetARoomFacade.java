@@ -8,25 +8,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class GetARoomFacade implements GetARoomFacadeInterface {
 
-    private final BookingServiceInterface bookingService;
-    private final RoomServiceInterface roomService;
+
     private final RouteServiceInterface routeService;
+    private final SearchServiceInterface searchService;
 
     @Autowired
-    public GetARoomFacade(BookingServiceInterface bookingService, RoomServiceInterface roomService, RouteServiceInterface routeService) {
+    public GetARoomFacade(RouteServiceInterface routeService, SearchServiceInterface searchService) {
 
-        this.bookingService = bookingService;
-        this.roomService = roomService;
         this.routeService = routeService;
+        this.searchService = searchService;
     }
 
     /**
@@ -38,57 +33,7 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
      */
     @Override
     public SearchResult search(SearchQuery searchQuery) throws IOException, IllegalArgumentException {
-
-        if (searchQuery.groupSize() < 1) {
-            throw new IllegalArgumentException("Group size must be at least 1");
-        }
-
-        if (searchQuery.startTime().isAfter(searchQuery.endTime())) {
-            throw new IllegalArgumentException("Start time must be before end time");
-        }
-
-        List<Room> candidateRooms = roomService.getRooms();
-        List<Room> matchingRooms = new ArrayList<>();
-        roomLoop:
-        for (Room room : candidateRooms) {
-
-            //todo Include the rooms with unknown size? (marked with -1)
-            if (room.seats() < searchQuery.groupSize()) {
-                continue;
-            }
-
-            try {
-                List<Booking> bookings = bookingService.getBookings(room);
-
-                for (Booking booking : bookings) {
-                    //Booking start time is within the search time
-                    if (((booking.startTime().isAfter(searchQuery.startTime()) || booking.startTime().isEqual(searchQuery.startTime())) && booking.startTime().isBefore(searchQuery.endTime()))
-                            //or Booking end time is within the search time
-                            || (booking.endTime().isAfter(searchQuery.startTime()) && (booking.endTime().isBefore(searchQuery.endTime()) || booking.endTime().isEqual(searchQuery.endTime())))) {
-                        continue roomLoop;
-                    }
-                }
-                matchingRooms.add(room);
-
-            }catch (Exception e){
-                continue;
-            }
-
-        }
-
-        List<SearchRecord> results = new ArrayList<>();
-        for (Room room : matchingRooms) {
-
-            try {
-                results.add(new SearchRecord(room, bookingService.getBookings(room),
-                        searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : -1));
-            } catch (ParseException e) {
-
-            }
-        }
-
-        return new SearchResult(searchQuery, results);
-
+        return searchService.search(searchQuery);
     }
 
     /**
