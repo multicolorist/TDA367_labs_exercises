@@ -2,8 +2,10 @@ package com.chalmers.group30.views.components;
 
 import com.google.gson.JsonObject;
 import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class MapView extends Component implements HasSize, HasStyle, HasComponen
      * @param longitude the longitude to fly to
      */
     public void flyTo(double latitude, double longitude) {
-        getElement().executeJs("this.flyTo("+latitude+", "+longitude+");");
+        getElement().executeJs("this.flyTo("+longitude+", "+latitude+");");
     }
 
     /**
