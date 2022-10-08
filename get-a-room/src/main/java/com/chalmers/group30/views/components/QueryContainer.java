@@ -1,17 +1,25 @@
 package com.chalmers.group30.views.components;
 
+import com.chalmers.group30.models.objects.SearchQuery;
 import com.chalmers.group30.views.components.buttons.ExecuteSearchButton;
 import com.chalmers.group30.views.components.controls.DatePickerControl;
 import com.chalmers.group30.views.components.controls.IntegerUnlabeledStepper;
 import com.chalmers.group30.views.components.controls.TimePickerControl;
+import com.chalmers.group30.views.utilities.TimeUtils;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.data.binder.BeanValidationBinder;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 
 /**
  * A container for the search query
@@ -24,6 +32,7 @@ public class QueryContainer extends Div {
     private final TimePickerControl endTimePicker;
     private final DatePickerControl datePicker;
     private final IntegerUnlabeledStepper groupSizeStepper;
+
     public QueryContainer() {
         // Style
         addClassNames(
@@ -37,8 +46,17 @@ public class QueryContainer extends Div {
         );
 
         // Initialize components
-        startTimePicker = new TimePickerControl(0);
-        endTimePicker = new TimePickerControl(2);
+        int minutesStepSize = 15;
+        startTimePicker = new TimePickerControl(LocalTime.now(), minutesStepSize);
+        // Ensure that end time initial value is not after midnight
+        LocalTime endTime;
+        Instant endTimeCandidate = Instant.now().plus(2, ChronoUnit.HOURS);
+        if (endTimeCandidate.isAfter(TimeUtils.localTimeToInstant(LocalTime.of(23, 59), LocalDate.now()))) {
+            endTime = LocalTime.of(23, 59 - minutesStepSize); // Was after midnight, so set to last choice
+        } else {
+            endTime = LocalTime.now().plus(2, ChronoUnit.HOURS); // Was today, so set to 2 hours from now
+        }
+        endTimePicker = new TimePickerControl(endTime, minutesStepSize);
         datePicker = new DatePickerControl();
         groupSizeStepper = new IntegerUnlabeledStepper(1, 12, 4);
         executeSearchButton = new ExecuteSearchButton();
