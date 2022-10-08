@@ -83,15 +83,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
 
 
         // Drawer with map
-        VerticalLayout drawerLayout = new VerticalLayout();
-        drawerLayout.addClassNames(
-                LumoUtility.Width.FULL,
-                LumoUtility.AlignItems.CENTER, // vertical
-                LumoUtility.AlignSelf.CENTER,  // vertical
-                LumoUtility.Padding.Horizontal.MEDIUM,
-                LumoUtility.Padding.Bottom.LARGE,
-                LumoUtility.Padding.Top.LARGE
-        );
         Button closeDrawerButton = new Button("Close map view", new Icon(VaadinIcon.CLOSE), event -> {
             // Notification.show("isOverlay: " + isOverlay());
             setDrawerOpened(false);
@@ -102,10 +93,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
                 LumoUtility.Display.BLOCK,
                 LumoUtility.BoxShadow.SMALL,
                 LumoUtility.BorderRadius.NONE
-        );
-        drawerLayout.add(
-                closeDrawerButton,
-                mapView // from dep. injection
         );
         addToDrawer(closeDrawerButton, mapView);
         setDrawerOpened(false);
