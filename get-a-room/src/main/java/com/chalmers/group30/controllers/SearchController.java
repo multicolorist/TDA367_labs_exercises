@@ -12,6 +12,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * Controller for the search query - relays the query to the model and displays the result
@@ -62,13 +63,28 @@ public class SearchController {
     private class ExecuteSearchButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
-            Notification.show(String.format("This executes a search for %d people between %s to %s at %s.",
-                    queryContainer.getGroupSize(),
-                    queryContainer.getStartDateTime().toString(),
-                    queryContainer.getEndDateTime().toString(),
-                    queryContainer.getDate().toString()
-            ));
-            updateResults();
+            if (queryInputIsValid()) {
+                Notification.show(String.format("This executes a search for %d people between %s to %s at %s.",
+                        queryContainer.getGroupSize(),
+                        queryContainer.getStartDateTime().toString(),
+                        queryContainer.getEndDateTime().toString(),
+                        queryContainer.getDate().toString()
+                ));
+                updateResults();
+            } else {
+                Notification.show(
+                    "Invalid input: Please ensure that the group size is at least 1, " +
+                            "that the start time is before the end time the same day, today or later.",
+                    7000,
+                    Notification.Position.TOP_CENTER);
+            }
+        }
+
+        private boolean queryInputIsValid() {
+            return queryContainer.getGroupSize() >= queryContainer.getMinGroupSize() &&
+                    queryContainer.getGroupSize() <= queryContainer.getMaxGroupSize() &&
+                    queryContainer.getStartDateTime().isBefore(queryContainer.getEndDateTime()) &&
+                    queryContainer.getDate().isAfter(LocalDate.now().minusDays(1)); // Today or later
         }
     }
 }

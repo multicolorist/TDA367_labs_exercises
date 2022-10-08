@@ -58,9 +58,9 @@ public class QueryContainer extends Div {
         );
     }
 
-    public int getGroupSize() {
-        return groupSizeStepper.getValue();
-    }
+    public int getGroupSize() { return groupSizeStepper.getValue(); }
+    public int getMinGroupSize() { return groupSizeStepper.getMinValue(); }
+    public int getMaxGroupSize() { return groupSizeStepper.getMaxValue(); }
     public LocalDateTime getStartDateTime() {
         return startTimePicker.getValue().atDate(getDate());
     }
