@@ -25,7 +25,7 @@ public class SearchController {
     private final RecordDisplay recordDisplay;
     private SearchResult currentSearchResult; // TODO: Decide if this will be used for sorting/filtering, else remove
 
-    private SearchResult getSearchResults() throws IOException {
+    private SearchResult getSearchResults() throws IOException, IllegalArgumentException {
         // TODO: Add user location when available
         Location userLocation = new Location(57.708870, 11.974560);
         return getARoomFacade.search(new SearchQuery(userLocation, queryContainer.getGroupSize(), queryContainer.getStartDateTime(), queryContainer.getEndDateTime()));
@@ -54,7 +54,7 @@ public class SearchController {
             currentSearchResult = getSearchResults();
             recordDisplay.setItems(currentSearchResult.results());
             recordDisplay.setCurrentSearchQueryDate(currentSearchResult.searchQuery().startTime().toLocalDate());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Notification.show("Could not get search result");
         }
