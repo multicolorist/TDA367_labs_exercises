@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gson.JsonParser;
 import org.springframework.context.annotation.Scope;
@@ -26,6 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     final String baseUrl = "https://maps.chalmers.se/v2/";
+    final Logger logger = Logger.getLogger(ChalmersMapsAPI.class.getName());
 
     /**
      * Gets information about objects inside a building or inside an area.
@@ -33,9 +36,14 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @return JSON object representing information about objects inside a building or inside an area.
      */
     public JsonObject informationBoard(UUID uid) throws IOException {
-        // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
-        final String requestUrl = baseUrl + String.format("information_board/%s/json", uid.toString());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try{
+            // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
+            final String requestUrl = baseUrl + String.format("information_board/%s/json", uid.toString());
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get information board from API", e);
+            throw e;
+        }
     }
 
     /**
@@ -47,8 +55,13 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonArray timeEditSchedule(String identifier, int year, int week) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", identifier, year, week);
-        return readJsonElementFromUrl(requestUrl).getAsJsonArray();
+        try {
+            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", identifier, year, week);
+            return readJsonElementFromUrl(requestUrl).getAsJsonArray();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get timeedit schedule from API", e);
+            throw e;
+        }
     }
 
     /**
@@ -59,9 +72,14 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject route(Location origin, Location destination) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%s/%s/to/%s/%s",
-                origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try {
+            final String requestUrl = baseUrl + String.format("webservices/navigation/route/walking/from/%s/%s/to/%s/%s",
+                    origin.latitude(), origin.longitude(), destination.latitude(), destination.longitude());
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get route from API", e);
+            throw e;
+        }
     }
 
     /**
@@ -71,8 +89,13 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject getInfo(UUID uuid) throws IOException {
-        final String requestUrl = baseUrl + String.format("info/%s/json", uuid.toString());
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try{
+            final String requestUrl = baseUrl + String.format("info/%s/json", uuid.toString());
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get object info from API", e);
+            throw e;
+        }
     }
 
     /**
@@ -82,8 +105,13 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject getTimeEditInfo(String identifier) throws IOException {
-        final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", identifier);
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try {
+            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", identifier);
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get timeedit room info from API", e);
+            throw e;
+        }
     }
 
     /**
@@ -92,18 +120,28 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject geoJsonBuildings() throws IOException {
-        final String requestUrl = baseUrl + "geojson?types[]=building:*&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try {
+            final String requestUrl = baseUrl + "geojson?types[]=building:*&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get geojson buildings from API", e);
+            throw e;
+        }
     }
 
     /**
-     * Get GeoJson object for relevant buildings
+     * Get GeoJson object for POIs
      * @return A GeoJson object representing different Points of Interest
      * @throws IOException If the underlying API request failed for some reason
      */
     public JsonObject geoJsonPOI() throws IOException {
-        final String requestUrl = baseUrl + "geojson?poi=true&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
-        return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        try{
+            final String requestUrl = baseUrl + "geojson?poi=true&recursive=true&scopes[]=chalmers&scopes[]=gothenburg&lang=en";
+            return readJsonElementFromUrl(requestUrl).getAsJsonObject();
+        }catch (Exception e){
+            logger.log(Level.WARNING, "Failed to get geojson POI from API", e);
+            throw e;
+        }
     }
 
 
