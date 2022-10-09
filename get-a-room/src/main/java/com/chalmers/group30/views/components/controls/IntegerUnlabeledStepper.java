@@ -24,4 +24,6 @@ public class IntegerUnlabeledStepper extends Span {
         public int getValue() {
             return integerField.getValue();
         }
+        public int getMinValue() { return integerField.getMin(); }
+        public int getMaxValue() { return integerField.getMax(); }
 }

@@ -5,11 +5,15 @@ import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.objects.Route;
 import com.chalmers.group30.views.components.MapView;
+import com.vaadin.flow.spring.annotation.UIScope;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@UIScope
 public class MapViewController {
     MapView mapView;
 
