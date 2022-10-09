@@ -395,8 +395,11 @@ class MapLibre extends LitElement {
         // Suppress typing error that works anyway
         // @ts-ignore
         this.map.addImage("pin", image);
+
+        // Set pinReady to true and dispatch event
+        this.pinReady = true
+        this.dispatchEvent(this.onPinReady);
       });
-      this.dispatchEvent(this.onPinReady);
     });
   }
 }
