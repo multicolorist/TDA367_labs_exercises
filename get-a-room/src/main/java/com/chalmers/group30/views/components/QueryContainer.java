@@ -1,6 +1,5 @@
 package com.chalmers.group30.views.components;
 
-import com.chalmers.group30.models.objects.SearchQuery;
 import com.chalmers.group30.views.components.buttons.ExecuteSearchButton;
 import com.chalmers.group30.views.components.controls.DatePickerControl;
 import com.chalmers.group30.views.components.controls.IntegerUnlabeledStepper;
@@ -9,8 +8,6 @@ import com.chalmers.group30.views.utilities.TimeUtils;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 import java.time.Instant;
@@ -18,8 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 
 /**
  * A container for the search query

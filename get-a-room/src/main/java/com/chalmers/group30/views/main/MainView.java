@@ -86,11 +86,8 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 darkLightModeButton
         );
 
-
-
         // Drawer with map
         Button closeDrawerButton = new Button("Close map view", new Icon(VaadinIcon.CLOSE), event -> {
-            // Notification.show("isOverlay: " + isOverlay());
             setDrawerOpened(false);
         });
         closeDrawerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
