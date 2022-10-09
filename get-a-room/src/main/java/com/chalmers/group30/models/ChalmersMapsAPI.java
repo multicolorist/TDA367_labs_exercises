@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Location;
+import com.google.common.net.PercentEscaper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -29,6 +30,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     final String baseUrl = "https://maps.chalmers.se/v2/";
     final Logger logger = Logger.getLogger(ChalmersMapsAPI.class.getName());
+    private final PercentEscaper percentEscaper = new PercentEscaper("", false);
 
     /**
      * Gets information about objects inside a building or inside an area.
@@ -56,7 +58,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonArray timeEditSchedule(String identifier, int year, int week) throws IOException {
         try {
-            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", identifier, year, week);
+            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/schedules/%d/%d/json", percentEscaper.escape(identifier), year, week);
             return readJsonElementFromUrl(requestUrl).getAsJsonArray();
         }catch (Exception e){
             logger.log(Level.WARNING, "Failed to get timeedit schedule from API", e);
@@ -106,7 +108,7 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
      */
     public JsonObject getTimeEditInfo(String identifier) throws IOException {
         try {
-            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", identifier);
+            final String requestUrl = baseUrl + String.format("webservices/timeedit/room/%s/json", percentEscaper.escape(identifier));
             return readJsonElementFromUrl(requestUrl).getAsJsonObject();
         }catch (Exception e){
             logger.log(Level.WARNING, "Failed to get timeedit room info from API", e);
