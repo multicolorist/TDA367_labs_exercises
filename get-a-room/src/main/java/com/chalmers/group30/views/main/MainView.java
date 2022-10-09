@@ -1,7 +1,12 @@
 package com.chalmers.group30.views.main;
 
-import com.chalmers.group30.controllers.*;
+import com.chalmers.group30.controllers.DarkLightModeButtonController;
+import com.chalmers.group30.controllers.FilterButtonController;
+import com.chalmers.group30.controllers.SearchController;
+import com.chalmers.group30.controllers.ShowOnMapButtonController;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
+import com.chalmers.group30.views.HasOpenableDrawer;
+import com.chalmers.group30.views.MapMediator;
 import com.chalmers.group30.views.components.MapView;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
@@ -35,7 +40,7 @@ import java.io.IOException;
 @Route(value = "")
 @Component
 @UIScope
-public class MainView extends AppLayout implements HasComponents, HasStyle {
+public class MainView extends AppLayout implements HasComponents, HasStyle, HasOpenableDrawer {
     @Autowired
     public MainView(
             GetARoomFacadeInterface getARoomFacade,
@@ -43,8 +48,9 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
             DarkLightModeButton darkLightModeButton,
             FilterButtonController filterButtonController,
             FilterButton filterButton,
-            MapViewController mapViewController,
-            MapView mapView) throws IOException {
+            MapView mapView,
+            ShowOnMapButtonController showOnMapButtonController
+    ) throws IOException {
 
         // Add styling for main view
         addClassNames(
@@ -98,8 +104,9 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         setDrawerOpened(false);
 
         // Record list - needed for the SearchController to be able to update the list with new results
-        ShowOnMapButtonController showOnMapButtonController = new ShowOnMapButtonController(getARoomFacade, this, mapViewController);
-        RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController);
+        //TODO: Can avoid the mediator pattern here by passing "this" to RecordDisplay and changing there to a HasOpenableDrawer
+        //TODO: However, it might be useful for other cases to use the mediator, for ex. more complex input validation
+        RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
 
         // Query container - display results on site load
         QueryContainer queryContainer = new QueryContainer();
@@ -127,5 +134,10 @@ public class MainView extends AppLayout implements HasComponents, HasStyle {
         setContent(
                 recordDisplay
         );
+    }
+
+    @Override
+    public void openDrawer() {
+        setDrawerOpened(true);
     }
 }

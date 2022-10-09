@@ -3,6 +3,7 @@ package com.chalmers.group30.views.components.displays;
 import com.chalmers.group30.controllers.BookButtonController;
 import com.chalmers.group30.controllers.ShowOnMapButtonController;
 import com.chalmers.group30.models.objects.SearchRecord;
+import com.chalmers.group30.views.Mediator;
 import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
@@ -18,7 +19,6 @@ import com.vaadin.flow.component.virtuallist.VirtualList;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -36,10 +36,12 @@ import java.util.Objects;
 public class RecordDisplay extends VirtualList<SearchRecord> {
     ShowOnMapButtonController showOnMapButtonController;
     private LocalDate currentSearchQueryDate;
+    private final Mediator mapMediator;
 
-    public RecordDisplay(ShowOnMapButtonController showOnMapButtonController) throws IOException {
+    public RecordDisplay(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) throws IOException {
         // Init fields
         this.showOnMapButtonController = showOnMapButtonController;
+        this.mapMediator = mapMediator;
 
         // Style
         addClassNames(
@@ -75,6 +77,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         bookButton.addClickListener(BookButtonController.getListener());
         Button showMapButton = new ShowOnMapButton(searchRecord.room());
         showMapButton.addClickListener(showOnMapButtonController.getListener());
+        showMapButton.addClickListener(e -> mapMediator.notify("mapCalled"));
 
         // Top of the entry
         HorizontalLayout topLayout = new HorizontalLayout();
