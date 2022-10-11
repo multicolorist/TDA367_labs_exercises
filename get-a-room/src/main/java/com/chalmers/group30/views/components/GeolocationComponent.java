@@ -17,8 +17,6 @@ import java.util.logging.Logger;
  */
 public class GeolocationComponent extends Component {
 
-    private final Logger logger = Logger.getLogger(GeolocationComponent.class.getName());
-
     private Double latitude;
     private Double longitude;
     private Instant lastUpdated;
@@ -61,7 +59,6 @@ public class GeolocationComponent extends Component {
 
     @ClientCallable
     private void onError() {
-        logger.log(java.util.logging.Level.WARNING, "Geolocation failed");
         latitude = Double.NaN;
         longitude = Double.NaN;
         this.lastUpdated = Instant.now();

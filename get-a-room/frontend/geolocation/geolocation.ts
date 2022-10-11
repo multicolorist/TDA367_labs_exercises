@@ -55,6 +55,7 @@ class GeoLocation extends LitElement {
     }
 
     private _geoError(error: any) {
+        console.error(error);
         // Set attribute
         this.latitude = null;
         this.longitude = null;
