@@ -56,7 +56,6 @@ public class GeolocationComponent extends Component {
     private void onUpdate() {
         getLatitude();
         getLongitude();
-        logger.info("Updated location to: " + this.latitude + ", " + this.longitude);
         this.lastUpdated = Instant.now();
     }
 
