@@ -35,7 +35,7 @@ class GeoLocation extends LitElement {
      * Gets the latitude of the user
      */
     getLatitude() {
-        console.log(this.latitude);
+        
         return this.latitude;
     }
 
