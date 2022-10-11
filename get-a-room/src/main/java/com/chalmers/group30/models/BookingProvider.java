@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -22,7 +24,7 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
-
+    private final Logger logger = Logger.getLogger(BookingProvider.class.getName());
     private final int weeksForwardToCache = 2;
 
     @Autowired
@@ -81,10 +83,8 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
         for (Room room : roomServiceInterface.getRooms()) {
             try {
                 bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }catch (IOException e){
-
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Failed to get bookings for room " + room.name() + " with UUID " + room.uuid() + " and time edit ID " + room.timeEditId() + ". Skipping this room.", e);
             }
         }
         return bookings;

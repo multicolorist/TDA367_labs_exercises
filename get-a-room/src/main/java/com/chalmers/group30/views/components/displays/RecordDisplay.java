@@ -3,6 +3,7 @@ package com.chalmers.group30.views.components.displays;
 import com.chalmers.group30.controllers.BookButtonController;
 import com.chalmers.group30.controllers.ShowOnMapButtonController;
 import com.chalmers.group30.models.objects.SearchRecord;
+import com.chalmers.group30.views.Mediator;
 import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
@@ -33,9 +34,15 @@ import java.util.Objects;
  * use a Grid instead to display the records.
  */
 public class RecordDisplay extends VirtualList<SearchRecord> {
+    ShowOnMapButtonController showOnMapButtonController;
     private LocalDate currentSearchQueryDate;
+    private final Mediator mapMediator;
 
-    public RecordDisplay() throws IOException {
+    public RecordDisplay(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) throws IOException {
+        // Init fields
+        this.showOnMapButtonController = showOnMapButtonController;
+        this.mapMediator = mapMediator;
+
         // Style
         addClassNames(
                 LumoUtility.Padding.Horizontal.MEDIUM,
@@ -44,10 +51,16 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.Height.FULL
         );
 
-        // Set renderer
+        // Set renderer to display each element
         setRenderer(new ComponentRenderer<>(this::listEntryProvider));
     }
 
+    /**
+     * Sets the date of the current search query.
+     * Used by the view to determined if when the room is free
+     * depending on the current time viewing the results.
+     * @param date the date of the current search query
+     */
     public void setCurrentSearchQueryDate(LocalDate date) {
         this.currentSearchQueryDate = date;
     }
@@ -62,8 +75,9 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         // Buttons
         Button bookButton = new BookButton(searchRecord.room().uuid());
         bookButton.addClickListener(BookButtonController.getListener());
-        Button showMapButton = new ShowOnMapButton(searchRecord.room().uuid());
-        showMapButton.addClickListener(ShowOnMapButtonController.getListener());
+        Button showMapButton = new ShowOnMapButton(searchRecord.room());
+        showMapButton.addClickListener(showOnMapButtonController.getListener());
+        showMapButton.addClickListener(e -> mapMediator.notify("mapCalled"));
 
         // Top of the entry
         HorizontalLayout topLayout = new HorizontalLayout();
@@ -91,7 +105,6 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         }
         topLayout.add(topLayoutLeft, topLayoutRight);
 
-
         // Bottom part of the entry, seen only when unfolded
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.addClassNames(
@@ -104,14 +117,19 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.TextAlignment.RIGHT
         );
         String bottomInfo = "";
-        if (!Objects.equals(searchRecord.room().streetAddress(), "")) {
+        boolean hasAddress = !Objects.equals(searchRecord.room().streetAddress(), "");
+        boolean hasSeats = searchRecord.room().seats() != -1;
+        if (hasAddress) {
             bottomInfo += searchRecord.room().streetAddress();
         }
-        if (searchRecord.room().seats() != -1) { // seats is optional
-            bottomInfo = bottomInfo + ", " + searchRecord.room().seats() + " seats";
+        if (hasAddress && hasSeats) {
+            bottomInfo += ", ";
+        }
+        if (hasSeats) { // seats is optional
+            bottomInfo += searchRecord.room().seats() + " seats";
         }
 
-        // Add booking info
+        // Add booking info to foldout
         // TODO: Should this be in a controller? Maybe a bit too much logic for a view?
         // TODO: Verify the logic once we have updated the booking cache to be more current
         String bookingInfo = "";
@@ -131,8 +149,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 }
             }
         }
-
-        // Container that wraps (helps with mobile)
+        // Container that wraps (helps with mobile) for foldout
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),
                 new Div(new Text(bookingInfo)),

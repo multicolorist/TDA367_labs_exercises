@@ -1,5 +1,6 @@
 package com.chalmers.group30.views.components.buttons;
 
+import com.chalmers.group30.models.objects.Room;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.Icon;
@@ -11,23 +12,22 @@ import java.util.UUID;
 /**
  * A button for showing a specific room on the map
  */
-public class ShowOnMapButton extends Button implements ButtonHasUUID {
-    UUID uuid;
+public class ShowOnMapButton extends Button {
     Icon icon = new Icon(VaadinIcon.MAP_MARKER);
+    private Room room;
 
-    public ShowOnMapButton(UUID uuid) {
+    public ShowOnMapButton(Room room) {
+        this.room = room;
         addClassNames(
                 LumoUtility.Display.INLINE_FLEX,
                 LumoUtility.BoxShadow.SMALL
         );
         addThemeVariants(ButtonVariant.LUMO_SMALL);
-        this.uuid = uuid;
         this.setIcon(icon);
         this.setText("Show");
     }
 
-    @Override
-    public UUID getUUID() {
-        return this.uuid;
+    public Room getRoom() {
+        return this.room;
     }
 }

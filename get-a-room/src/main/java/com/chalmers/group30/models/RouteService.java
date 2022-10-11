@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
+import java.util.logging.Logger;
+
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RouteService implements RouteServiceInterface {
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
+    private final Logger logger = Logger.getLogger(RouteService.class.getName());
 
     @Autowired
     public RouteService(ChalmersMapsAPIInterface chalmersMapsAPI){
@@ -29,8 +32,13 @@ public class RouteService implements RouteServiceInterface {
      * @throws IOException If an API request failed for some reason.
      */
     public Route getRoute(Location origin, Location destination) throws IOException {
-        JsonObject routeJson = chalmersMapsAPI.route(origin, destination);
-        return Route.fromJSON(routeJson);
+        try {
+            JsonObject route = chalmersMapsAPI.route(origin, destination);
+            return Route.fromJSON(route);
+        }catch (IOException e){
+            logger.log(java.util.logging.Level.SEVERE, "Failed to get route from API", e);
+            throw e;
+        }
     }
 
     /**
