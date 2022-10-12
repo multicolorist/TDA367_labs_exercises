@@ -6,9 +6,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Tag("geoloc-custom")
 @JsModule("./geolocation/geolocation.ts")
@@ -17,8 +14,8 @@ import java.util.logging.Logger;
  */
 public class GeolocationComponent extends Component {
 
-    private Double latitude;
-    private Double longitude;
+    private Double latitude = Double.NaN;
+    private Double longitude = Double.NaN;
     private Instant lastUpdated;
 
     /**

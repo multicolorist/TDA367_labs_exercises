@@ -21,18 +21,36 @@ import java.time.LocalDate;
 // @UIScope
 public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
+    private GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
     private SearchResult currentSearchResult; // TODO: Decide if this will be used for sorting/filtering, else remove
 
+    private Location getUserLocation() {
+        return geolocationComponentController.getLocation();
+    }
+
     private SearchResult getSearchResults() throws IOException, IllegalArgumentException {
         // TODO: Add user location when available
-        Location userLocation = new Location(57.708870, 11.974560);
+        // Location userLocation = new Location(57.708870, 11.974560);
+        Location userLocation;
+        try {
+            userLocation = getUserLocation();
+            Notification.show("Got user loc, was: " + userLocation.latitude() + ", " + userLocation.longitude());
+        } catch (Exception e) {
+            Notification.show("Could not get user location, using default location instead");
+            Notification.show("Error was: " + e.getMessage());
+            userLocation = new Location(57.708870, 11.974560); // Default Johanneberg location
+        }
         return getARoomFacade.search(new SearchQuery(userLocation, queryContainer.getGroupSize(), queryContainer.getStartDateTime(), queryContainer.getEndDateTime()));
     }
 
-    public SearchController(GetARoomFacadeInterface getARoomFacade, RecordDisplay recordDisplay, QueryContainer queryContainer) {
+    public SearchController(GetARoomFacadeInterface getARoomFacade,
+                            GeolocationComponentController geolocationComponentController,
+                            RecordDisplay recordDisplay,
+                            QueryContainer queryContainer) {
         this.getARoomFacade = getARoomFacade;
+        this.geolocationComponentController = geolocationComponentController;
         this.queryContainer = queryContainer;
         this.recordDisplay = recordDisplay;
         this.queryContainer.executeSearchButton.addClickListener(getExecuteSearchButtonListener());

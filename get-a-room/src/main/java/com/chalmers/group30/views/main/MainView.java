@@ -1,12 +1,11 @@
 package com.chalmers.group30.views.main;
 
-import com.chalmers.group30.controllers.DarkLightModeButtonController;
-import com.chalmers.group30.controllers.FilterButtonController;
-import com.chalmers.group30.controllers.SearchController;
-import com.chalmers.group30.controllers.ShowOnMapButtonController;
+import com.chalmers.group30.controllers.*;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
+import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
+import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
@@ -21,6 +20,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -86,6 +86,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 darkLightModeButton
         );
 
+
         // Drawer with map
         Button closeDrawerButton = new Button("Close map view", new Icon(VaadinIcon.CLOSE), event -> {
             setDrawerOpened(false);
@@ -105,9 +106,13 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         //TODO: However, it might be useful for other cases to use the mediator, for ex. more complex input validation
         RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
 
+        // Geolocation
+        GeolocationComponent geolocationComponent = new GeolocationComponent();
+        GeolocationComponentController geolocationComponentController = new GeolocationComponentController(geolocationComponent);
+
         // Query container - display results on site load
         QueryContainer queryContainer = new QueryContainer();
-        SearchController searchController = new SearchController(getARoomFacade, recordDisplay, queryContainer);
+        SearchController searchController = new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer);
         searchController.updateResults();
 
         // Navbar
@@ -124,7 +129,12 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 headerContainer,
                 queryContainer
         );
-        addToNavbar(navbarContainer);
+        addToNavbar(navbarContainer, geolocationComponent);
+
+        addToNavbar(new Button("Get geolocation", new Icon(VaadinIcon.LOCATION_ARROW), event -> {
+            Location userLoc = geolocationComponentController.getLocation();
+            Notification.show(userLoc.toString());
+        }));
 
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");
