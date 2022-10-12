@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  */
 public class GeolocationComponent extends Component {
 
-    private Double latitude;
-    private Double longitude;
+    private Double latitude = Double.NaN;
+    private Double longitude = Double.NaN;
     private Instant lastUpdated;
 
     /**
