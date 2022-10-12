@@ -8,6 +8,9 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Interface for a booking provider that gets bookings for a room
+ */
 public interface BookingProviderInterface {
     /**
      * Gets bookings for the desired room

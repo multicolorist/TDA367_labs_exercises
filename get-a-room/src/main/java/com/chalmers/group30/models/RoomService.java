@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Facade for finding rooms to the user - the only front-facing interface
+ * Service for managing the cache of rooms
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -37,6 +37,10 @@ public class RoomService implements RoomServiceInterface{
         }
     }
 
+    /**
+     * Refreshes the cache of rooms from the API. Automatically called 04:00 every day
+     * @throws IOException If the underlying API call fails
+     */
     @Scheduled(cron = "0 0 4 * * *")
     public void refreshRoomCache() throws IOException{
         logger.info("Refreshing room cache...");

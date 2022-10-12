@@ -8,6 +8,9 @@ import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * Interface for the Chalmers Maps API V2
+ */
 public interface ChalmersMapsAPIInterface {
     JsonObject informationBoard(UUID uuid) throws IOException;
     JsonArray timeEditSchedule(String identifier, int year, int week) throws IOException;

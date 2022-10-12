@@ -18,6 +18,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Provides bookings from the API to be cached
+ */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> , BookingProviderInterface{
@@ -33,6 +36,10 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
     }
 
+    /**
+     * Get how many weeks forward the cache will be get bookings
+     * @return The number of weeks forward
+     */
     public int getWeeksForwardToCache() {
         return weeksForwardToCache;
     }

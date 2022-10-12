@@ -5,6 +5,9 @@ import com.chalmers.group30.models.objects.SearchResult;
 
 import java.io.IOException;
 
+/**
+ * Interface defining how a search service should behave
+ */
 public interface SearchServiceInterface {
     /**
      * Search for matching rooms that are free at the given time
