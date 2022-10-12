@@ -1,11 +1,8 @@
 package com.chalmers.group30.models;
 
-import com.chalmers.group30.models.BookingProviderInterface;
 import com.chalmers.group30.models.objects.Booking;
 import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.utilities.CacheUpdateProvider;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -15,12 +12,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.temporal.Temporal;
 import java.util.*;
 
-public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>>, BookingProviderInterface {
+public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> {
 
     private final RoomServiceInterface roomServiceInterface;
     private final TimeEditAPIInterface timeEditAPIInterface;
@@ -34,7 +28,22 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
     }
 
     @Override
-    public List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException, ParserException {
+    public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
+        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
+
+        for (Room room : roomServiceInterface.getRooms()) {
+            try {
+                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
+            } catch (ParseException | ParserException e) {
+                e.printStackTrace();
+            }catch (IOException e){
+
+            }
+        }
+        return bookings;
+    }
+
+    private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException, ParserException {
         List<Booking> bookings = new ArrayList<>();
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null");
@@ -51,22 +60,6 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
         }
 
 
-        return bookings;
-    }
-
-    @Override
-    public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
-        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
-
-        for (Room room : roomServiceInterface.getRooms()) {
-            try {
-                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (ParseException | ParserException e) {
-                e.printStackTrace();
-            }catch (IOException e){
-
-            }
-        }
         return bookings;
     }
 }
