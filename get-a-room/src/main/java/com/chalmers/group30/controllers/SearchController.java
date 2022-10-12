@@ -24,7 +24,6 @@ public class SearchController {
     private GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
-    private SearchResult currentSearchResult; // TODO: Decide if this will be used for sorting/filtering, else remove
 
     private Location getUserLocation() {
         return geolocationComponentController.getLocation();
@@ -69,9 +68,9 @@ public class SearchController {
      */
     public void updateResults() {
         try {
-            currentSearchResult = getSearchResults();
-            recordDisplay.setItems(currentSearchResult.results());
-            recordDisplay.setCurrentSearchQueryDate(currentSearchResult.searchQuery().startTime().toLocalDate());
+            SearchResult searchResult = getSearchResults();
+            recordDisplay.setItems(searchResult.results());
+            recordDisplay.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
         } catch (Exception e) {
             e.printStackTrace();
             Notification.show("Could not get search result");
