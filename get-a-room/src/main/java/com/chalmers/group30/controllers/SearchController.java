@@ -30,17 +30,8 @@ public class SearchController {
     }
 
     private SearchResult getSearchResults() throws IOException, IllegalArgumentException {
-        // TODO: Add user location when available
-        // Location userLocation = new Location(57.708870, 11.974560);
         Location userLocation;
-        try {
-            userLocation = getUserLocation();
-            Notification.show("Got user loc, was: " + userLocation.latitude() + ", " + userLocation.longitude());
-        } catch (Exception e) {
-            Notification.show("Could not get user location, using default location instead");
-            Notification.show("Error was: " + e.getMessage());
-            userLocation = new Location(57.708870, 11.974560); // Default Johanneberg location
-        }
+        userLocation = getUserLocation();
         return getARoomFacade.search(new SearchQuery(userLocation, queryContainer.getGroupSize(), queryContainer.getStartDateTime(), queryContainer.getEndDateTime()));
     }
 
@@ -71,6 +62,13 @@ public class SearchController {
             SearchResult searchResult = getSearchResults();
             recordDisplay.setItems(searchResult.results());
             recordDisplay.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
+            Notification.show(String.format("%f", searchResult.searchQuery().userLocation().latitude()));
+            if (Double.isNaN(searchResult.searchQuery().userLocation().latitude())) {
+                Notification.show(
+                        "Please enable location services to see distance to rooms.",
+                        6000,
+                        Notification.Position.TOP_CENTER);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Notification.show("Could not get search result");
@@ -81,17 +79,15 @@ public class SearchController {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
             if (queryInputIsValid()) {
-                Notification.show(String.format("This executes a search for %d people between %s to %s at %s.",
-                        queryContainer.getGroupSize(),
-                        queryContainer.getStartDateTime().toString(),
-                        queryContainer.getEndDateTime().toString(),
-                        queryContainer.getDate().toString()
-                ));
+                Notification.show(
+                        "Getting you many lovely rooms..",
+                        4000,
+                        Notification.Position.TOP_CENTER);
                 updateResults();
             } else {
                 Notification.show(
                     "Invalid input: Please ensure that the group size is at least 1, " +
-                            "that the start time is before the end time the same day, today or later.",
+                            "that the start time is before the end time on the same day, today or later.",
                     7000,
                     Notification.Position.TOP_CENTER);
             }

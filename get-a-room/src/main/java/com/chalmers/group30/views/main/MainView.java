@@ -49,7 +49,9 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
             FilterButtonController filterButtonController,
             FilterButton filterButton,
             MapView mapView,
-            ShowOnMapButtonController showOnMapButtonController
+            ShowOnMapButtonController showOnMapButtonController,
+            GeolocationComponent geolocationComponent,
+            GeolocationComponentController geolocationComponentController
     ) throws IOException {
 
         // Add styling for main view
@@ -107,12 +109,11 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
 
         // Geolocation
-        GeolocationComponent geolocationComponent = new GeolocationComponent();
-        GeolocationComponentController geolocationComponentController = new GeolocationComponentController(geolocationComponent);
+        geolocationComponentController = new GeolocationComponentController(geolocationComponent);
 
-        // Query container - display results on site load
+        // Query container - display results only on user-triggered search
         QueryContainer queryContainer = new QueryContainer();
-        SearchController searchController = new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer);
+        new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer); // init search controller
 
         // Navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
@@ -129,11 +130,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 queryContainer
         );
         addToNavbar(navbarContainer, geolocationComponent);
-
-        addToNavbar(new Button("Get geolocation", new Icon(VaadinIcon.LOCATION_ARROW), event -> {
-            Location userLoc = geolocationComponentController.getLocation();
-            Notification.show(userLoc.toString());
-        }));
 
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");
