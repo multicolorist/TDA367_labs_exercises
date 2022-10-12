@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 /**
- * Facade for finding rooms to the user - the only front-facing interface
+ * Manages the cache of bookings
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)

@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+/**
+ * Provides rooms from the API to be cached
+ */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RoomProvider implements CacheUpdateProvider<List<Room>> {
@@ -42,6 +45,11 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
         this.chalmersMapsAPI = chalmersMapsAPI;
     }
 
+    /**
+     * Gets all rooms from the API
+     * @return A list of all rooms
+     * @throws IOException If the underlying API call fails
+     */
     @Override
     public List<Room> getNewDataToCache() throws IOException {
         try {
