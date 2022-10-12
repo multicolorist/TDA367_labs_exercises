@@ -91,7 +91,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         );
         topLayoutLeft.getElement().appendChild(ElementFactory.createStrong(searchRecord.room().name()));
         int distanceToRoom = (int) Math.round(searchRecord.birdsDistance());
-        topLayoutLeft.add(new Div(new Text(String.format("%s meters away", distanceToRoom))));
+        topLayoutLeft.add(new Div(new Text(String.format("%s meters away", distanceToRoom == 0 ? "-" : distanceToRoom))));
         // Top right part of the entry, seen both folded and unfolded
         VerticalLayout topLayoutRight = new VerticalLayout();
         topLayoutRight.addClassNames(
