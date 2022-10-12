@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> , BookingProviderInterface{
+public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>>{
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
@@ -26,7 +26,7 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
     private final int weeksForwardToCache = 2;
 
     @Autowired
-    public BookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
+    public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
         this.roomServiceInterface = roomServiceInterface;
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
     }
@@ -35,16 +35,29 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
         return weeksForwardToCache;
     }
 
+
     /**
-     * Gets bookings for the desired room for the next x weeks based on weeksForwardToCache
-     * @param room The room to check bookings for
-     * @param startTime The time from which bookings should be checked
-     * @return A list of bookings for the given time period
+     * Gets all bookings for the next x weeks based on weeksForwardToCache
+     * @return A dictionary with rooms as keys and a list of bookings as values
      * @throws IOException If the underlying API call fails
-     * @throws ParseException If the underlying API call returns invalid data
-     * @throws IllegalArgumentException If the room is null
      */
-    public List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
+    @Override
+    public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
+        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
+
+        for (Room room : roomServiceInterface.getRooms()) {
+            try {
+                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }catch (IOException e){
+
+            }
+        }
+        return bookings;
+    }
+
+    private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
         List<Booking> bookings = new ArrayList<>();
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null");
@@ -66,27 +79,6 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
             }
         }
 
-        return bookings;
-    }
-
-    /**
-     * Gets all bookings for the next x weeks based on weeksForwardToCache
-     * @return A dictionary with rooms as keys and a list of bookings as values
-     * @throws IOException If the underlying API call fails
-     */
-    @Override
-        public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
-        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
-
-        for (Room room : roomServiceInterface.getRooms()) {
-            try {
-                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }catch (IOException e){
-
-            }
-        }
         return bookings;
     }
 }
