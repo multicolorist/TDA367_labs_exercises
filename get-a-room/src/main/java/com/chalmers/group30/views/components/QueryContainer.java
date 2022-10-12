@@ -37,7 +37,8 @@ public class QueryContainer extends Div {
                 LumoUtility.AlignSelf.CENTER,
                 LumoUtility.Background.BASE,
                 LumoUtility.FontSize.LARGE,
-                LumoUtility.FontWeight.SEMIBOLD
+                LumoUtility.FontWeight.SEMIBOLD,
+                LumoUtility.TextAlignment.CENTER
         );
 
         // Initialize components
