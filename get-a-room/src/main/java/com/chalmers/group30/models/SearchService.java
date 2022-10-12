@@ -10,6 +10,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -89,6 +90,12 @@ public class SearchService implements SearchServiceInterface {
                 } catch (Exception e) {
                     logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
                 }
+            }
+
+            if (searchQuery.userLocation() == null){
+                results.sort(Comparator.comparing(o -> o.room().name()));
+            }else {
+                results.sort(Comparator.comparing(o -> o.birdsDistance()));
             }
 
             return new SearchResult(searchQuery, results);
