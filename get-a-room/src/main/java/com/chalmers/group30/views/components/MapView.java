@@ -9,14 +9,14 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.util.List;
 
+/**
+ * Represents a MapLibre component to be used in Vaadin
+ */
 @Tag("maplibre-gl-js")
 @NpmPackage(value = "maplibre-gl", version = "2.4.0")
 @JsModule("./maplibre/maplibre.ts")
 @UIScope
 @org.springframework.stereotype.Component
-/**
- * Represents a MapLibre component to be used in Vaadin
- */
 public class MapView extends Component implements HasSize, HasStyle, HasComponents {
     /**
      * Add and display a room on the map
