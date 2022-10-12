@@ -27,6 +27,11 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
         this.timeEditAPIInterface = timeEditAPIInterface;
     }
 
+    /**
+     * Gets all bookings for the next x weeks based on weeksForwardToCache
+     * @return A dictionary with rooms as keys and a list of bookings as values
+     * @throws IOException If the underlying API call fails
+     */
     @Override
     public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
         Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
