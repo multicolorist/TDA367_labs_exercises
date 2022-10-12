@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * A button for booking a room
  */
-public class BookButton extends Button implements ButtonHasUUID {
+public class BookButton extends Button {
     UUID uuid;
     Icon icon = new Icon(VaadinIcon.CALENDAR_CLOCK);
 
@@ -26,7 +26,6 @@ public class BookButton extends Button implements ButtonHasUUID {
         this.setText("Book");
     }
 
-    @Override
     public UUID getUUID() {
         return this.uuid;
     }

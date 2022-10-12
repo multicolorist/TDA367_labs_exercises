@@ -1,0 +1,14 @@
+:host {
+    /*--vaadin-app-layout-drawer-offset-size: 320px;*/
+    --vaadin-app-layout-drawer-offset-size: 100%;
+    /*
+    Workaround for allowing overlay in all screen sizes,
+    see for ex.:
+    https://github.com/vaadin/web-components/issues/650
+     */
+    --vaadin-app-layout-drawer-overlay: true;
+}
+
+[part="drawer"] {
+    width: var(--vaadin-app-layout-drawer-offset-size);
+}

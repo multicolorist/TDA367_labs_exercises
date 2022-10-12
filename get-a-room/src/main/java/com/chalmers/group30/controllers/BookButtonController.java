@@ -1,6 +1,6 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.views.components.buttons.ButtonHasUUID;
+import com.chalmers.group30.views.components.buttons.BookButton;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -12,9 +12,8 @@ import com.vaadin.flow.component.notification.Notification;
 public class BookButtonController{
     /**
      * Gets a listener for the corresponding button
-     * @return The distance in meters between the position and the room
+     * @return Listener for the button
      */
-
     public static ComponentEventListener<ClickEvent<Button>> getListener() {
         return new BookButtonListener();
     }
@@ -22,8 +21,7 @@ public class BookButtonController{
     private static class BookButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
-            ButtonHasUUID btn = (ButtonHasUUID) e.getSource();
-            btn.getUUID();
+            BookButton btn = (BookButton) e.getSource();
             Notification.show("This leads to time-edit for UUID: " + btn.getUUID());
         }
     }
