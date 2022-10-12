@@ -113,7 +113,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         // Query container - display results on site load
         QueryContainer queryContainer = new QueryContainer();
         SearchController searchController = new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer);
-        searchController.updateResults();
 
         // Navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
