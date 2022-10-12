@@ -62,7 +62,6 @@ public class SearchController {
             SearchResult searchResult = getSearchResults();
             recordDisplay.setItems(searchResult.results());
             recordDisplay.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
-            Notification.show(String.format("%f", searchResult.searchQuery().userLocation().latitude()));
             if (Double.isNaN(searchResult.searchQuery().userLocation().latitude())) {
                 Notification.show(
                         "Please enable location services to see distance to rooms.",
