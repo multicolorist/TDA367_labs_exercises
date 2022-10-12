@@ -27,12 +27,10 @@ import java.util.*;
 public class BookingService implements BookingServiceInterface{
 
     private GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;
-    private BookingProviderInterface bookingProvider;
 
     @Autowired
-    public BookingService(CacheUpdateProvider<Dictionary<Room, List<Booking>>> bookingCacheUpdateProvider, BookingProviderInterface bookingProvider){
+    public BookingService(CacheUpdateProvider<Dictionary<Room, List<Booking>>> bookingCacheUpdateProvider){
         this.bookingCache = new GenericCache<Dictionary<Room, List<Booking>>>(bookingCacheUpdateProvider);
-        this.bookingProvider = bookingProvider;
     }
 
     /**
@@ -52,10 +50,6 @@ public class BookingService implements BookingServiceInterface{
     public List<Booking> getBookings(Room room) throws IOException, ParseException, ParserException {
 
         List<Booking> bookings = bookingCache.getData().get(room);
-
-        if (bookings == null) {
-            bookings = bookingProvider.getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris")));
-        }
 
         return bookings;
     }
