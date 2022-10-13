@@ -12,6 +12,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Controller for the showOnMap button
@@ -57,6 +58,7 @@ public class ShowOnMapButtonController {
             // Notification.show("Got user loc, was: " + userLocation.latitude() + ", " + userLocation.longitude());
             if (Double.isNaN(userLocation.latitude())) {
                 Notification.show("Please enable location services to see the route from your location to the room.");
+                mapViewController.showRoute(new Route(0, Arrays.asList(destination))); // Just mark the destination
             } else {
                 try {
                     Route route = getARoomFacade.getWalkingRoute(userLocation, destination);
