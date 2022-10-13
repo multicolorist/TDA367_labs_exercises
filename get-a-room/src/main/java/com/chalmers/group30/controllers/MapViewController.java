@@ -1,9 +1,8 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.models.ChalmersMapsAPI;
+import com.chalmers.group30.models.ChalmersMapsAPIInterface;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Route;
-import com.chalmers.group30.models.utilities.WebRequests;
 import com.chalmers.group30.views.components.MapView;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
@@ -16,24 +15,27 @@ import java.util.List;
 @UIScope
 public class MapViewController {
     MapView mapView;
+    
+    ChalmersMapsAPIInterface chalmersMapsAPI;
 
     /**
      * Constructor for the MapViewController
      * @param mapView the MapView to control
      */
-    public MapViewController(MapView mapView) {
+    public MapViewController(MapView mapView, ChalmersMapsAPIInterface chalmersMapsAPI) {
         // TODO: init buildings etc
         this.mapView = mapView;
+        this.chalmersMapsAPI = chalmersMapsAPI;
 
         try {
-            mapView.addGeoJSON("buildings", new ChalmersMapsAPI(new WebRequests()).geoJsonBuildings());
+            mapView.addGeoJSON("buildings", chalmersMapsAPI.geoJsonBuildings());
             mapView.addExtrusionLayer("buildings_extrude", "buildings");
         } catch (IOException e) {
             //TODO: Add logging
         }
 
         try {
-            mapView.addGeoJSON("poi", new ChalmersMapsAPI(new WebRequests()).geoJsonPOI());
+            mapView.addGeoJSON("poi", chalmersMapsAPI.geoJsonPOI());
             mapView.addExtrusionLayer("poi_extrude", "poi");
         } catch (IOException e) {
             //TODO: Add logging

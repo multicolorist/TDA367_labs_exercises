@@ -17,7 +17,7 @@ public class MapTestView extends VerticalLayout {
         setSpacing(false);
 
         MapView map = new MapView();
-        MapViewController mapViewController = new MapViewController(map);
+        MapViewController mapViewController = new MapViewController(map, new ChalmersMapsAPI(new WebRequests()));
         map.setSizeFull();
 
         try {

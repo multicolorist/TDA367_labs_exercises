@@ -57,9 +57,13 @@ public class BookingService implements BookingServiceInterface{
      * @return A list of bookings for the room
      * @throws IOException If the underlying API call fails
      */
-    public List<Booking> getBookings(Room room) throws IOException, ParseException, ParserException {
+    public List<Booking> getBookings(Room room) throws IOException {
 
         List<Booking> bookings = bookingCache.getData().get(room);
+
+        if (bookings == null) {
+            logger.warning("Room " + room.name() + " UUID " + room.uuid() + " was not found in booking cache.");
+        }
 
         return bookings;
     }

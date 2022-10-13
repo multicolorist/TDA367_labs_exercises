@@ -41,7 +41,7 @@ public class TimeEditAPI implements TimeEditAPIInterface{
     }
 
     /**
-     *
+     * Gets a schedule from TimeEdit for multiple given rooms and time period.
      * @param IDs A list of TimeEdit IDs for rooms
      * @param start The start time of the period to get bookings for
      * @param end The end time of the period to get bookings for
