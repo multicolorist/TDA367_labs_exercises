@@ -8,6 +8,6 @@ public enum RoomToTimeEditID implements Function<Room, String> {
 
     @Override
     public String apply(Room input) {
-        return input.timeEditId();
+        return input.timeEditId().split(":")[1];
     }
 }
