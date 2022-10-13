@@ -40,10 +40,10 @@ public record Booking(LocalDateTime startTime, LocalDateTime endTime) implements
      */
     public static Booking fromVEvent(VEvent event) {
         Temporal startTemporal = event.getStartDate().get().getDate();
-        LocalDateTime startTime = LocalDateTime.from(startTemporal);
+        LocalDateTime startTime = LocalDateTime.ofInstant(Instant.from(startTemporal), ZoneId.of("Europe/Paris"));
 
         Temporal endTemporal = event.getEndDate().get().getDate();
-        LocalDateTime endTime = LocalDateTime.from(endTemporal);
+        LocalDateTime endTime = LocalDateTime.ofInstant(Instant.from(endTemporal), ZoneId.of("Europe/Paris"));
 
         return new Booking(startTime, endTime);
     }
