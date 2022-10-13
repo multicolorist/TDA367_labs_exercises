@@ -18,7 +18,7 @@ public interface BookingServiceInterface {
      * @return A list of bookings for the room
      * @throws IOException If the underlying API call fails
      */
-    List<Booking> getBookings(Room room) throws IOException, IllegalArgumentException, ParseException;
+    List<Booking> getBookings(Room room) throws IOException;
 
     /**
      * Refreshes the cache
