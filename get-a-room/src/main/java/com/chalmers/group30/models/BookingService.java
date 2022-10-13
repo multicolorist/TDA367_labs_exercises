@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 public class BookingService implements BookingServiceInterface{
 
     private GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;
-    private BookingProviderInterface bookingProvider;
     private final Logger logger = Logger.getLogger(BookingService.class.getName());
 
     @Autowired
@@ -61,11 +60,6 @@ public class BookingService implements BookingServiceInterface{
     public List<Booking> getBookings(Room room) throws IOException, ParseException, ParserException {
 
         List<Booking> bookings = bookingCache.getData().get(room);
-
-        if (bookings == null) {
-            logger.warning("Room " + room.name() + " UUID " + room.uuid() + " was not found in booking cache. Getting directly from provider, this will be slow.");
-            bookings = bookingProvider.getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris")));
-        }
 
         return bookings;
     }

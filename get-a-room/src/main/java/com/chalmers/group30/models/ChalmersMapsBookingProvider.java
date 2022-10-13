@@ -26,7 +26,7 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
-    private final Logger logger = Logger.getLogger(BookingProvider.class.getName());
+    private final Logger logger = Logger.getLogger(ChalmersMapsBookingProvider.class.getName());
     private final int weeksForwardToCache = 2;
     
     public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
@@ -40,32 +40,6 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
      */
     public int getWeeksForwardToCache() {
         return weeksForwardToCache;
-    }
-
-
-    /**
-     * Gets all bookings for the next x weeks based on weeksForwardToCache
-     * @return A dictionary with rooms as keys and a list of bookings as values
-     * @throws IOException If the underlying API call fails
-     */
-
-    /**
-     * Gets all bookings for the next x weeks based on weeksForwardToCache
-     * @return A dictionary with rooms as keys and a list of bookings as values
-     * @throws IOException If the underlying API call fails
-     */
-    @Override
-        public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
-        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
-
-        for (Room room : roomServiceInterface.getRooms()) {
-            try {
-                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (Exception e) {
-                logger.log(Level.WARNING, "Failed to get bookings for room " + room.name() + " with UUID " + room.uuid() + " and time edit ID " + room.timeEditId() + ". Skipping this room.", e);
-            }
-        }
-        return bookings;
     }
 
     private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
