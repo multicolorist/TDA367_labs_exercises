@@ -15,15 +15,17 @@ import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Facade for finding rooms to the user - the only front-facing interface
+ * Service for managing the cache of rooms
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RoomService implements RoomServiceInterface{
 
     private GenericCacheInterface<List<Room>> roomCache;
+    private final Logger logger = Logger.getLogger(RoomService.class.getName());
 
     @Autowired
     public RoomService(CacheUpdateProvider<List<Room>> roomCacheUpdateProvider){
@@ -35,9 +37,20 @@ public class RoomService implements RoomServiceInterface{
         }
     }
 
+    /**
+     * Refreshes the cache of rooms from the API. Automatically called 04:00 every day
+     * @throws IOException If the underlying API call fails
+     */
     @Scheduled(cron = "0 0 4 * * *")
     public void refreshRoomCache() throws IOException{
-        roomCache.refreshCache();
+        logger.info("Refreshing room cache...");
+        try {
+            roomCache.refreshCache();
+            logger.info("Room cache refreshed");
+        }catch (IOException e){
+            logger.log(java.util.logging.Level.SEVERE, "Failed to refresh room cache", e);
+            throw e;
+        }
     }
 
     /**

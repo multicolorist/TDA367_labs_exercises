@@ -11,8 +11,14 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Service for searching for available rooms
+ */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SearchService implements SearchServiceInterface {
@@ -20,6 +26,7 @@ public class SearchService implements SearchServiceInterface {
     private final BookingServiceInterface bookingService;
     private final RoomServiceInterface roomService;
     private final RouteServiceInterface routeService;
+    private final Logger logger = Logger.getLogger(SearchService.class.getName());
 
     @Autowired
     public SearchService(BookingServiceInterface bookingService, RoomServiceInterface roomService, RouteServiceInterface routeService) {
@@ -47,46 +54,58 @@ public class SearchService implements SearchServiceInterface {
             throw new IllegalArgumentException("Start time must be before end time");
         }
 
-        List<Room> candidateRooms = roomService.getRooms();
-        List<Room> matchingRooms = new ArrayList<>();
-        roomLoop:
-        for (Room room : candidateRooms) {
+        try {
+            List<Room> candidateRooms = roomService.getRooms();
+            List<Room> matchingRooms = new ArrayList<>();
+            roomLoop:
+            for (Room room : candidateRooms) {
 
-            //todo Include the rooms with unknown size? (marked with -1)
-            if (room.seats() < searchQuery.groupSize()) {
-                continue;
-            }
-
-            try {
-                List<Booking> bookings = bookingService.getBookings(room);
-
-                for (Booking booking : bookings) {
-                    //Booking start time is within the search time
-                    if (((booking.startTime().isAfter(searchQuery.startTime()) || booking.startTime().isEqual(searchQuery.startTime())) && booking.startTime().isBefore(searchQuery.endTime()))
-                            //or Booking end time is within the search time
-                            || (booking.endTime().isAfter(searchQuery.startTime()) && (booking.endTime().isBefore(searchQuery.endTime()) || booking.endTime().isEqual(searchQuery.endTime())))) {
-                        continue roomLoop;
-                    }
+                //todo Include the rooms with unknown size? (marked with -1)
+                if (room.seats() < searchQuery.groupSize()) {
+                    continue;
                 }
-                matchingRooms.add(room);
 
-            }catch (Exception e){
-                continue;
+                try {
+                    List<Booking> bookings = bookingService.getBookings(room);
+
+                    for (Booking booking : bookings) {
+                        //Booking start time is within the search time
+                        if (((booking.startTime().isAfter(searchQuery.startTime()) || booking.startTime().isEqual(searchQuery.startTime())) && booking.startTime().isBefore(searchQuery.endTime()))
+                                //or Booking end time is within the search time
+                                || (booking.endTime().isAfter(searchQuery.startTime()) && (booking.endTime().isBefore(searchQuery.endTime()) || booking.endTime().isEqual(searchQuery.endTime())))) {
+                            continue roomLoop;
+                        }
+                    }
+                    matchingRooms.add(room);
+
+                }catch (Exception e){
+                    logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
+                    continue;
+                }
+
             }
 
-        }
+            List<SearchRecord> results = new ArrayList<>();
+            for (Room room : matchingRooms) {
 
-        List<SearchRecord> results = new ArrayList<>();
-        for (Room room : matchingRooms) {
-
-            try {
-                results.add(new SearchRecord(room, bookingService.getBookings(room),
-                        searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : -1));
-            } catch (ParseException | ParserException e) {
-
+                try {
+                    results.add(new SearchRecord(room, bookingService.getBookings(room),
+                            searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : Double.NaN));
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
+                }
             }
-        }
 
-        return new SearchResult(searchQuery, results);
+            if (searchQuery.userLocation() == null){
+                results.sort(Comparator.comparing(o -> o.room().name()));
+            }else {
+                results.sort(Comparator.comparing(o -> o.birdsDistance()));
+            }
+
+            return new SearchResult(searchQuery, results);
+        }catch (Exception e){
+            logger.log(Level.SEVERE, "Failed to search for bookings.", e);
+            throw e;
+        }
     }
 }

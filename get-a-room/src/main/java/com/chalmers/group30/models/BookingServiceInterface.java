@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+/**
+ * Interface defines how a booking management service should behave
+ */
 public interface BookingServiceInterface {
     /**
      * Gets bookings for the desired room for the next 2 weeks

@@ -15,13 +15,18 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * Provides bookings from the API to be cached
+ */
 @Deprecated
 public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>>{
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
-
+    private final Logger logger = Logger.getLogger(BookingProvider.class.getName());
     private final int weeksForwardToCache = 2;
     
     public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
@@ -29,6 +34,10 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
     }
 
+    /**
+     * Get how many weeks forward the cache will be get bookings
+     * @return The number of weeks forward
+     */
     public int getWeeksForwardToCache() {
         return weeksForwardToCache;
     }
@@ -39,17 +48,21 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
      * @return A dictionary with rooms as keys and a list of bookings as values
      * @throws IOException If the underlying API call fails
      */
+
+    /**
+     * Gets all bookings for the next x weeks based on weeksForwardToCache
+     * @return A dictionary with rooms as keys and a list of bookings as values
+     * @throws IOException If the underlying API call fails
+     */
     @Override
-    public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
+        public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
         Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
 
         for (Room room : roomServiceInterface.getRooms()) {
             try {
                 bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }catch (IOException e){
-
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Failed to get bookings for room " + room.name() + " with UUID " + room.uuid() + " and time edit ID " + room.timeEditId() + ". Skipping this room.", e);
             }
         }
         return bookings;
@@ -77,6 +90,25 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
             }
         }
 
+        return bookings;
+    }
+
+    /**
+     * Gets all bookings for the next x weeks based on weeksForwardToCache
+     * @return A dictionary with rooms as keys and a list of bookings as values
+     * @throws IOException If the underlying API call fails
+     */
+    @Override
+        public Dictionary<Room, List<Booking>> getNewDataToCache() throws IOException {
+        Dictionary<Room, List<Booking>> bookings = new Hashtable<>();
+
+        for (Room room : roomServiceInterface.getRooms()) {
+            try {
+                bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Failed to get bookings for room " + room.name() + " with UUID " + room.uuid() + " and time edit ID " + room.timeEditId() + ". Skipping this room.", e);
+            }
+        }
         return bookings;
     }
 }
