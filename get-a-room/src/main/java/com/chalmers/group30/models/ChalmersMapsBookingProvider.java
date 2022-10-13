@@ -16,16 +16,14 @@ import java.text.ParseException;
 import java.time.*;
 import java.util.*;
 
-@Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Deprecated
 public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>>{
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
 
     private final int weeksForwardToCache = 2;
-
-    @Autowired
+    
     public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
         this.roomServiceInterface = roomServiceInterface;
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
