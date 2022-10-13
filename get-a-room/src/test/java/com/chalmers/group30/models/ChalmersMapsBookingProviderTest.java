@@ -7,9 +7,6 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
@@ -20,7 +17,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BookingProviderTest {
+class ChalmersMapsBookingProviderTest {
 
     @Test
     void getNewDataToCache_bookingsForRoom() throws IOException {
