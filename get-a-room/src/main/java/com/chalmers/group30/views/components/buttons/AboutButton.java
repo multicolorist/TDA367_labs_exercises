@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @UIScope
-public class FilterButton extends Button {
-    Icon lightModeIcon = new Icon(VaadinIcon.FILTER);
+public class AboutButton extends Button {
+    Icon  lightModeIcon = new Icon(VaadinIcon.QUESTION);
 
     @Autowired
-    public FilterButton() {
+    public AboutButton() {
         this.setIcon(lightModeIcon);
     }
 }

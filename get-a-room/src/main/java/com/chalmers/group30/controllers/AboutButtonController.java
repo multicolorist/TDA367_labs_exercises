@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @UIScope
-public class FilterButtonController {
+public class AboutButtonController {
     // TODO: Add filtering logic
 
     @Autowired
-    public FilterButtonController() {
+    public AboutButtonController() {
 
     }
 

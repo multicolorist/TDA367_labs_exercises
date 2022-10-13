@@ -2,14 +2,13 @@ package com.chalmers.group30.views.main;
 
 import com.chalmers.group30.controllers.*;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
-import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
 import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
-import com.chalmers.group30.views.components.buttons.FilterButton;
+import com.chalmers.group30.views.components.buttons.AboutButton;
 import com.chalmers.group30.views.components.displays.RecordDisplay;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -20,7 +19,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -46,8 +44,8 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
             GetARoomFacadeInterface getARoomFacade,
             DarkLightModeButtonController darkLightModeButtonController,
             DarkLightModeButton darkLightModeButton,
-            FilterButtonController filterButtonController,
-            FilterButton filterButton,
+            AboutButtonController aboutButtonController,
+            AboutButton aboutButton,
             MapView mapView,
             ShowOnMapButtonController showOnMapButtonController,
             GeolocationComponent geolocationComponent,
@@ -62,7 +60,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         );
 
         // Init filter and dark/light mode button
-        filterButton.addClickListener(filterButtonController.getListener());
+        aboutButton.addClickListener(aboutButtonController.getListener());
         darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
 
         // Header
@@ -83,7 +81,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         );
         headerContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         headerContainer.add(
-                filterButton,
+                aboutButton,
                 title,
                 darkLightModeButton
         );
