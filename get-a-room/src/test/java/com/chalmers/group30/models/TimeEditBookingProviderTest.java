@@ -91,7 +91,7 @@ public class TimeEditBookingProviderTest {
         CalendarBuilder builder = new CalendarBuilder();
         Calendar c = builder.build(new StringReader(calendarString));
 
-        when(api.getSchedule(eq(List.of("chalmers:test")), any(), any())).thenReturn(c);
+        when(api.getSchedule(eq("chalmers:test"), any(), any())).thenReturn(c);
 
         TimeEditBookingProvider service = new TimeEditBookingProvider(roomServiceInterface, api);
 
