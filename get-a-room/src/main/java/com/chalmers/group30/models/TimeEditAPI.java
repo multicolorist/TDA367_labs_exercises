@@ -1,8 +1,13 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.utilities.WebRequestsInterface;
+import com.google.common.net.PercentEscaper;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -11,9 +16,12 @@ import java.util.List;
 /**
  * Utility for accessing the TimeEdit API
  */
+@Service
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TimeEditAPI implements TimeEditAPIInterface{
 
     private WebRequestsInterface webRequests;
+    private final PercentEscaper percentEscaper = new PercentEscaper("", false);
 
     public TimeEditAPI(WebRequestsInterface webRequests) {
         this.webRequests = webRequests;
@@ -42,10 +50,11 @@ public class TimeEditAPI implements TimeEditAPIInterface{
      * @throws ParserException If the underlying API request returned invalid or malformed data
      */
     public Calendar getSchedule(List<String> IDs, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {
-        StringBuilder sURL = new StringBuilder("https://cloud.timeedit.net/chalmers/web/public/ri.ical?sid=3");
+        StringBuilder sURL = new StringBuilder("https://cloud.timeedit.net/chalmers/web/public/ri.ics?sid=3");
         for (String id : IDs) {
-            sURL.append("&object=").append(id).append("&type=room");
+            sURL.append("&object=").append(percentEscaper.escape(id)).append("&type=room");
         }
+        sURL.append("&l=en");
         return webRequests.readIcalendarFromUrl(sURL.toString());
     }
 }
