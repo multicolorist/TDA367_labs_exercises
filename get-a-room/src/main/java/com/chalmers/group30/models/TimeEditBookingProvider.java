@@ -7,6 +7,10 @@ import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.component.VEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -14,6 +18,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+@Service
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> {
 
     private final RoomServiceInterface roomServiceInterface;
@@ -41,8 +47,6 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
                 bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
             } catch (ParseException | ParserException e) {
                 e.printStackTrace();
-            }catch (IOException e){
-
             }
         }
         return bookings;
