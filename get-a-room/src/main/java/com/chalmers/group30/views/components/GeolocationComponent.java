@@ -4,14 +4,14 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @Tag("geoloc-custom")
 @JsModule("./geolocation/geolocation.ts")
+@org.springframework.stereotype.Component
+@UIScope
 /**
  * A custom component that uses the browser's geolocation API to get the user's location
  */

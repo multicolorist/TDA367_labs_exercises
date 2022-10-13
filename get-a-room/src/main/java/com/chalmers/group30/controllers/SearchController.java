@@ -21,18 +21,26 @@ import java.time.LocalDate;
 // @UIScope
 public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
+    private GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
-    private SearchResult currentSearchResult; // TODO: Decide if this will be used for sorting/filtering, else remove
+
+    private Location getUserLocation() {
+        return geolocationComponentController.getLocation();
+    }
 
     private SearchResult getSearchResults() throws IOException, IllegalArgumentException {
-        // TODO: Add user location when available
-        Location userLocation = new Location(57.708870, 11.974560);
+        Location userLocation;
+        userLocation = getUserLocation();
         return getARoomFacade.search(new SearchQuery(userLocation, queryContainer.getGroupSize(), queryContainer.getStartDateTime(), queryContainer.getEndDateTime()));
     }
 
-    public SearchController(GetARoomFacadeInterface getARoomFacade, RecordDisplay recordDisplay, QueryContainer queryContainer) {
+    public SearchController(GetARoomFacadeInterface getARoomFacade,
+                            GeolocationComponentController geolocationComponentController,
+                            RecordDisplay recordDisplay,
+                            QueryContainer queryContainer) {
         this.getARoomFacade = getARoomFacade;
+        this.geolocationComponentController = geolocationComponentController;
         this.queryContainer = queryContainer;
         this.recordDisplay = recordDisplay;
         this.queryContainer.executeSearchButton.addClickListener(getExecuteSearchButtonListener());
@@ -51,9 +59,15 @@ public class SearchController {
      */
     public void updateResults() {
         try {
-            currentSearchResult = getSearchResults();
-            recordDisplay.setItems(currentSearchResult.results());
-            recordDisplay.setCurrentSearchQueryDate(currentSearchResult.searchQuery().startTime().toLocalDate());
+            SearchResult searchResult = getSearchResults();
+            recordDisplay.setItems(searchResult.results());
+            recordDisplay.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
+            if (Double.isNaN(searchResult.searchQuery().userLocation().latitude())) {
+                Notification.show(
+                        "Please enable location services to see distance to rooms.",
+                        6000,
+                        Notification.Position.TOP_CENTER);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Notification.show("Could not get search result");
@@ -64,17 +78,15 @@ public class SearchController {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
             if (queryInputIsValid()) {
-                Notification.show(String.format("This executes a search for %d people between %s to %s at %s.",
-                        queryContainer.getGroupSize(),
-                        queryContainer.getStartDateTime().toString(),
-                        queryContainer.getEndDateTime().toString(),
-                        queryContainer.getDate().toString()
-                ));
+                Notification.show(
+                        "Getting you many lovely rooms..",
+                        4000,
+                        Notification.Position.TOP_CENTER);
                 updateResults();
             } else {
                 Notification.show(
                     "Invalid input: Please ensure that the group size is at least 1, " +
-                            "that the start time is before the end time the same day, today or later.",
+                            "that the start time is before the end time on the same day, today or later.",
                     7000,
                     Notification.Position.TOP_CENTER);
             }

@@ -1,12 +1,11 @@
 package com.chalmers.group30.views.main;
 
-import com.chalmers.group30.controllers.DarkLightModeButtonController;
-import com.chalmers.group30.controllers.FilterButtonController;
-import com.chalmers.group30.controllers.SearchController;
-import com.chalmers.group30.controllers.ShowOnMapButtonController;
+import com.chalmers.group30.controllers.*;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
+import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
+import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
@@ -21,6 +20,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -49,7 +49,9 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
             FilterButtonController filterButtonController,
             FilterButton filterButton,
             MapView mapView,
-            ShowOnMapButtonController showOnMapButtonController
+            ShowOnMapButtonController showOnMapButtonController,
+            GeolocationComponent geolocationComponent,
+            GeolocationComponentController geolocationComponentController
     ) throws IOException {
 
         // Add styling for main view
@@ -86,6 +88,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 darkLightModeButton
         );
 
+
         // Drawer with map
         Button closeDrawerButton = new Button("Close map view", new Icon(VaadinIcon.CLOSE), event -> {
             setDrawerOpened(false);
@@ -105,10 +108,12 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         //TODO: However, it might be useful for other cases to use the mediator, for ex. more complex input validation
         RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
 
-        // Query container - display results on site load
+        // Geolocation
+        geolocationComponentController = new GeolocationComponentController(geolocationComponent);
+
+        // Query container - display results only on user-triggered search
         QueryContainer queryContainer = new QueryContainer();
-        SearchController searchController = new SearchController(getARoomFacade, recordDisplay, queryContainer);
-        searchController.updateResults();
+        new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer); // init search controller
 
         // Navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
@@ -124,7 +129,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 headerContainer,
                 queryContainer
         );
-        addToNavbar(navbarContainer);
+        addToNavbar(navbarContainer, geolocationComponent);
 
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");

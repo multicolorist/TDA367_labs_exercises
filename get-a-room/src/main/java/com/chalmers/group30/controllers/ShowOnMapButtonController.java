@@ -12,6 +12,7 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Controller for the showOnMap button
@@ -21,13 +22,16 @@ import java.io.IOException;
 public class ShowOnMapButtonController {
     GetARoomFacadeInterface getARoomFacade;
     MapViewController mapViewController;
-    // @Autowired
+    GeolocationComponentController geolocationComponentController;
+
     public ShowOnMapButtonController(
             GetARoomFacadeInterface getARoomFacade,
-            MapViewController mapViewController) {
+            MapViewController mapViewController,
+            GeolocationComponentController geolocationComponentController) {
 
         this.getARoomFacade = getARoomFacade;
         this.mapViewController = mapViewController;
+        this.geolocationComponentController = geolocationComponentController;
     }
 
     /**
@@ -47,18 +51,25 @@ public class ShowOnMapButtonController {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
             ShowOnMapButton sourceButton = (ShowOnMapButton) e.getSource();
-            Notification.show("This makes the map slide up and marks UUID: " + sourceButton.getRoom().uuid());
-            // TODO: Change to real user loc when available
-            Location userLocation = new Location(57.708870, 11.974560);
+            // Notification.show("This makes the map slide up and marks UUID: " + sourceButton.getRoom().uuid());
             Location destination = sourceButton.getRoom().location();
-            try {
-                Route route = getARoomFacade.getWalkingRoute(userLocation, destination);
-                mapViewController.showRoute(route);
-                mapViewController.flyTo(destination);
-            } catch (IOException ex) {
-                Notification.show("Could not get walking route");
-                //TODO: Add logging
+            Location userLocation;
+            userLocation = geolocationComponentController.getLocation();
+            // Notification.show("Got user loc, was: " + userLocation.latitude() + ", " + userLocation.longitude());
+            if (Double.isNaN(userLocation.latitude())) {
+                Notification.show("Please enable location services to see the route from your location to the room.");
+                mapViewController.showRoute(new Route(0, Arrays.asList(destination))); // Just mark the destination
+            } else {
+                try {
+                    Route route = getARoomFacade.getWalkingRoute(userLocation, destination);
+                    mapViewController.showRoute(route);
+
+                } catch (IOException ex) {
+                    Notification.show("Could not get walking route");
+                    //TODO: Add logging
+                }
             }
+            mapViewController.flyTo(destination);
         }
 
     }
