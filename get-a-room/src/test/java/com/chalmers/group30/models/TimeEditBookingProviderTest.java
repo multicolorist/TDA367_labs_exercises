@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class TimeEditBookingProviderTest {
 
     @Test
-    void getNewDataToCache_bookingsForRoom() throws IOException, ParserException {
+    void getNewDataToCache_shouldReturnEvents() throws IOException, ParserException {
         Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
         TimeEditAPIInterface api = mock(TimeEditAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
