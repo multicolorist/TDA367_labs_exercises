@@ -7,6 +7,7 @@ import com.chalmers.group30.views.MapMediator;
 import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
 import com.chalmers.group30.views.components.QueryContainer;
+import com.chalmers.group30.views.components.buttons.CustomAnchor;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
 import com.chalmers.group30.views.components.buttons.AboutButton;
 import com.chalmers.group30.views.components.displays.RecordDisplay;
@@ -60,9 +61,22 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.Padding.Horizontal.SMALL
         );
 
-        // Init filter and dark/light mode button
+        // Book rooms anchor button - special handling needed for a link to open in new tab from a button
+        CustomAnchor bookRoomsAnchor = new CustomAnchor(
+                "https://cloud.timeedit.net/chalmers/web/b1/ri1Q5008.html",
+                "",
+                new Icon(VaadinIcon.CALENDAR_CLOCK),
+                ""
+                );
+
+        // About and dark/light mode button
         aboutButton.addClickListener(aboutButtonController.getListener());
         darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
+        HorizontalLayout headerButtonLayout = new HorizontalLayout();
+
+        // Add buttons to navbar
+        headerButtonLayout.addClassName("header-button-layout");
+        headerButtonLayout.add(bookRoomsAnchor, aboutButton, darkLightModeButton);
 
         // Header
         H3 title = new H3("GetARoom");
@@ -82,9 +96,8 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         );
         headerContainer.setSpacing(false);
         headerContainer.add(
-                aboutButton,
                 title,
-                darkLightModeButton
+                headerButtonLayout
         );
 
 
