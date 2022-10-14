@@ -1,10 +1,8 @@
 package com.chalmers.group30.views.components.displays;
 
-import com.chalmers.group30.controllers.BookButtonController;
 import com.chalmers.group30.controllers.ShowOnMapButtonController;
 import com.chalmers.group30.models.objects.SearchRecord;
 import com.chalmers.group30.views.Mediator;
-import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -73,8 +71,6 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
      */
     Component listEntryProvider(SearchRecord searchRecord) {
         // Buttons
-        Button bookButton = new BookButton(searchRecord.room().uuid());
-        bookButton.addClickListener(BookButtonController.getListener());
         Button showMapButton = new ShowOnMapButton(searchRecord.room());
         showMapButton.addClickListener(showOnMapButtonController.getListener());
         showMapButton.addClickListener(e -> mapMediator.notify("mapCalled"));
@@ -153,8 +149,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),
                 new Div(new Text(bookingInfo)),
-                showMapButton,
-                bookButton
+                showMapButton
         );
         bottomLayout.add(
                 new Hr(),
