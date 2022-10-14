@@ -31,7 +31,6 @@ public class QueryContainer extends Div {
     public QueryContainer() {
         // Style
         addClassNames(
-                LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.JustifyContent.CENTER,
                 LumoUtility.AlignItems.CENTER,
                 LumoUtility.AlignSelf.CENTER,

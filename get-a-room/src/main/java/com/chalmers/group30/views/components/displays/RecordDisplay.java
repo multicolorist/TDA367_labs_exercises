@@ -92,7 +92,10 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         // Top right part of the entry, seen both folded and unfolded
         VerticalLayout topLayoutRight = new VerticalLayout();
         topLayoutRight.addClassNames(
-                LumoUtility.Gap.SMALL
+                LumoUtility.Gap.SMALL,
+                LumoUtility.Padding.Top.MEDIUM,
+                LumoUtility.Padding.Left.NONE,
+                LumoUtility.Padding.Right.NONE
         );
         topLayoutRight.add(new Div(new Text(searchRecord.room().building())));
         if (Objects.equals(searchRecord.room().floor(), "")) { // floor is optional
