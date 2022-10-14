@@ -22,5 +22,6 @@ public class AboutButton extends Button {
 
     public AboutButton() {
         this.setIcon(icon);
+        this.getElement().setAttribute("aria-label", "About this site");
     }
 }

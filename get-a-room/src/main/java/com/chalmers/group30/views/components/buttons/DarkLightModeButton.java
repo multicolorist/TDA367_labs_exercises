@@ -18,5 +18,6 @@ public class DarkLightModeButton extends Button {
     @Autowired
     public DarkLightModeButton() {
         this.setIcon(lightModeIcon);
+        this.getElement().setAttribute("aria-label", "Toggle dark/light mode");
     }
 }

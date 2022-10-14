@@ -25,6 +25,7 @@ public class ShowOnMapButton extends Button {
         addThemeVariants(ButtonVariant.LUMO_SMALL);
         this.setIcon(icon);
         this.setText("Show on map");
+        // No aria-label needed, since the button has text
     }
 
     public Room getRoom() {

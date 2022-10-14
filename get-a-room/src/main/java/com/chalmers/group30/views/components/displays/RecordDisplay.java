@@ -169,6 +169,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.BoxShadow.SMALL, // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
                 LumoUtility.BorderRadius.SMALL
         );
+        foldablePanel.getElement().setAttribute("aria-label", "A room from the search results");
         return foldablePanel;
     }
 }

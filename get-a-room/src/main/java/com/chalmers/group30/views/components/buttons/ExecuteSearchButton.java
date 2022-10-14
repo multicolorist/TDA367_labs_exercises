@@ -24,6 +24,6 @@ public class ExecuteSearchButton extends Button {
         this.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
         this.setIcon(icon);
         this.setText("Search! ");
-
+        // No aria-label needed, since the button has text
     }
 }
