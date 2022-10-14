@@ -46,7 +46,8 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.Padding.Top.MEDIUM,
                 LumoUtility.Padding.Bottom.XLARGE,
-                LumoUtility.Height.FULL
+                LumoUtility.Height.FULL,
+                LumoUtility.Overflow.HIDDEN // To disable side-scroll
         );
 
         // Set renderer to display each element
