@@ -64,7 +64,7 @@ public class QueryContainer extends Div {
                 startTimePicker,
                 new Span(new Text(" until ")),
                 endTimePicker,
-                new Span(new Text(" at ")),
+                new Span(new Text(" on ")),
                 datePicker,
                 new Span(new Text(" and ")),
                 executeSearchButton
