@@ -33,6 +33,7 @@ import java.io.IOException;
 
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 
 @PageTitle("GetARoom")
 @Route(value = "")
@@ -66,20 +67,20 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         // Header
         H3 title = new H3("GetARoom");
         title.addClassNames(
+                "header",
                 LumoUtility.Margin.Bottom.SMALL,
-                LumoUtility.Margin.Top.SMALL,
-                LumoUtility.FontSize.XXXLARGE
+                LumoUtility.Margin.Top.SMALL
         );
         HorizontalLayout headerContainer = new HorizontalLayout();
         headerContainer.addClassNames(
                 LumoUtility.Width.FULL,
-                LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.JustifyContent.BETWEEN,
                 LumoUtility.AlignItems.CENTER,
                 LumoUtility.AlignSelf.CENTER,
-                LumoUtility.Background.BASE
+                LumoUtility.Background.BASE,
+                LumoUtility.FlexWrap.WRAP
         );
-        headerContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        headerContainer.setSpacing(false);
         headerContainer.add(
                 aboutButton,
                 title,
@@ -117,7 +118,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
         navbarContainer.addClassNames(
                 LumoUtility.Width.FULL,
-                LumoUtility.Padding.Horizontal.MEDIUM,
+                LumoUtility.Padding.Horizontal.SMALL,
                 LumoUtility.JustifyContent.BETWEEN, // horizontal
                 LumoUtility.AlignItems.CENTER, // vertical
                 LumoUtility.AlignSelf.CENTER,  // vertical
