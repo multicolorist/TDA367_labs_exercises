@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Controller for the filter button to filter rooms according to specific criteria
+ * Controller for the about button
  */
 @Component
 @UIScope
@@ -25,7 +25,7 @@ public class AboutButtonController {
 
     /**
      * Gets a listener for the corresponding button
-     * @return The distance in meters between the position and the room
+     * @return Listener for the button
      */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
         return new AboutButtonListener();

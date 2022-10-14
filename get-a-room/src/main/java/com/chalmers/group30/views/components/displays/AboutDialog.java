@@ -11,6 +11,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 
+/** A dialog for displaying information about the site */
 @Component
 @UIScope
 public class AboutDialog extends Dialog {
