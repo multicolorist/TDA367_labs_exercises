@@ -6,8 +6,14 @@ html {
     --lumo-font-family: Inter;
 }
 
+/* Generic styling not warranting a specific file*/
+
 h3.header {
-    font-size: max(4vw,calc(var(--lumo-font-size-xl)*0.9));
+    font-size: max(4vh,calc(var(--lumo-font-size-xl)*0.9));
     font-weight: bold;
     padding-left: 2vw;
+}
+
+vaadin-horizontal-layout.header-button-layout {
+    padding-right: 2vw;
 }
