@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the showOnMap button
@@ -23,6 +25,7 @@ public class ShowOnMapButtonController {
     GetARoomFacadeInterface getARoomFacade;
     MapViewController mapViewController;
     GeolocationComponentController geolocationComponentController;
+    private final Logger logger = Logger.getLogger(ShowOnMapButtonController.class.getName());
 
     public ShowOnMapButtonController(
             GetARoomFacadeInterface getARoomFacade,
@@ -65,8 +68,7 @@ public class ShowOnMapButtonController {
                     mapViewController.showRoute(route);
 
                 } catch (IOException ex) {
-                    Notification.show("Could not get walking route");
-                    //TODO: Add logging
+                    logger.log(Level.SEVERE, "Could not get walking route even though input was not NaN.", e);
                 }
             }
             mapViewController.flyTo(destination);

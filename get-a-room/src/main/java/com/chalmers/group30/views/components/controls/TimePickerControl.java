@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
  * A component that contains a time picker meant to be displayed inline
  * The initial value is set to the next given step-size.
  */
-@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-time-picker.css", themeFor = "vaadin-time-picker")
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-time-picker.css", themeFor = "vaadin-input-control")
 public class TimePickerControl extends Span {
     TimePicker timePicker = new TimePicker();
 
@@ -25,9 +25,9 @@ public class TimePickerControl extends Span {
      */
     public TimePickerControl(LocalTime initialTime, int minutesStepSize) {
         timePicker.addClassNames(
+                "vaadin-time-picker",
                 LumoUtility.BorderRadius.MEDIUM,
                 LumoUtility.Display.INLINE_FLEX
-
         );
 
         // Set step size

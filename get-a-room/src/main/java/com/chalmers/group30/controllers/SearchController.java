@@ -13,6 +13,8 @@ import com.vaadin.flow.component.notification.Notification;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the search query - relays the query to the model and displays the result
@@ -24,6 +26,8 @@ public class SearchController {
     private GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
     private final RecordDisplay recordDisplay;
+    private final Logger logger = Logger.getLogger(SearchController.class.getName());
+
 
     private Location getUserLocation() {
         return geolocationComponentController.getLocation();
@@ -69,8 +73,8 @@ public class SearchController {
                         Notification.Position.TOP_CENTER);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            Notification.show("Could not get search result");
+            logger.log(Level.SEVERE, "Could not get search results.", e);
+            Notification.show("Could not get search results, please check your connection or contact the authors.");
         }
     }
 

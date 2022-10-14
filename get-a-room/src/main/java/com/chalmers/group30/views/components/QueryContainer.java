@@ -19,8 +19,6 @@ import java.time.temporal.ChronoUnit;
 /**
  * A container for the search query
  */
-// @Component
-// @UIScope
 public class QueryContainer extends Div {
     public ExecuteSearchButton executeSearchButton;
     private final TimePickerControl startTimePicker;
@@ -31,7 +29,6 @@ public class QueryContainer extends Div {
     public QueryContainer() {
         // Style
         addClassNames(
-                LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.JustifyContent.CENTER,
                 LumoUtility.AlignItems.CENTER,
                 LumoUtility.AlignSelf.CENTER,
@@ -44,6 +41,7 @@ public class QueryContainer extends Div {
         // Initialize components
         int minutesStepSize = 15;
         startTimePicker = new TimePickerControl(LocalTime.now(), minutesStepSize);
+        startTimePicker.getElement().setAttribute("aria-label", "Pick start time for room search");
         // Ensure that end time initial value is not after midnight
         LocalTime endTime;
         Instant endTimeCandidate = Instant.now().plus(2, ChronoUnit.HOURS);
@@ -52,9 +50,16 @@ public class QueryContainer extends Div {
         } else {
             endTime = LocalTime.now().plus(2, ChronoUnit.HOURS); // Was today, so set to 2 hours from now
         }
+
         endTimePicker = new TimePickerControl(endTime, minutesStepSize);
+        endTimePicker.getElement().setAttribute("aria-label", "Pick end time for room search");
+
         datePicker = new DatePickerControl();
+        datePicker.getElement().setAttribute("aria-label", "Pick date for room search");
+
         groupSizeStepper = new IntegerUnlabeledStepper(1, 12, 4);
+        groupSizeStepper.getElement().setAttribute("aria-label", "Select number of seats for room search");
+
         executeSearchButton = new ExecuteSearchButton();
 
         // Add to container
@@ -65,7 +70,7 @@ public class QueryContainer extends Div {
                 startTimePicker,
                 new Span(new Text(" until ")),
                 endTimePicker,
-                new Span(new Text(" at ")),
+                new Span(new Text(" on ")),
                 datePicker,
                 new Span(new Text(" and ")),
                 executeSearchButton
@@ -83,5 +88,5 @@ public class QueryContainer extends Div {
     }
     public LocalDate getDate() {
         return datePicker.getValue();
-    } // TODO: Make private?
+    }
 }
