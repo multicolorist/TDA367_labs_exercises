@@ -7,10 +7,12 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 
-// Adapted from:
-// https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463
+/**
+  * A custom anchor that looks like a button
+  * Adapted from:
+  * https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463
+  */
 public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyle {
     /** Custom-Attribut, used to identify the `vaadin-button` as child of `CustomAnchor` */
     private static final String ATTR_ANCHOR = "anchor";
