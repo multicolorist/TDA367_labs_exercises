@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
+import net.fortuna.ical4j.data.ParserException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 class SearchServiceTest {
 
     @Test
-    void search_shouldReturnProperResults() throws IOException, ParseException {
+    void search_shouldReturnProperResults() throws IOException, ParseException, ParserException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);

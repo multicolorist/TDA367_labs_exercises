@@ -12,4 +12,5 @@
 [part="drawer"] {
     width: var(--vaadin-app-layout-drawer-offset-size);
     height: 100vh;
+    overflow: hidden; /* Hide scroll bar by clipping content */
 }

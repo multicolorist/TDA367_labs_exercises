@@ -20,6 +20,13 @@ public class DatePickerControl extends Span {
                 LumoUtility.BorderRadius.MEDIUM,
                 LumoUtility.Display.INLINE_FLEX
         );
+
+        // Set custom format
+        DatePicker.DatePickerI18n format = new DatePicker.DatePickerI18n();
+        format.setDateFormat("d/M");
+        datePicker.setI18n(format);
+
+        // Set initial value to today
         datePicker.setValue(LocalDate.now());
         add(datePicker);
     }

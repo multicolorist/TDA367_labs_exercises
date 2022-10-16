@@ -21,17 +21,15 @@ import java.util.logging.Logger;
 /**
  * Provides bookings from the API to be cached
  */
-@Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> , BookingProviderInterface{
+@Deprecated
+public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>>{
 
     private final RoomServiceInterface roomServiceInterface;
     private final ChalmersMapsAPIInterface chalmersMapsAPIInterface;
-    private final Logger logger = Logger.getLogger(BookingProvider.class.getName());
+    private final Logger logger = Logger.getLogger(ChalmersMapsBookingProvider.class.getName());
     private final int weeksForwardToCache = 2;
-
-    @Autowired
-    public BookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
+    
+    public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
         this.roomServiceInterface = roomServiceInterface;
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
     }
@@ -44,16 +42,7 @@ public class BookingProvider implements CacheUpdateProvider<Dictionary<Room, Lis
         return weeksForwardToCache;
     }
 
-    /**
-     * Gets bookings for the desired room for the next x weeks based on weeksForwardToCache
-     * @param room The room to check bookings for
-     * @param startTime The time from which bookings should be checked
-     * @return A list of bookings for the given time period
-     * @throws IOException If the underlying API call fails
-     * @throws ParseException If the underlying API call returns invalid data
-     * @throws IllegalArgumentException If the room is null
-     */
-    public List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
+    private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
         List<Booking> bookings = new ArrayList<>();
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null");
