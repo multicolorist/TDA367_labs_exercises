@@ -33,6 +33,11 @@ public class BookingService implements BookingServiceInterface{
     @Autowired
     public BookingService(CacheUpdateProvider<Dictionary<Room, List<Booking>>> bookingCacheUpdateProvider){
         this.bookingCache = new GenericCache<Dictionary<Room, List<Booking>>>(bookingCacheUpdateProvider);
+        try{
+            refreshBookingCache();
+        }catch (Exception e){
+            logger.log(java.util.logging.Level.SEVERE, "Failed to do initial booking cache retrieval", e);
+        }
     }
 
     /**
