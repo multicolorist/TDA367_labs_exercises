@@ -35,6 +35,9 @@ import java.io.IOException;
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 
+/**
+ * The main view of the entire application.
+ */
 @PageTitle("GetARoom")
 @Route(value = "")
 @Component
@@ -137,7 +140,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.AlignSelf.CENTER,  // vertical
                 LumoUtility.Background.BASE
         );
-        navbarContainer.getElement().setAttribute("aria-label", "Top bar containing header and seach controls");
+        navbarContainer.getElement().setAttribute("aria-label", "Top bar containing header and search controls");
 
         navbarContainer.add(
                 headerContainer,

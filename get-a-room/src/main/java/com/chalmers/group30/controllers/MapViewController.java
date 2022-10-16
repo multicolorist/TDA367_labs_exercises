@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for the MapView component
+ */
 @Component
 @UIScope
 public class MapViewController {
