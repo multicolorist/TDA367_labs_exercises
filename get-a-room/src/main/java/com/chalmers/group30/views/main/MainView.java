@@ -35,6 +35,9 @@ import java.io.IOException;
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 
+/**
+ * The main view of the entire application.
+ */
 @PageTitle("GetARoom")
 @Route(value = "")
 @Component
