@@ -49,6 +49,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
             AboutButton aboutButton,
             MapView mapView,
             ShowOnMapButtonController showOnMapButtonController,
+            GeolocationComponentController geolocationComponentController,
             GeolocationComponent geolocationComponent
     ) throws IOException {
 
@@ -121,9 +122,6 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         // Record list - needed for the SearchController to be able to update the list with new results
         RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
         recordDisplay.getElement().setAttribute("aria-label", "List of search results");
-
-        // Geolocation
-        GeolocationComponentController geolocationComponentController = new GeolocationComponentController(geolocationComponent);
 
         // Query container - display results only on user-triggered search
         QueryContainer queryContainer = new QueryContainer();
