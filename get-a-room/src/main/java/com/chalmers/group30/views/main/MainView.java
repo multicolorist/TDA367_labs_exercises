@@ -2,11 +2,11 @@ package com.chalmers.group30.views.main;
 
 import com.chalmers.group30.controllers.*;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
-import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
 import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
+import com.chalmers.group30.views.components.PreferredClientThemeComponent;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
 import com.chalmers.group30.views.components.buttons.FilterButton;
@@ -20,7 +20,6 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -44,14 +43,15 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
     @Autowired
     public MainView(
             GetARoomFacadeInterface getARoomFacade,
-            DarkLightModeButtonController darkLightModeButtonController,
+            DarkLightModeController darkLightModeController,
             DarkLightModeButton darkLightModeButton,
             FilterButtonController filterButtonController,
             FilterButton filterButton,
             MapView mapView,
             ShowOnMapButtonController showOnMapButtonController,
             GeolocationComponent geolocationComponent,
-            GeolocationComponentController geolocationComponentController
+            GeolocationComponentController geolocationComponentController,
+            PreferredClientThemeComponent preferredClientThemeComponent
     ) throws IOException {
 
         // Add styling for main view
@@ -61,9 +61,17 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.Padding.Horizontal.SMALL
         );
 
+        add(preferredClientThemeComponent);
+
         // Init filter and dark/light mode button
         filterButton.addClickListener(filterButtonController.getListener());
-        darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
+        darkLightModeButton.addClickListener(darkLightModeController.getListener());
+        darkLightModeController.registerIconToChange(darkLightModeButton);
+
+        darkLightModeController.applyClientPreferredTheme();
+
+
+
 
         // Header
         H3 title = new H3("GetARoom");
