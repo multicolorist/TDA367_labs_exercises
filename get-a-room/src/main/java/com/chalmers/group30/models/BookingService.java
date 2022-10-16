@@ -36,9 +36,10 @@ public class BookingService implements BookingServiceInterface{
     }
 
     /**
-     * Refreshes the cache
+     * Refreshes the booking cache. Called automatically every 15 minutes
      * @throws IOException If the underlying API call fails
      */
+    @Scheduled(cron = "0 */15 * * * *")
     public void refreshBookingCache() throws IOException{
         logger.info("Refreshing booking cache...");
         try {
