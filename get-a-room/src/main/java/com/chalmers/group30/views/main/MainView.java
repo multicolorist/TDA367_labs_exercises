@@ -140,7 +140,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.AlignSelf.CENTER,  // vertical
                 LumoUtility.Background.BASE
         );
-        navbarContainer.getElement().setAttribute("aria-label", "Top bar containing header and seach controls");
+        navbarContainer.getElement().setAttribute("aria-label", "Top bar containing header and search controls");
 
         navbarContainer.add(
                 headerContainer,
