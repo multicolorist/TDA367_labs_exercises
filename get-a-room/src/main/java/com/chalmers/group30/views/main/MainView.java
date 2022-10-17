@@ -6,6 +6,7 @@ import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
 import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
+import com.chalmers.group30.views.components.PreferredClientThemeComponent;
 import com.chalmers.group30.views.components.QueryContainer;
 import com.chalmers.group30.views.components.buttons.AboutButton;
 import com.chalmers.group30.views.components.buttons.CustomAnchor;
@@ -46,14 +47,15 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
     @Autowired
     public MainView(
             GetARoomFacadeInterface getARoomFacade,
-            DarkLightModeButtonController darkLightModeButtonController,
+            DarkLightModeController darkLightModeController,
             DarkLightModeButton darkLightModeButton,
             AboutButtonController aboutButtonController,
             AboutButton aboutButton,
             MapView mapView,
             ShowOnMapButtonController showOnMapButtonController,
             GeolocationComponentController geolocationComponentController,
-            GeolocationComponent geolocationComponent
+            GeolocationComponent geolocationComponent,
+            PreferredClientThemeComponent preferredClientThemeComponent
     ) throws IOException {
 
         // Add styling for main view
@@ -73,9 +75,15 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 );
         bookRoomsAnchor.getElement().setAttribute("aria-label", "Open TimeEdit in new tab");
 
+        add(preferredClientThemeComponent);
+
         // About and dark/light mode button
         aboutButton.addClickListener(aboutButtonController.getListener());
-        darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
+        darkLightModeButton.addClickListener(darkLightModeController.getListener());
+        darkLightModeController.registerIconToChange(darkLightModeButton);
+
+        darkLightModeController.applyClientPreferredTheme();
+
 
         // Add buttons to header
         HorizontalLayout headerButtonLayout = new HorizontalLayout();

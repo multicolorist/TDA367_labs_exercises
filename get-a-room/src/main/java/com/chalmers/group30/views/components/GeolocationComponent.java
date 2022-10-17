@@ -8,13 +8,13 @@ import com.vaadin.flow.spring.annotation.UIScope;
 
 import java.time.Instant;
 
+/**
+ * A custom component that uses the browser's geolocation API to get the user's location
+ */
 @Tag("geoloc-custom")
 @JsModule("./geolocation/geolocation.ts")
 @org.springframework.stereotype.Component
 @UIScope
-/**
- * A custom component that uses the browser's geolocation API to get the user's location
- */
 public class GeolocationComponent extends Component {
 
     private Double latitude = Double.NaN;

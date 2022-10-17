@@ -1,5 +1,6 @@
 package com.chalmers.group30.views.components.buttons;
 
+import com.chalmers.group30.views.HasChangeableIcon;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,12 +13,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @UIScope
-public class DarkLightModeButton extends Button {
+public class DarkLightModeButton extends Button implements HasChangeableIcon {
     Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
 
     @Autowired
     public DarkLightModeButton() {
         this.setIcon(lightModeIcon);
         this.getElement().setAttribute("aria-label", "Toggle dark/light mode");
+    }
+
+    @Override
+    public void setIcon(Icon icon) {
+        super.setIcon(icon);
     }
 }
