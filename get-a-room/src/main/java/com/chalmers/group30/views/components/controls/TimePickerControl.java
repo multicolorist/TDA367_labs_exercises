@@ -1,6 +1,5 @@
 package com.chalmers.group30.views.components.controls;
 
-import com.chalmers.group30.views.utilities.TimeUtils;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.timepicker.TimePicker;
@@ -9,6 +8,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 /**
  * A component that contains a time picker meant to be displayed inline
@@ -19,16 +19,19 @@ public class TimePickerControl extends Span {
     TimePicker timePicker = new TimePicker();
 
     /**
-     // * @param initialHourOffsetFromNow The initial value, offset from now (0 gives no offset)
      * @param initialTime The initial value
      * @param minutesStepSize The step size for the picker
      */
     public TimePickerControl(LocalTime initialTime, int minutesStepSize) {
+        // Style
         timePicker.addClassNames(
                 "vaadin-time-picker",
                 LumoUtility.BorderRadius.MEDIUM,
                 LumoUtility.Display.INLINE_FLEX
         );
+
+        // Set locale
+        timePicker.setLocale(new Locale("sv", "SE"));
 
         // Set step size
         timePicker.setStep(Duration.ofMinutes(minutesStepSize));
