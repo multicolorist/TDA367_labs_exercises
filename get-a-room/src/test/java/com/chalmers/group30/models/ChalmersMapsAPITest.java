@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ChalmersMapsAPITest {
     @Test
     public void informationBoard_shouldGiveProperJsonAndIsNotEmpty() {
-
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
         try {
@@ -28,7 +27,6 @@ public class ChalmersMapsAPITest {
 
     @Test
     public void timeEditSchedule_shouldGiveProperJsonAndIsNotEmpty() {
-
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
         try {
@@ -42,7 +40,6 @@ public class ChalmersMapsAPITest {
 
     @Test
     public void getInfo_shouldGiveProperJsonAndIsNotEmpty() {
-
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
         try {
@@ -93,5 +90,16 @@ public class ChalmersMapsAPITest {
         }
     }
 
+    @Test
+    public void getTimeEditInfo_shouldGiveProperJsonAndIsNotEmpty() {
+        ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
+        try {
+            // Get info from a room using an example timeedit id for an existing room
+            JsonObject info = api.getTimeEditInfo("chalmers:room_F3316");
+            assertNotEquals(info.get("info").getAsString().length(), 0);
+        } catch (Exception e) {
+            fail(e);
+        }
+    }
 }
