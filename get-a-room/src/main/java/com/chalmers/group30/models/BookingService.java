@@ -33,12 +33,18 @@ public class BookingService implements BookingServiceInterface{
     @Autowired
     public BookingService(CacheUpdateProvider<Dictionary<Room, List<Booking>>> bookingCacheUpdateProvider){
         this.bookingCache = new GenericCache<Dictionary<Room, List<Booking>>>(bookingCacheUpdateProvider);
+        try{
+            refreshBookingCache();
+        }catch (Exception e){
+            logger.log(java.util.logging.Level.SEVERE, "Failed to do initial booking cache retrieval", e);
+        }
     }
 
     /**
-     * Refreshes the cache
+     * Refreshes the booking cache. Called automatically every 15 minutes
      * @throws IOException If the underlying API call fails
      */
+    @Scheduled(cron = "0 */15 * * * *")
     public void refreshBookingCache() throws IOException{
         logger.info("Refreshing booking cache...");
         try {
