@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
  * Utility for accessing the Chalmers Maps API v2
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     private final String baseUrl = "https://maps.chalmers.se/v2/";

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * Provides rooms from the API to be cached
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class RoomProvider implements CacheUpdateProvider<List<Room>> {
 
     // UID for Campus Johanneberg
