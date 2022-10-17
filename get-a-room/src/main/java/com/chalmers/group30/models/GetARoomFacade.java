@@ -13,7 +13,7 @@ import java.io.IOException;
  * Facade for the GetARoom model. This class is the only one that should be used outside the model package.
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class GetARoomFacade implements GetARoomFacadeInterface {
 
 

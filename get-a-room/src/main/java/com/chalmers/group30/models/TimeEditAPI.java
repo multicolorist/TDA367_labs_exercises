@@ -17,7 +17,7 @@ import java.util.List;
  * Utility for accessing the TimeEdit API
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class TimeEditAPI implements TimeEditAPIInterface{
 
     private WebRequestsInterface webRequests;

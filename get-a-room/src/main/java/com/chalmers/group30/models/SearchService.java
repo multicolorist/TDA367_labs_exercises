@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Service for searching for available rooms
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class SearchService implements SearchServiceInterface {
 
     private final BookingServiceInterface bookingService;
