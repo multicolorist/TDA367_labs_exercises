@@ -57,7 +57,7 @@ public class QueryContainer extends Div {
         datePicker = new DatePickerControl();
         datePicker.getElement().setAttribute("aria-label", "Pick date for room search");
 
-        groupSizeStepper = new IntegerUnlabeledStepper(1, 12, 4);
+        groupSizeStepper = new IntegerUnlabeledStepper(1, 16, 4);
         groupSizeStepper.getElement().setAttribute("aria-label", "Select number of seats for room search");
 
         executeSearchButton = new ExecuteSearchButton();

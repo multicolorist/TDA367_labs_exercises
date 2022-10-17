@@ -7,6 +7,7 @@ import com.chalmers.group30.models.utilities.GenericCache;
 import com.chalmers.group30.models.utilities.GenericCacheInterface;
 import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  * Manages the cache of bookings
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class BookingService implements BookingServiceInterface{
 
     private GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;

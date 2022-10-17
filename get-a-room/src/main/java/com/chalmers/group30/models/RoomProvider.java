@@ -18,24 +18,17 @@ import java.util.logging.Logger;
  * Provides rooms from the API to be cached
  */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class RoomProvider implements CacheUpdateProvider<List<Room>> {
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
     private final static UUID areaUuid = UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f");
-    private Logger logger = Logger.getLogger(RoomProvider.class.getName());
+    private final Logger logger = Logger.getLogger(RoomProvider.class.getName());
 
     private final List<String> elementTypes = Arrays.asList(
             "breakout_room",
-            "reading_room'",
-            "quiet_reading_room",
-            "computer_room",
-            "meeting_room",
-            "conference_room",
-            "multifunctional_room",
-            "practice_room",
-            "conversation_room"
+            "computer_room"
     );
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
