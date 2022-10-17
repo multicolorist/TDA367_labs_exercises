@@ -5,15 +5,13 @@ import com.chalmers.group30.models.objects.Room;
 import com.chalmers.group30.models.utilities.CacheUpdateProvider;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,14 +30,6 @@ public class ChalmersMapsBookingProvider implements CacheUpdateProvider<Dictiona
     public ChalmersMapsBookingProvider(RoomServiceInterface roomServiceInterface, ChalmersMapsAPIInterface chalmersMapsAPIInterface) {
         this.roomServiceInterface = roomServiceInterface;
         this.chalmersMapsAPIInterface = chalmersMapsAPIInterface;
-    }
-
-    /**
-     * Get how many weeks forward the cache will be get bookings
-     * @return The number of weeks forward
-     */
-    public int getWeeksForwardToCache() {
-        return weeksForwardToCache;
     }
 
     private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException {
