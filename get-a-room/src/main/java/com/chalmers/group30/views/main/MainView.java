@@ -32,13 +32,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
-@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
-@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
-
 /**
  * The main view of the entire application.
  */
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 @PageTitle("GetARoom")
 @Route(value = "")
 @Component
@@ -72,7 +71,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 "",
                 new Icon(VaadinIcon.CALENDAR_CLOCK),
                 ""
-                );
+        );
         bookRoomsAnchor.getElement().setAttribute("aria-label", "Open TimeEdit in new tab");
 
         add(preferredClientThemeComponent);
@@ -81,9 +80,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         aboutButton.addClickListener(aboutButtonController.getListener());
         darkLightModeButton.addClickListener(darkLightModeController.getListener());
         darkLightModeController.registerIconToChange(darkLightModeButton);
-
         darkLightModeController.applyClientPreferredTheme();
-
 
         // Add buttons to header
         HorizontalLayout headerButtonLayout = new HorizontalLayout();

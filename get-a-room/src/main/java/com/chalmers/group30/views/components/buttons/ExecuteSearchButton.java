@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 public class ExecuteSearchButton extends Button {
-    Icon icon = new Icon(VaadinIcon.SEARCH);
+    private final Icon icon = new Icon(VaadinIcon.SEARCH);
 
     public ExecuteSearchButton() {
         addClassNames(

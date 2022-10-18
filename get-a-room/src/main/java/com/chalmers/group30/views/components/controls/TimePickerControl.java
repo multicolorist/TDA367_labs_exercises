@@ -16,10 +16,10 @@ import java.util.Locale;
  */
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-time-picker.css", themeFor = "vaadin-input-control")
 public class TimePickerControl extends Span {
-    TimePicker timePicker = new TimePicker();
+    private final TimePicker timePicker = new TimePicker();
 
     /**
-     * @param initialTime The initial value
+     * @param initialTime     The initial value
      * @param minutesStepSize The step size for the picker
      */
     public TimePickerControl(LocalTime initialTime, int minutesStepSize) {

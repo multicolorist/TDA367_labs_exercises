@@ -3,7 +3,7 @@ package com.chalmers.group30.views;
 /**
  * Mediator for the map view
  */
-public class MapMediator implements Mediator{
+public class MapMediator implements Mediator {
     private final HasOpenableDrawer hasOpenableDrawer;
 
     // @Autowired

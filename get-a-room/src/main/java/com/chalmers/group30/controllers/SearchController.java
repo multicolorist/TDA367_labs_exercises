@@ -52,6 +52,7 @@ public class SearchController {
 
     /**
      * Gets a listener for the corresponding button
+     *
      * @return Listener for the button
      */
     private ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
@@ -89,10 +90,10 @@ public class SearchController {
                 updateResults();
             } else {
                 Notification.show(
-                    "Invalid input: Please ensure that the group size is at least 1, " +
-                            "that the start time is before the end time on the same day, today or later.",
-                    7000,
-                    Notification.Position.TOP_CENTER);
+                        "Invalid input: Please ensure that the group size is at least 1, " +
+                                "that the start time is before the end time on the same day, today or later.",
+                        7000,
+                        Notification.Position.TOP_CENTER);
             }
         }
 

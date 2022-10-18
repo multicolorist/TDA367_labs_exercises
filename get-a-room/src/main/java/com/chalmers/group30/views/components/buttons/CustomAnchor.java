@@ -9,15 +9,17 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 /**
-  * A custom anchor that looks like a button
-  * Adapted from:
-  * https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463
-  */
+ * A custom anchor that looks like a button
+ * Adapted from:
+ * https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463
+ */
 public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyle {
-    /** Custom-Attribut, used to identify the `vaadin-button` as child of `CustomAnchor` */
+    /**
+     * Custom-Attribut, used to identify the `vaadin-button` as child of `CustomAnchor`
+     */
     private static final String ATTR_ANCHOR = "anchor";
 
-    private Button btn;
+    private final Button btn;
 
     public CustomAnchor() {
         super();
@@ -25,6 +27,7 @@ public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyl
         // btn.setSizeFull();
         btn.getElement().setAttribute(ATTR_ANCHOR, "");
     }
+
     public CustomAnchor(String href, String text, Icon icon, String customClassName) {
         this();
         setHref(href);
@@ -34,6 +37,7 @@ public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyl
             btn.addClassName(customClassName);
         }
     }
+
     // ===============================
     // Other constructors, matching the ones in Anchor
     // ===============================
@@ -43,9 +47,11 @@ public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyl
         a.add(btn);
         return a;
     }
+
     public void setHref(String href) {
         getContent().setHref(href);
     }
+
     public void setText(String text) {
         btn.setText(text);
     }

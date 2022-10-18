@@ -8,6 +8,7 @@ import com.vaadin.flow.component.icon.Icon;
 public interface HasChangeableIcon {
     /**
      * Sets the icon of the component
+     *
      * @param icon The icon to set
      */
     void setIcon(Icon icon);

@@ -25,7 +25,6 @@ import java.util.Objects;
 
 /**
  * A component that displays a list of SearchRecords
- *
  * Note that Vaadin has a bug with loading duplicated results:
  * https://github.com/vaadin/flow-components/issues/3547
  * The solution is to not allow duplicates in the list, or to
@@ -58,6 +57,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
      * Sets the date of the current search query.
      * Used by the view to determined if when the room is free
      * depending on the current time viewing the results.
+     *
      * @param date the date of the current search query
      */
     public void setCurrentSearchQueryDate(LocalDate date) {
@@ -130,8 +130,6 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         }
 
         // Add booking info to foldout
-        // TODO: Should this be in a controller? Maybe a bit too much logic for a view?
-        // TODO: Verify the logic once we have updated the booking cache to be more current
         String bookingInfo = "";
         if (currentSearchQueryDate != null) { // Has not been set, should be a bug if it happens but just to make sure
             boolean isBookedOnQueryDate = false;
@@ -149,6 +147,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 }
             }
         }
+
         // Container that wraps (helps with mobile) for foldout
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),

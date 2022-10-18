@@ -2,7 +2,6 @@ package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.Location;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
@@ -11,9 +10,10 @@ import java.util.UUID;
 /**
  * Interface for the Chalmers Maps API V2
  */
-public interface ChalmersMapsAPIInterface {
+interface ChalmersMapsAPIInterface {
     /**
      * Gets information about objects inside a building or inside an area.
+     *
      * @param uuid The unique identifier of the desired building or area.
      * @return JSON object representing information about objects inside a building or inside an area.
      */
@@ -21,9 +21,10 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Gets a schedule from TimeEdit for a given room and time period.
+     *
      * @param identifier The unique identifier of the given room
-     * @param year The year in which the schedule should be checked
-     * @param week The week in which the schedule should be checked
+     * @param year       The year in which the schedule should be checked
+     * @param week       The week in which the schedule should be checked
      * @return JSON object representing all bookings for the room and given period
      * @throws IOException If the underlying API request failed for some reason
      */
@@ -31,7 +32,8 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Gets a walking route between two points.
-     * @param origin The origin location
+     *
+     * @param origin      The origin location
      * @param destination The destination location
      * @return JSON object representing a walking route between the two points
      * @throws IOException If the underlying API request failed for some reason
@@ -40,6 +42,7 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Get information about a TimeEdit object identified by its identifier.
+     *
      * @param identifier The TimeEdit identifier of the object
      * @return JSON object representing information about the object
      * @throws IOException If the underlying API request failed for some reason
@@ -48,6 +51,7 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Get information about a API object identified by its UID.
+     *
      * @param uuid The unique identifier of the object
      * @return JSON object representing information about the object
      * @throws IOException If the underlying API request failed for some reason
@@ -56,6 +60,7 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Get GeoJson object for relevant buildings
+     *
      * @return A GeoJson object representing different buildings
      * @throws IOException If the underlying API request failed for some reason
      */
@@ -63,6 +68,7 @@ public interface ChalmersMapsAPIInterface {
 
     /**
      * Get GeoJson object for POIs
+     *
      * @return A GeoJson object representing different Points of Interest
      * @throws IOException If the underlying API request failed for some reason
      */

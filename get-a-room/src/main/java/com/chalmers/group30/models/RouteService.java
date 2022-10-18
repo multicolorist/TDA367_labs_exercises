@@ -17,19 +17,20 @@ import java.util.logging.Logger;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class RouteService implements RouteServiceInterface {
+class RouteService implements RouteServiceInterface {
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;
     private final Logger logger = Logger.getLogger(RouteService.class.getName());
 
     @Autowired
-    public RouteService(ChalmersMapsAPIInterface chalmersMapsAPI){
+    public RouteService(ChalmersMapsAPIInterface chalmersMapsAPI) {
         this.chalmersMapsAPI = chalmersMapsAPI;
     }
 
     /**
      * Gets the route between two locations
-     * @param origin The origin location
+     *
+     * @param origin      The origin location
      * @param destination The destination location
      * @return A Route object representing the route
      * @throws IOException If an API request failed for some reason.
@@ -38,7 +39,7 @@ public class RouteService implements RouteServiceInterface {
         try {
             JsonObject route = chalmersMapsAPI.route(origin, destination);
             return Route.fromJSON(route);
-        }catch (IOException e){
+        } catch (IOException e) {
             logger.log(java.util.logging.Level.SEVERE, "Failed to get route from API", e);
             throw e;
         }
@@ -46,7 +47,8 @@ public class RouteService implements RouteServiceInterface {
 
     /**
      * Calculates the walking distance in meters between two positions
-     * @param origin The origin location
+     *
+     * @param origin      The origin location
      * @param destination The destination location
      * @return The distance to the room in meters
      * @throws IOException If an API request failed for some reason.
@@ -58,7 +60,8 @@ public class RouteService implements RouteServiceInterface {
 
     /**
      * Calculates the as-the-crow-flies distance in meters between a given position and a room.
-     * @param origin The origin location
+     *
+     * @param origin      The origin location
      * @param destination The destination location
      * @return The distance in meters between the position and the room
      */
@@ -75,10 +78,10 @@ public class RouteService implements RouteServiceInterface {
         double dPhi = Math.toRadians(origin.latitude() - destination.latitude());
         double dLambda = Math.toRadians(origin.longitude() - destination.longitude());
 
-        double a = Math.sin(dPhi/2) * Math.sin(dPhi/2) +
+        double a = Math.sin(dPhi / 2) * Math.sin(dPhi / 2) +
                 Math.cos(phi1) * Math.cos(phi2) *
-                        Math.sin(dLambda/2) * Math.sin(dLambda/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Math.sin(dLambda / 2) * Math.sin(dLambda / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c;
     }

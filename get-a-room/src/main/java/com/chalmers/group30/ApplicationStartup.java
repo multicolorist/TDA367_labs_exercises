@@ -1,7 +1,6 @@
 package com.chalmers.group30;
 
-import com.chalmers.group30.models.BookingService;
-import com.chalmers.group30.models.RoomService;
+import com.chalmers.group30.models.GetARoomFacadeInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -20,7 +19,7 @@ public class ApplicationStartup
 
     // Services to initialize
     @Autowired
-    public ApplicationStartup(RoomService roomService, BookingService bookingService) {
+    public ApplicationStartup(GetARoomFacadeInterface getARoomFacadeInterface) {
     }
 
     /**

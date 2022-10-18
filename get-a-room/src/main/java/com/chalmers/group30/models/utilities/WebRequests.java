@@ -5,7 +5,6 @@ import com.google.gson.JsonParser;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
@@ -26,6 +25,7 @@ public class WebRequests implements WebRequestsInterface {
 
     /**
      * Reads a JSON element from a given URL
+     *
      * @param sURL The URL to read from
      * @return The JSON element
      * @throws IOException If the underlying web request failed
@@ -42,9 +42,10 @@ public class WebRequests implements WebRequestsInterface {
 
     /**
      * Reads an iCalendar from a given URL
+     *
      * @param sURL The URL to read from
      * @return The iCalendar object
-     * @throws IOException If the underlying web request failed
+     * @throws IOException     If the underlying web request failed
      * @throws ParserException If the underlying web request returned invalid or malformed data
      */
     public Calendar readIcalendarFromUrl(String sURL) throws IOException, ParserException {

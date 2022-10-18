@@ -11,5 +11,6 @@ import java.io.IOException;
  */
 public interface WebRequestsInterface {
     JsonElement readJsonElementFromUrl(String sURL) throws IOException;
+
     Calendar readIcalendarFromUrl(String sURL) throws IOException, ParserException;
 }

@@ -5,7 +5,6 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +24,7 @@ public class AboutButtonController {
 
     /**
      * Gets a listener for the corresponding button
+     *
      * @return Listener for the button
      */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
