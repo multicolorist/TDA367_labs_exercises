@@ -34,13 +34,13 @@ public class ChalmersMapsAPI implements ChalmersMapsAPIInterface{
 
     /**
      * Gets information about objects inside a building or inside an area.
-     * @param uid The unique identifier of the desired building or area.
+     * @param uuid The unique identifier of the desired building or area.
      * @return JSON object representing information about objects inside a building or inside an area.
      */
-    public JsonObject informationBoard(UUID uid) throws IOException {
+    public JsonObject informationBoard(UUID uuid) throws IOException {
         try{
             // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
-            final String requestUrl = baseUrl + String.format("information_board/%s/json", uid.toString());
+            final String requestUrl = baseUrl + String.format("information_board/%s/json", uuid.toString());
             return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
         }catch (Exception e){
             logger.log(Level.WARNING, "Failed to get information board from API", e);

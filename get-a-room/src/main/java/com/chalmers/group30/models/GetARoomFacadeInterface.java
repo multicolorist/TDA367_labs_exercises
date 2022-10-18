@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -26,4 +27,18 @@ public interface GetARoomFacadeInterface {
      * @throws IOException If the API request failed for some reason.
      */
     Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException;
+
+    /**
+     * Get GeoJson object for POIs
+     * @return A GeoJson object representing different Points of Interest
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    JsonObject geoJsonPOI() throws IOException;
+
+    /**
+     * Get GeoJson object for relevant buildings
+     * @return A GeoJson object representing different buildings
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    JsonObject geoJsonBuildings() throws IOException;
 }
