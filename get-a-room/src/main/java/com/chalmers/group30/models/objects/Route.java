@@ -11,11 +11,12 @@ import java.util.List;
  * Represents a route
  *
  * @param distance The distance between the two locations
- * TODO: Add the rest of the fields for the routeTODO: Discuss visibility for fields
+ *                 TODO: Add the rest of the fields for the routeTODO: Discuss visibility for fields
  */
 public record Route(double distance, List<Location> maneuvers) {
     /**
      * Parses a given JSON to a Route object.
+     *
      * @param obj A JSON object representing the route
      * @return A Route object from the parsed JSON
      */

@@ -39,6 +39,7 @@ public class ShowOnMapButtonController {
 
     /**
      * Gets a listener for the corresponding button
+     *
      * @return Listener for the button
      */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
@@ -47,6 +48,7 @@ public class ShowOnMapButtonController {
 
     private class ShowOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         GetARoomFacadeInterface getARoomFacade;
+
         public ShowOnMapButtonListener(GetARoomFacadeInterface getARoomFacade) {
             this.getARoomFacade = getARoomFacade;
         }

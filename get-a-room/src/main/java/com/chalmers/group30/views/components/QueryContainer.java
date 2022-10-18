@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
  * A container for the search query
  */
 public class QueryContainer extends Div {
-    public ExecuteSearchButton executeSearchButton;
+    public final ExecuteSearchButton executeSearchButton;
     private final TimePickerControl startTimePicker;
     private final TimePickerControl endTimePicker;
     private final DatePickerControl datePicker;
@@ -77,15 +77,26 @@ public class QueryContainer extends Div {
         );
     }
 
-    public int getGroupSize() { return groupSizeStepper.getValue(); }
-    public int getMinGroupSize() { return groupSizeStepper.getMinValue(); }
-    public int getMaxGroupSize() { return groupSizeStepper.getMaxValue(); }
+    public int getGroupSize() {
+        return groupSizeStepper.getValue();
+    }
+
+    public int getMinGroupSize() {
+        return groupSizeStepper.getMinValue();
+    }
+
+    public int getMaxGroupSize() {
+        return groupSizeStepper.getMaxValue();
+    }
+
     public LocalDateTime getStartDateTime() {
         return startTimePicker.getValue().atDate(getDate());
     }
+
     public LocalDateTime getEndDateTime() {
         return endTimePicker.getValue().atDate(getDate());
     }
+
     public LocalDate getDate() {
         return datePicker.getValue();
     }

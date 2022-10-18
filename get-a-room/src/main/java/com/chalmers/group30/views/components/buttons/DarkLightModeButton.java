@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 public class DarkLightModeButton extends Button implements HasChangeableIcon {
-    Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
+    private final Icon lightModeIcon = new Icon(VaadinIcon.SUN_O);
 
     @Autowired
     public DarkLightModeButton() {

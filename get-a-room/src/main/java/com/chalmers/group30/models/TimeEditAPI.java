@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class TimeEditAPI implements TimeEditAPIInterface{
+class TimeEditAPI implements TimeEditAPIInterface {
 
     private WebRequestsInterface webRequests;
     private final PercentEscaper percentEscaper = new PercentEscaper("", false);
@@ -29,11 +29,12 @@ public class TimeEditAPI implements TimeEditAPIInterface{
 
     /**
      * Gets a schedule from TimeEdit for a given room and time period.
-     * @param id The ID of the room
+     *
+     * @param id    The ID of the room
      * @param start The start time of the period to get bookings for
-     * @param end The end time of the period to get bookings for
+     * @param end   The end time of the period to get bookings for
      * @return Calendar object representing all bookings for the room and given period
-     * @throws IOException If the underlying API request failed for some reason
+     * @throws IOException     If the underlying API request failed for some reason
      * @throws ParserException If the underlying API request returned invalid or malformed data
      */
     public Calendar getSchedule(String id, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {
@@ -42,11 +43,12 @@ public class TimeEditAPI implements TimeEditAPIInterface{
 
     /**
      * Gets a schedule from TimeEdit for multiple given rooms and time period.
-     * @param IDs A list of TimeEdit IDs for rooms
+     *
+     * @param IDs   A list of TimeEdit IDs for rooms
      * @param start The start time of the period to get bookings for
-     * @param end The end time of the period to get bookings for
+     * @param end   The end time of the period to get bookings for
      * @return Calendar object representing all bookings for the rooms and given period
-     * @throws IOException If the underlying API request failed for some reason
+     * @throws IOException     If the underlying API request failed for some reason
      * @throws ParserException If the underlying API request returned invalid or malformed data
      */
     public Calendar getSchedule(List<String> IDs, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {

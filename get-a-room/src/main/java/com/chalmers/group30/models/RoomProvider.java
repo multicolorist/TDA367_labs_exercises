@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class RoomProvider implements CacheUpdateProvider<List<Room>> {
+class RoomProvider implements CacheUpdateProvider<List<Room>> {
 
     // UID for Campus Johanneberg
     // TODO: Use both campuses when basic functionality is there for Johanneberg
@@ -33,12 +33,13 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
     private ChalmersMapsAPIInterface chalmersMapsAPI;
 
     @Autowired
-    public RoomProvider(ChalmersMapsAPIInterface chalmersMapsAPI){
+    public RoomProvider(ChalmersMapsAPIInterface chalmersMapsAPI) {
         this.chalmersMapsAPI = chalmersMapsAPI;
     }
 
     /**
      * Gets all rooms from the API
+     *
      * @return A list of all rooms
      * @throws IOException If the underlying API call fails
      */
@@ -51,24 +52,24 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
             HashSet<UUID> existingRooms = new HashSet<>();
             // Get all rooms in buildings and facilities
             List<Room> rooms = new ArrayList<>();
-            for(JsonElement building : buildings.get("suggestions").getAsJsonArray()) {
+            for (JsonElement building : buildings.get("suggestions").getAsJsonArray()) {
                 JsonObject buildingRooms = chalmersMapsAPI.informationBoard(UUID.fromString(building.getAsJsonObject().get("data").getAsString()));
-                for(JsonElement room : buildingRooms.get("suggestions").getAsJsonArray()){
+                for (JsonElement room : buildingRooms.get("suggestions").getAsJsonArray()) {
                     // Add room to list if it matches one of the given categories
-                    if(elementTypes.contains(room.getAsJsonObject().get("element_type").getAsString())){
+                    if (elementTypes.contains(room.getAsJsonObject().get("element_type").getAsString())) {
                         UUID roomUUID = UUID.fromString(room.getAsJsonObject().get("data").getAsString());
-                        if(existingRooms.contains(roomUUID)){
+                        if (existingRooms.contains(roomUUID)) {
                             continue;
                         }
                         // Get info about specific room from API
                         JsonObject roomInfo = chalmersMapsAPI.getInfo(roomUUID);
                         JsonObject roomProperties = roomInfo.get("properties").getAsJsonObject();
-                        if (roomProperties.has("timeedit_id")){
+                        if (roomProperties.has("timeedit_id")) {
                             String timeeditId = roomProperties.get("timeedit_id").getAsString();
                             JsonObject timeEditInfo = null;
-                            try{
+                            try {
                                 timeEditInfo = chalmersMapsAPI.getTimeEditInfo(timeeditId);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 //Failed to get timeedit info
                                 logger.info("Failed to get timeedit info for room with UUID of" + roomUUID + " and time edit id of " + timeeditId + "and will as a result not have seat information");
                             }
@@ -81,7 +82,7 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
                 }
             }
             return rooms;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Failed to get rooms from ChalmersMapsAPI with exception", e);
             throw e;
         }

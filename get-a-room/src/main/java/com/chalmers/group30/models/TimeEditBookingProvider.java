@@ -16,11 +16,14 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> {
+class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, List<Booking>>> {
 
     private final RoomServiceInterface roomServiceInterface;
     private final TimeEditAPIInterface timeEditAPIInterface;
@@ -35,6 +38,7 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
 
     /**
      * Gets all bookings for the next x weeks based on weeksForwardToCache
+     *
      * @return A dictionary with rooms as keys and a list of bookings as values
      * @throws IOException If the underlying API call fails
      */
@@ -57,15 +61,15 @@ public class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<R
         if (room == null) {
             throw new IllegalArgumentException("Room cannot be null");
         }
-        if (weeksForwardToCache <= 0){
+        if (weeksForwardToCache <= 0) {
             throw new IllegalArgumentException(weeksForwardToCache + " is not a valid number of weeks to cache");
         }
 
         LocalDateTime endTime = startTime.plusWeeks(weeksForwardToCache);
         net.fortuna.ical4j.model.Calendar schedule = timeEditAPIInterface.getSchedule(room.timeEditId(), startTime, endTime);
 
-        for(CalendarComponent component : schedule.getComponents()){
-            bookings.add(Booking.fromVEvent((VEvent)component));
+        for (CalendarComponent component : schedule.getComponents()) {
+            bookings.add(Booking.fromVEvent((VEvent) component));
         }
 
 

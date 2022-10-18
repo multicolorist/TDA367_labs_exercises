@@ -1,7 +1,6 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
-import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,7 +19,7 @@ import java.util.logging.Logger;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class SearchService implements SearchServiceInterface {
+class SearchService implements SearchServiceInterface {
 
     private final BookingServiceInterface bookingService;
     private final RoomServiceInterface roomService;
@@ -38,9 +36,10 @@ public class SearchService implements SearchServiceInterface {
 
     /**
      * Search for matching rooms that are free at the given time
+     *
      * @param searchQuery The search query
      * @return A list of matching rooms with a distance from the user and all existing bookings for the room
-     * @throws IOException If the API request failed for some reason.
+     * @throws IOException              If the API request failed for some reason.
      * @throws IllegalArgumentException If ether the group size is less than 1 or the start time is after the end time
      */
     @Override
@@ -78,7 +77,7 @@ public class SearchService implements SearchServiceInterface {
                     }
                     matchingRooms.add(room);
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
                     continue;
                 }
@@ -96,14 +95,14 @@ public class SearchService implements SearchServiceInterface {
                 }
             }
 
-            if (searchQuery.userLocation() == null){
+            if (searchQuery.userLocation() == null) {
                 results.sort(Comparator.comparing(o -> o.room().name()));
-            }else {
+            } else {
                 results.sort(Comparator.comparing(o -> o.birdsDistance()));
             }
 
             return new SearchResult(searchQuery, results);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to search for bookings.", e);
             throw e;
         }

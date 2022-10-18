@@ -5,17 +5,15 @@ import net.fortuna.ical4j.model.component.VEvent;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
-import java.util.TimeZone;
 
 /**
  * Represents a booking in for a Room in TimeEdit.
+ *
  * @param startTime The time at which the booking starts
  * @param endTime   The time at which the booking ends
  */
@@ -35,6 +33,7 @@ public record Booking(LocalDateTime startTime, LocalDateTime endTime) implements
 
     /**
      * Parses an iCal VEvent to a Booking object.
+     *
      * @param event The VEvent to parse
      * @return A Booking object from the parsed VEvent
      */

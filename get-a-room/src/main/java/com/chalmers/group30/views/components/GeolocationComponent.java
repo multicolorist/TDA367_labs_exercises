@@ -16,13 +16,13 @@ import java.time.Instant;
 @org.springframework.stereotype.Component
 @UIScope
 public class GeolocationComponent extends Component {
-
     private Double latitude = Double.NaN;
     private Double longitude = Double.NaN;
     private Instant lastUpdated;
 
     /**
      * Gets the last latitude of the user
+     *
      * @return The latitude of the user
      */
     public Double getLatitude() {
@@ -34,6 +34,7 @@ public class GeolocationComponent extends Component {
 
     /**
      * Gets the last longitude of the user
+     *
      * @return The longitude of the user
      */
     public Double getLongitude() {

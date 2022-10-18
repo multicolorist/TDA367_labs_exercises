@@ -20,6 +20,7 @@ public class GeolocationComponentController {
 
     /**
      * Gets the last tracked location of the user
+     *
      * @return The last tracked location of the user
      */
     public Location getLocation() {

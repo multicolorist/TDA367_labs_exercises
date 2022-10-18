@@ -2,7 +2,10 @@ package com.chalmers.group30.controllers;
 
 import com.chalmers.group30.views.HasChangeableIcon;
 import com.chalmers.group30.views.components.PreferredClientThemeComponent;
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -44,7 +47,7 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
      * Applies the darkmode or lightmode theme depending on the user's preference.
      * If the user does not hava a theme cookie (set when the click listener is triggered), then the clients browser theme is used.
      */
-    public void applyClientPreferredTheme(){
+    public void applyClientPreferredTheme() {
         Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
 
         Optional<Cookie> themeCookie = Arrays.stream(cookies)
@@ -56,10 +59,10 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
                 setTheme(true, true);
             } else if (themeCookie.get().getValue().equals("light")) {
                 setTheme(false, true);
-            }else {
+            } else {
                 setClientPreferredTheme();
             }
-        }else {
+        } else {
             setClientPreferredTheme();
         }
     }
@@ -67,25 +70,27 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
 
     /**
      * Registers a component that has an icon that should be changed when the theme is changed
+     *
      * @param hasChangeableIcon The component to register
      */
-    public void registerIconToChange(HasChangeableIcon hasChangeableIcon){
+    public void registerIconToChange(HasChangeableIcon hasChangeableIcon) {
         iconsToChange.add(hasChangeableIcon);
     }
 
     /**
      * Changes all registered changeable icons
+     *
      * @param icon The icon to change to
      */
-    private void changeIcons(Icon icon){
+    private void changeIcons(Icon icon) {
         for (HasChangeableIcon changeableIcon : iconsToChange) {
             changeableIcon.setIcon(icon);
         }
     }
 
-    private void setTheme(boolean useDarkTheme, boolean saveToCookie){
+    private void setTheme(boolean useDarkTheme, boolean saveToCookie) {
 
-        if (saveToCookie){
+        if (saveToCookie) {
             Cookie themeCookie = new Cookie("theme", useDarkTheme ? "dark" : "light");
             themeCookie.setPath("/");
             themeCookie.setMaxAge(60 * 60 * 24 * 365);
@@ -118,7 +123,7 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
     /**
      * Sets the theme to the clients browser's preferred theme
      */
-    private void setClientPreferredTheme(){
+    private void setClientPreferredTheme() {
         preferredClientThemeComponent.getClientPrefersDarkModeJavaScriptResult().then(Boolean.class, prefersDark -> {
             setTheme(prefersDark, false);
         });
@@ -126,6 +131,7 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
 
     /**
      * Gets a listener for the theme button
+     *
      * @return A click event listener
      */
     public ComponentEventListener<ClickEvent<Button>> getListener() {
@@ -134,6 +140,7 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
 
     /**
      * Click event listener for a theme button
+     *
      * @param e The click event
      */
     @Override

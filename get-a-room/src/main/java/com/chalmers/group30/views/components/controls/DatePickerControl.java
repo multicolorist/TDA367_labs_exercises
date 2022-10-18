@@ -13,8 +13,8 @@ import java.time.LocalDate;
  */
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-date-picker.css", themeFor = "vaadin-date-picker")
 public class DatePickerControl extends Span {
+    private final DatePicker datePicker = new DatePicker();
 
-    DatePicker datePicker = new DatePicker();
     public DatePickerControl() {
         datePicker.addClassNames(
                 LumoUtility.BorderRadius.MEDIUM,

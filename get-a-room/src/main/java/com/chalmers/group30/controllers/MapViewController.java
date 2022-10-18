@@ -26,6 +26,7 @@ public class MapViewController {
 
     /**
      * Constructor for the MapViewController
+     *
      * @param mapView the MapView to control
      */
     public MapViewController(MapView mapView, GetARoomFacadeInterface getARoomFacade) {
@@ -49,6 +50,7 @@ public class MapViewController {
 
     /**
      * Fly to the given location
+     *
      * @param location the location to fly to
      */
     public void flyTo(Location location) {
@@ -57,13 +59,14 @@ public class MapViewController {
 
     /**
      * Display a route on the map. Only allows one route at a time. Showing a new route will remove the old.
+     *
      * @param r A route to be displayed
      */
     public void showRoute(Route r) {
         List<List<Double>> maneuvers = new ArrayList<List<Double>>();
 
         // Convert route maneuvers into list of coordinate pairs
-        for(Location l: r.maneuvers()) {
+        for (Location l : r.maneuvers()) {
             maneuvers.add(List.of(l.latitude(), l.longitude()));
         }
         mapView.showRoute(maneuvers);

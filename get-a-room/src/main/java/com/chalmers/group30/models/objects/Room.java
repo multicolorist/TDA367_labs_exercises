@@ -17,8 +17,9 @@ import java.util.UUID;
  * @param uuid             The unique identifier of the room
  * @param location         The rooms location
  * @param entranceLocation The location for the entrance
- * */
-public record Room(String name, int seats, String building, String floor, String streetAddress, String timeEditId, UUID uuid, Location location, Location entranceLocation) implements Serializable {
+ */
+public record Room(String name, int seats, String building, String floor, String streetAddress, String timeEditId,
+                   UUID uuid, Location location, Location entranceLocation) implements Serializable {
     /**
      * Parses a given JSON to a Room object.
      *
@@ -46,10 +47,10 @@ public record Room(String name, int seats, String building, String floor, String
         double latitude = infoObj.get("latitude").getAsDouble();
         double entranceLongitude;
         double entranceLatitude;
-        if(infoObj.has("entrance_longitude") && infoObj.has("entrance_latitude")){
+        if (infoObj.has("entrance_longitude") && infoObj.has("entrance_latitude")) {
             entranceLongitude = infoObj.get("entrance_longitude").getAsDouble();
             entranceLatitude = infoObj.get("entrance_latitude").getAsDouble();
-        }else {
+        } else {
             //Fallback to "normal" location
             entranceLongitude = longitude;
             entranceLatitude = latitude;
@@ -59,10 +60,9 @@ public record Room(String name, int seats, String building, String floor, String
 
         try {
             seats = timeeditInfoObj.get("seats").getAsInt();
-        }catch (Exception e){
+        } catch (Exception e) {
             seats = -1;
         }
-
 
 
         return new Room(name, seats, building, floor, streetAddress, timeEditId, uuid, new Location(latitude, longitude), new Location(entranceLatitude, entranceLongitude));

@@ -8,16 +8,18 @@ import java.util.List;
 /**
  * Interface defines how a room management service should behave
  */
-public interface RoomServiceInterface {
+interface RoomServiceInterface {
 
     /**
      * Refreshes the cache
+     *
      * @throws IOException If the underlying API call fails
      */
     void refreshRoomCache() throws IOException;
 
     /**
      * Gets all rooms
+     *
      * @return A list of all rooms
      * @throws IOException If the underlying API call fails
      */
