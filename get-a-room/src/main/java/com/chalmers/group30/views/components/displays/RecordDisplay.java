@@ -1,10 +1,8 @@
 package com.chalmers.group30.views.components.displays;
 
-import com.chalmers.group30.controllers.BookButtonController;
 import com.chalmers.group30.controllers.ShowOnMapButtonController;
 import com.chalmers.group30.models.objects.SearchRecord;
 import com.chalmers.group30.views.Mediator;
-import com.chalmers.group30.views.components.buttons.BookButton;
 import com.chalmers.group30.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -48,7 +46,8 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.Padding.Top.MEDIUM,
                 LumoUtility.Padding.Bottom.XLARGE,
-                LumoUtility.Height.FULL
+                LumoUtility.Height.FULL,
+                LumoUtility.Overflow.HIDDEN // To disable side-scroll
         );
 
         // Set renderer to display each element
@@ -73,8 +72,6 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
      */
     Component listEntryProvider(SearchRecord searchRecord) {
         // Buttons
-        Button bookButton = new BookButton(searchRecord.room().uuid());
-        bookButton.addClickListener(BookButtonController.getListener());
         Button showMapButton = new ShowOnMapButton(searchRecord.room());
         showMapButton.addClickListener(showOnMapButtonController.getListener());
         showMapButton.addClickListener(e -> mapMediator.notify("mapCalled"));
@@ -91,11 +88,14 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         );
         topLayoutLeft.getElement().appendChild(ElementFactory.createStrong(searchRecord.room().name()));
         int distanceToRoom = (int) Math.round(searchRecord.birdsDistance());
-        topLayoutLeft.add(new Div(new Text(String.format("%s meters away", distanceToRoom))));
+        topLayoutLeft.add(new Div(new Text(String.format("%s meters away", distanceToRoom == 0 ? "-" : distanceToRoom))));
         // Top right part of the entry, seen both folded and unfolded
         VerticalLayout topLayoutRight = new VerticalLayout();
         topLayoutRight.addClassNames(
-                LumoUtility.Gap.SMALL
+                LumoUtility.Gap.SMALL,
+                LumoUtility.Padding.Top.MEDIUM,
+                LumoUtility.Padding.Left.NONE,
+                LumoUtility.Padding.Right.NONE
         );
         topLayoutRight.add(new Div(new Text(searchRecord.room().building())));
         if (Objects.equals(searchRecord.room().floor(), "")) { // floor is optional
@@ -153,8 +153,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         bottomWrappedRowContainer.add(
                 new Div(new Text(bottomInfo)),
                 new Div(new Text(bookingInfo)),
-                showMapButton,
-                bookButton
+                showMapButton
         );
         bottomLayout.add(
                 new Hr(),
@@ -170,6 +169,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
                 LumoUtility.BoxShadow.SMALL, // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
                 LumoUtility.BorderRadius.SMALL
         );
+        foldablePanel.getElement().setAttribute("aria-label", "A room from the search results");
         return foldablePanel;
     }
 }

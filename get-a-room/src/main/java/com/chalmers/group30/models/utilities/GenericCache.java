@@ -18,39 +18,7 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
      * @param updateProvider Provider used to update cache data
      */
     public GenericCache(CacheUpdateProvider<T> updateProvider){
-
         this.updateProvider = updateProvider;
-
-        //todo Remove disk cache later
-        FileInputStream fileIn = null;
-        ObjectInputStream ois = null;
-        try {
-            fileIn = new FileInputStream(updateProvider.toString().split("@", 2)[0] + ".cache");
-            ois = new ObjectInputStream(fileIn);
-            GenericCache<T> oldCache = (GenericCache<T>) ois.readObject();
-            this.cache = oldCache.cache;
-            this.lastRefresh = oldCache.lastRefresh;
-            this.cacheRefreshSucceeded = oldCache.cacheRefreshSucceeded;
-        }catch (Exception e){
-
-        }finally {
-            try {
-                if (ois != null) {
-                    ois.close();
-                }
-
-            } catch (Exception e) {
-
-            }
-            try {
-                if (fileIn != null) {
-                    fileIn.close();
-                }
-            } catch (Exception e) {
-
-            }
-        }
-        //End of disk cache
     }
 
     /**
@@ -63,9 +31,6 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
                 cache = updateProvider.getNewDataToCache();
                 lastRefresh = Instant.now();
                 cacheRefreshSucceeded = true;
-                //todo Remove disk cache later
-                saveCacheToFile();
-
             }finally {
                 cacheRefreshInProgressLock.unlock();
             }
@@ -76,35 +41,6 @@ public class GenericCache<T> implements GenericCacheInterface, Serializable {
             if (!cacheRefreshSucceeded){
                 //Cache update appears to have failed. Trying again
                 refreshCache();
-            }
-        }
-    }
-
-    //todo Remove later
-    private void saveCacheToFile() {
-        FileOutputStream fileOut = null;
-        ObjectOutputStream oos = null;
-        try {
-            fileOut = new FileOutputStream(updateProvider.toString().split("@", 2)[0] + ".cache", false);
-            oos = new ObjectOutputStream(fileOut);
-            oos.writeObject(this);
-        } catch (IOException e) {
-
-        }finally {
-            try {
-                if (oos != null) {
-                    oos.close();
-                }
-
-            } catch (Exception e) {
-
-            }
-            try {
-                if (fileOut != null) {
-                    fileOut.close();
-                }
-            } catch (Exception e) {
-
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
+import net.fortuna.ical4j.data.ParserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -10,12 +11,16 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Service for searching for available rooms
+ */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class SearchService implements SearchServiceInterface {
 
     private final BookingServiceInterface bookingService;
@@ -89,6 +94,12 @@ public class SearchService implements SearchServiceInterface {
                 } catch (Exception e) {
                     logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
                 }
+            }
+
+            if (searchQuery.userLocation() == null){
+                results.sort(Comparator.comparing(o -> o.room().name()));
+            }else {
+                results.sort(Comparator.comparing(o -> o.birdsDistance()));
             }
 
             return new SearchResult(searchQuery, results);

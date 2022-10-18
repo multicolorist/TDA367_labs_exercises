@@ -150,7 +150,12 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
-        <!-- Used for URL encoding https://stackoverflow.com/questions/27220327/how-to-percent-encode-in-java -->
+        <!-- https://mvnrepository.com/artifact/org.mnode.ical4j/ical4j -->
+        <dependency>
+            <groupId>org.mnode.ical4j</groupId>
+            <artifactId>ical4j</artifactId>
+            <version>4.0.0-beta2</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

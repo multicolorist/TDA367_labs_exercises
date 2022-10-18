@@ -12,8 +12,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+/**
+ * Provides routes and distances from the API
+ */
 @Service
-@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class RouteService implements RouteServiceInterface {
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;

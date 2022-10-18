@@ -1,16 +1,16 @@
 package com.chalmers.group30.views.main;
 
-import com.chalmers.group30.controllers.DarkLightModeButtonController;
-import com.chalmers.group30.controllers.FilterButtonController;
-import com.chalmers.group30.controllers.SearchController;
-import com.chalmers.group30.controllers.ShowOnMapButtonController;
+import com.chalmers.group30.controllers.*;
 import com.chalmers.group30.models.GetARoomFacadeInterface;
 import com.chalmers.group30.views.HasOpenableDrawer;
 import com.chalmers.group30.views.MapMediator;
+import com.chalmers.group30.views.components.GeolocationComponent;
 import com.chalmers.group30.views.components.MapView;
+import com.chalmers.group30.views.components.PreferredClientThemeComponent;
 import com.chalmers.group30.views.components.QueryContainer;
+import com.chalmers.group30.views.components.buttons.AboutButton;
+import com.chalmers.group30.views.components.buttons.CustomAnchor;
 import com.chalmers.group30.views.components.buttons.DarkLightModeButton;
-import com.chalmers.group30.views.components.buttons.FilterButton;
 import com.chalmers.group30.views.components.displays.RecordDisplay;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
@@ -18,10 +18,9 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -35,7 +34,11 @@ import java.io.IOException;
 
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-details.css", themeFor = "vaadin-details")
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
+@CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 
+/**
+ * The main view of the entire application.
+ */
 @PageTitle("GetARoom")
 @Route(value = "")
 @Component
@@ -44,12 +47,15 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
     @Autowired
     public MainView(
             GetARoomFacadeInterface getARoomFacade,
-            DarkLightModeButtonController darkLightModeButtonController,
+            DarkLightModeController darkLightModeController,
             DarkLightModeButton darkLightModeButton,
-            FilterButtonController filterButtonController,
-            FilterButton filterButton,
+            AboutButtonController aboutButtonController,
+            AboutButton aboutButton,
             MapView mapView,
-            ShowOnMapButtonController showOnMapButtonController
+            ShowOnMapButtonController showOnMapButtonController,
+            GeolocationComponentController geolocationComponentController,
+            GeolocationComponent geolocationComponent,
+            PreferredClientThemeComponent preferredClientThemeComponent
     ) throws IOException {
 
         // Add styling for main view
@@ -58,73 +64,97 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.Padding.Bottom.LARGE,
                 LumoUtility.Padding.Horizontal.SMALL
         );
+        this.getElement().setAttribute("aria-label", "main");
 
-        // Init filter and dark/light mode button
-        filterButton.addClickListener(filterButtonController.getListener());
-        darkLightModeButton.addClickListener(darkLightModeButtonController.getListener());
+        // Book rooms anchor button - special handling needed for a link to open in new tab from a button
+        CustomAnchor bookRoomsAnchor = new CustomAnchor(
+                "https://cloud.timeedit.net/chalmers/web/b1/ri1Q5008.html",
+                "",
+                new Icon(VaadinIcon.CALENDAR_CLOCK),
+                ""
+                );
+        bookRoomsAnchor.getElement().setAttribute("aria-label", "Open TimeEdit in new tab");
+
+        add(preferredClientThemeComponent);
+
+        // About and dark/light mode button
+        aboutButton.addClickListener(aboutButtonController.getListener());
+        darkLightModeButton.addClickListener(darkLightModeController.getListener());
+        darkLightModeController.registerIconToChange(darkLightModeButton);
+
+        darkLightModeController.applyClientPreferredTheme();
+
+
+        // Add buttons to header
+        HorizontalLayout headerButtonLayout = new HorizontalLayout();
+        headerButtonLayout.addClassName("header-button-layout");
+        headerButtonLayout.add(bookRoomsAnchor, aboutButton, darkLightModeButton);
 
         // Header
-        H3 title = new H3("GetARoom");
+        H1 title = new H1("GetARoom");
         title.addClassNames(
+                "header",
                 LumoUtility.Margin.Bottom.SMALL,
-                LumoUtility.Margin.Top.SMALL,
-                LumoUtility.FontSize.XXXLARGE
+                LumoUtility.Margin.Top.SMALL
         );
         HorizontalLayout headerContainer = new HorizontalLayout();
         headerContainer.addClassNames(
                 LumoUtility.Width.FULL,
-                LumoUtility.Padding.Horizontal.MEDIUM,
                 LumoUtility.JustifyContent.BETWEEN,
                 LumoUtility.AlignItems.CENTER,
                 LumoUtility.AlignSelf.CENTER,
-                LumoUtility.Background.BASE
+                LumoUtility.Background.BASE,
+                LumoUtility.FlexWrap.WRAP
         );
-        headerContainer.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        headerContainer.setSpacing(false);
+        headerContainer.getElement().setAttribute("aria-label", "header");
         headerContainer.add(
-                filterButton,
                 title,
-                darkLightModeButton
+                headerButtonLayout
         );
 
         // Drawer with map
         Button closeDrawerButton = new Button("Close map view", new Icon(VaadinIcon.CLOSE), event -> {
             setDrawerOpened(false);
         });
-        closeDrawerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,
+        closeDrawerButton.addThemeVariants(
+                ButtonVariant.LUMO_PRIMARY,
                 ButtonVariant.LUMO_CONTRAST); // To distinguish from other UI elements
         closeDrawerButton.addClassNames(
                 LumoUtility.Display.BLOCK,
                 LumoUtility.BoxShadow.SMALL,
                 LumoUtility.BorderRadius.NONE
         );
+        closeDrawerButton.getElement().setAttribute("aria-label", "Close map and return to the main view");
+        mapView.getElement().setAttribute("aria-label", "Map view");
         addToDrawer(closeDrawerButton, mapView);
         setDrawerOpened(false);
 
         // Record list - needed for the SearchController to be able to update the list with new results
-        //TODO: Can avoid the mediator pattern here by passing "this" to RecordDisplay and changing there to a HasOpenableDrawer
-        //TODO: However, it might be useful for other cases to use the mediator, for ex. more complex input validation
         RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
+        recordDisplay.getElement().setAttribute("aria-label", "List of search results");
 
-        // Query container - display results on site load
+        // Query container - display results only on user-triggered search
         QueryContainer queryContainer = new QueryContainer();
-        SearchController searchController = new SearchController(getARoomFacade, recordDisplay, queryContainer);
-        searchController.updateResults();
+        new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer); // init search controller
 
-        // Navbar
+        // Static navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
         navbarContainer.addClassNames(
                 LumoUtility.Width.FULL,
-                LumoUtility.Padding.Horizontal.MEDIUM,
+                LumoUtility.Padding.Horizontal.SMALL,
                 LumoUtility.JustifyContent.BETWEEN, // horizontal
                 LumoUtility.AlignItems.CENTER, // vertical
                 LumoUtility.AlignSelf.CENTER,  // vertical
                 LumoUtility.Background.BASE
         );
+        navbarContainer.getElement().setAttribute("aria-label", "Top bar containing header and search controls");
+
         navbarContainer.add(
                 headerContainer,
                 queryContainer
         );
-        addToNavbar(navbarContainer);
+        addToNavbar(navbarContainer, geolocationComponent);
 
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");
