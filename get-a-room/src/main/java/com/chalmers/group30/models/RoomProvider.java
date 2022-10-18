@@ -27,8 +27,7 @@ public class RoomProvider implements CacheUpdateProvider<List<Room>> {
     private final Logger logger = Logger.getLogger(RoomProvider.class.getName());
 
     private final List<String> elementTypes = Arrays.asList(
-            "breakout_room",
-            "computer_room"
+            "breakout_room"
     );
 
     private ChalmersMapsAPIInterface chalmersMapsAPI;

@@ -21,8 +21,7 @@ public class AboutDialog extends Dialog {
             new Paragraph("GetARoom was developed by Space, Goose & Matcha."),
             new Span("When you have found your room, press the booking button "),
             new Span(new Icon(VaadinIcon.CALENDAR_CLOCK)),
-            new Span(" to go to TimeEdit."),
-            new Paragraph("Note that computer rooms are not bookable by students, but shown as a convenience."));
+            new Span(" to go to TimeEdit."));
 
         Button closeButton = new Button(new Icon("lumo", "cross"),
                 (e) -> this.close());
