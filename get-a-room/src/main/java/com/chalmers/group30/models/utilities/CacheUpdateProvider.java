@@ -1,9 +1,0 @@
-package com.chalmers.group30.models.utilities;
-
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-
-public interface CacheUpdateProvider<T> {
-    @NotNull
-    T getNewDataToCache() throws IOException;
-}
