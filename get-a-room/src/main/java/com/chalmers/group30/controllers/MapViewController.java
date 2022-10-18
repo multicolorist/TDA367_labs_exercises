@@ -1,6 +1,6 @@
 package com.chalmers.group30.controllers;
 
-import com.chalmers.group30.models.ChalmersMapsAPIInterface;
+import com.chalmers.group30.models.GetARoomFacadeInterface;
 import com.chalmers.group30.models.objects.Location;
 import com.chalmers.group30.models.objects.Route;
 import com.chalmers.group30.views.components.MapView;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the MapView component
@@ -18,30 +20,30 @@ import java.util.List;
 @UIScope
 public class MapViewController {
     MapView mapView;
-    
-    ChalmersMapsAPIInterface chalmersMapsAPI;
+
+    GetARoomFacadeInterface getARoomFacade;
+    private final Logger logger = Logger.getLogger(MapViewController.class.getName());
 
     /**
      * Constructor for the MapViewController
      * @param mapView the MapView to control
      */
-    public MapViewController(MapView mapView, ChalmersMapsAPIInterface chalmersMapsAPI) {
-        // TODO: init buildings etc
+    public MapViewController(MapView mapView, GetARoomFacadeInterface getARoomFacade) {
         this.mapView = mapView;
-        this.chalmersMapsAPI = chalmersMapsAPI;
+        this.getARoomFacade = getARoomFacade;
 
         try {
-            mapView.addGeoJSON("buildings", chalmersMapsAPI.geoJsonBuildings());
+            mapView.addGeoJSON("buildings", getARoomFacade.geoJsonBuildings());
             mapView.addExtrusionLayer("buildings_extrude", "buildings");
         } catch (IOException e) {
-            //TODO: Add logging
+            logger.log(Level.SEVERE, "Could not get geoJSON buildings.", e);
         }
 
         try {
-            mapView.addGeoJSON("poi", chalmersMapsAPI.geoJsonPOI());
+            mapView.addGeoJSON("poi", getARoomFacade.geoJsonPOI());
             mapView.addExtrusionLayer("poi_extrude", "poi");
         } catch (IOException e) {
-            //TODO: Add logging
+            logger.log(Level.SEVERE, "Could not get geoJSON POIs.", e);
         }
     }
 

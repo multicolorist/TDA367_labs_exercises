@@ -1,6 +1,7 @@
 package com.chalmers.group30.models;
 
 import com.chalmers.group30.models.objects.*;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -16,15 +17,15 @@ import java.io.IOException;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 public class GetARoomFacade implements GetARoomFacadeInterface {
 
-
     private final RouteServiceInterface routeService;
     private final SearchServiceInterface searchService;
+    private final ChalmersMapsAPIInterface chalmersMapsAPI;
 
     @Autowired
-    public GetARoomFacade(RouteServiceInterface routeService, SearchServiceInterface searchService) {
-
+    public GetARoomFacade(RouteServiceInterface routeService, SearchServiceInterface searchService, ChalmersMapsAPIInterface chalmersMapsAPI) {
         this.routeService = routeService;
         this.searchService = searchService;
+        this.chalmersMapsAPI = chalmersMapsAPI;
     }
 
     /**
@@ -49,6 +50,26 @@ public class GetARoomFacade implements GetARoomFacadeInterface {
     @Override
     public Route getWalkingRoute(Location userLocation, Location destinationLocation) throws IOException {
         return routeService.getRoute(userLocation, destinationLocation);
+    }
+
+    /**
+     * Get GeoJson object for POIs
+     * @return A GeoJson object representing different Points of Interest
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    @Override
+    public JsonObject geoJsonPOI() throws IOException {
+        return chalmersMapsAPI.geoJsonPOI();
+    }
+
+    /**
+     * Get GeoJson object for relevant buildings
+     * @return A GeoJson object representing different buildings
+     * @throws IOException If the underlying API request failed for some reason
+     */
+    @Override
+    public JsonObject geoJsonBuildings() throws IOException {
+        return chalmersMapsAPI.geoJsonBuildings();
     }
 }
 
