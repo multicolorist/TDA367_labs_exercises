@@ -21,7 +21,7 @@ public class AboutDialog extends Dialog {
         this.setHeaderTitle("About");
         this.add(
                 new Paragraph("GetARoom was developed by Space, Goose & Matcha."),
-                new Span("When you have found your room at Campus Johanneberg, press the booking button "),
+                new Span("When you have found your room at Campus Johanneberg or Campus Lindholmen, press the booking button "),
                 new Span(new Icon(VaadinIcon.CALENDAR_CLOCK)),
                 new Span(" to go to TimeEdit."));
 
