@@ -1,17 +1,17 @@
-package com.chalmers.getaroom.views.main;
+package com.chalmers.getaroom.views;
 
 import com.chalmers.getaroom.controllers.*;
 import com.chalmers.getaroom.models.GetARoomFacadeInterface;
-import com.chalmers.getaroom.views.HasOpenableDrawer;
-import com.chalmers.getaroom.views.MapMediator;
+import com.chalmers.getaroom.views.utilities.HasOpenableDrawer;
+import com.chalmers.getaroom.views.utilities.MapMediator;
 import com.chalmers.getaroom.views.components.GeolocationComponent;
-import com.chalmers.getaroom.views.components.MapView;
+import com.chalmers.getaroom.views.components.MapComponent;
 import com.chalmers.getaroom.views.components.PreferredClientThemeComponent;
 import com.chalmers.getaroom.views.components.QueryContainer;
 import com.chalmers.getaroom.views.components.buttons.AboutButton;
 import com.chalmers.getaroom.views.components.buttons.CustomAnchor;
 import com.chalmers.getaroom.views.components.buttons.DarkLightModeButton;
-import com.chalmers.getaroom.views.components.displays.RecordDisplay;
+import com.chalmers.getaroom.views.components.SearchResultComponent;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -50,7 +50,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
             DarkLightModeButton darkLightModeButton,
             AboutButtonController aboutButtonController,
             AboutButton aboutButton,
-            MapView mapView,
+            MapComponent mapComponent,
             ShowOnMapButtonController showOnMapButtonController,
             GeolocationComponentController geolocationComponentController,
             GeolocationComponent geolocationComponent,
@@ -123,17 +123,17 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
                 LumoUtility.BorderRadius.NONE
         );
         closeDrawerButton.getElement().setAttribute("aria-label", "Close map and return to the main view");
-        mapView.getElement().setAttribute("aria-label", "Map view");
-        addToDrawer(closeDrawerButton, mapView);
+        mapComponent.getElement().setAttribute("aria-label", "Map view");
+        addToDrawer(closeDrawerButton, mapComponent);
         setDrawerOpened(false);
 
         // Record list - needed for the SearchController to be able to update the list with new results
-        RecordDisplay recordDisplay = new RecordDisplay(showOnMapButtonController, new MapMediator(this));
-        recordDisplay.getElement().setAttribute("aria-label", "List of search results");
+        SearchResultComponent searchResultComponent = new SearchResultComponent(showOnMapButtonController, new MapMediator(this));
+        searchResultComponent.getElement().setAttribute("aria-label", "List of search results");
 
         // Query container - display results only on user-triggered search
         QueryContainer queryContainer = new QueryContainer();
-        new SearchController(getARoomFacade, geolocationComponentController, recordDisplay, queryContainer); // init search controller
+        new SearchController(getARoomFacade, geolocationComponentController, searchResultComponent, queryContainer); // init search controller
 
         // Static navbar
         VerticalLayout navbarContainer = new VerticalLayout(); // To keep elements vertically ordered
@@ -156,7 +156,7 @@ public class MainView extends AppLayout implements HasComponents, HasStyle, HasO
         // Main view composition (header in navbar which is already a child)
         getElement().getStyle().set("height", "auto");
         setContent(
-                recordDisplay
+                searchResultComponent
         );
     }
 

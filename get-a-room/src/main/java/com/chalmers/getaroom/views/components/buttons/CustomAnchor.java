@@ -9,9 +9,12 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 /**
- * A custom anchor that looks like a button
+ * A custom anchor that looks and acts like a button
+ * Needed as buttons cannot open links in new tabs
+ * If it looks like a button, swims like a button,
+ * and quacks like a button, it probably is a button 🦆
  * Adapted from:
- * https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463
+ * <a href="https://github.com/vaadin/web-components/issues/1803#issuecomment-467493463">link</a>
  */
 public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyle {
     /**
@@ -48,11 +51,11 @@ public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyl
         return a;
     }
 
-    public void setHref(String href) {
+    private void setHref(String href) {
         getContent().setHref(href);
     }
 
-    public void setText(String text) {
+    private void setText(String text) {
         btn.setText(text);
     }
 

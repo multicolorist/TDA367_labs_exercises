@@ -1,4 +1,4 @@
-package com.chalmers.getaroom.views;
+package com.chalmers.getaroom.views.utilities;
 
 /**
  * Mediator that decouples communicating objects

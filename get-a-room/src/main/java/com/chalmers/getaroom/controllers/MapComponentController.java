@@ -3,7 +3,7 @@ package com.chalmers.getaroom.controllers;
 import com.chalmers.getaroom.models.GetARoomFacadeInterface;
 import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.objects.Route;
-import com.chalmers.getaroom.views.components.MapView;
+import com.chalmers.getaroom.views.components.MapComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import org.springframework.stereotype.Component;
 
@@ -18,31 +18,31 @@ import java.util.logging.Logger;
  */
 @Component
 @UIScope
-public class MapViewController {
-    MapView mapView;
+public class MapComponentController {
+    private final MapComponent mapComponent;
 
     GetARoomFacadeInterface getARoomFacade;
-    private final Logger logger = Logger.getLogger(MapViewController.class.getName());
+    private final Logger logger = Logger.getLogger(MapComponentController.class.getName());
 
     /**
      * Constructor for the MapViewController
      *
-     * @param mapView the MapView to control
+     * @param mapComponent the MapView to control
      */
-    public MapViewController(MapView mapView, GetARoomFacadeInterface getARoomFacade) {
-        this.mapView = mapView;
+    public MapComponentController(MapComponent mapComponent, GetARoomFacadeInterface getARoomFacade) {
+        this.mapComponent = mapComponent;
         this.getARoomFacade = getARoomFacade;
 
         try {
-            mapView.addGeoJSON("buildings", getARoomFacade.getGeoJsonBuildings());
-            mapView.addExtrusionLayer("buildings_extrude", "buildings");
+            mapComponent.addGeoJSON("buildings", getARoomFacade.getGeoJsonBuildings());
+            mapComponent.addExtrusionLayer("buildings_extrude", "buildings");
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Could not get geoJSON buildings.", e);
         }
 
         try {
-            mapView.addGeoJSON("poi", getARoomFacade.getGeoJsonPOI());
-            mapView.addExtrusionLayer("poi_extrude", "poi");
+            mapComponent.addGeoJSON("poi", getARoomFacade.getGeoJsonPOI());
+            mapComponent.addExtrusionLayer("poi_extrude", "poi");
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Could not get geoJSON POIs.", e);
         }
@@ -54,7 +54,7 @@ public class MapViewController {
      * @param location the location to fly to
      */
     public void flyTo(Location location) {
-        mapView.flyTo(location.latitude(), location.longitude());
+        mapComponent.flyTo(location.latitude(), location.longitude());
     }
 
     /**
@@ -69,7 +69,7 @@ public class MapViewController {
         for (Location l : r.maneuvers()) {
             maneuvers.add(List.of(l.latitude(), l.longitude()));
         }
-        mapView.showRoute(maneuvers);
+        mapComponent.showRoute(maneuvers);
     }
 
 }

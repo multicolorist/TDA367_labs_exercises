@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @UIScope
-public class ExecuteSearchButton extends Button {
+public class SearchButton extends Button {
     private final Icon icon = new Icon(VaadinIcon.SEARCH);
 
-    public ExecuteSearchButton() {
+    public SearchButton() {
         addClassNames(
                 LumoUtility.Display.INLINE_FLEX,
                 LumoUtility.BoxShadow.SMALL

@@ -16,7 +16,7 @@ import java.util.List;
 @JsModule("./maplibre/maplibre.ts")
 @UIScope
 @org.springframework.stereotype.Component
-public class MapView extends Component implements HasSize, HasStyle, HasComponents {
+public class MapComponent extends Component implements HasSize, HasStyle, HasComponents {
     /**
      * Add and display a room on the map
      *

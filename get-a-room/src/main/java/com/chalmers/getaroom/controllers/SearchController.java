@@ -5,7 +5,7 @@ import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.objects.SearchQuery;
 import com.chalmers.getaroom.models.objects.SearchResult;
 import com.chalmers.getaroom.views.components.QueryContainer;
-import com.chalmers.getaroom.views.components.displays.RecordDisplay;
+import com.chalmers.getaroom.views.components.SearchResultComponent;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
@@ -25,9 +25,8 @@ public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
     private GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
-    private final RecordDisplay recordDisplay;
+    private final SearchResultComponent searchResultComponent;
     private final Logger logger = Logger.getLogger(SearchController.class.getName());
-
 
     private Location getUserLocation() {
         return geolocationComponentController.getLocation();
@@ -41,13 +40,14 @@ public class SearchController {
 
     public SearchController(GetARoomFacadeInterface getARoomFacade,
                             GeolocationComponentController geolocationComponentController,
-                            RecordDisplay recordDisplay,
+                            SearchResultComponent searchResultComponent,
                             QueryContainer queryContainer) {
         this.getARoomFacade = getARoomFacade;
         this.geolocationComponentController = geolocationComponentController;
         this.queryContainer = queryContainer;
-        this.recordDisplay = recordDisplay;
-        this.queryContainer.executeSearchButton.addClickListener(getExecuteSearchButtonListener());
+        this.searchResultComponent = searchResultComponent;
+        ComponentEventListener<ClickEvent<Button>> listener = getSearchButtonListener();
+        this.queryContainer.addSearchButtonListener(listener);
     }
 
     /**
@@ -55,18 +55,18 @@ public class SearchController {
      *
      * @return Listener for the button
      */
-    private ComponentEventListener<ClickEvent<Button>> getExecuteSearchButtonListener() {
-        return new SearchController.ExecuteSearchButtonListener();
+    private ComponentEventListener<ClickEvent<Button>> getSearchButtonListener() {
+        return new SearchController.SearchButtonListener();
     }
 
     /**
      * Get search results and updates display accordingly
      */
-    public void updateResults() {
+    private void updateResults() {
         try {
             SearchResult searchResult = getSearchResults();
-            recordDisplay.setItems(searchResult.results());
-            recordDisplay.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
+            searchResultComponent.setItems(searchResult.results());
+            searchResultComponent.setCurrentSearchQueryDate(searchResult.searchQuery().startTime().toLocalDate());
             if (Double.isNaN(searchResult.searchQuery().userLocation().latitude())) {
                 Notification.show(
                         "Please enable location services to see distance to rooms.",
@@ -79,7 +79,7 @@ public class SearchController {
         }
     }
 
-    private class ExecuteSearchButtonListener implements ComponentEventListener<ClickEvent<Button>> {
+    private class SearchButtonListener implements ComponentEventListener<ClickEvent<Button>> {
         @Override
         public void onComponentEvent(ClickEvent<Button> e) {
             if (queryInputIsValid()) {
