@@ -79,6 +79,7 @@ class RoomProviderTest {
                         "}").getAsJsonObject();
 
         when(api.informationBoard(UUID.fromString("a85a8be2-4ff6-4e39-9880-c2adb2a7626f"))).thenReturn(jObj1);
+        when(api.informationBoard(UUID.fromString("c5d6ba21-7336-49f7-aef7-b161fcc91ad7"))).thenReturn(jObj1);
 
         JsonObject jObj2 = JsonParser.parseString(
                 "{\n" +
