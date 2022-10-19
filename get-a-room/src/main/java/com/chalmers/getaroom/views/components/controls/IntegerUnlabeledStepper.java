@@ -15,7 +15,7 @@ public class IntegerUnlabeledStepper extends Span {
         integerField.setValue(defaultValue);
         integerField.setHasControls(true);
         integerField.setMin(minValue);
-        integerField.setMax(maxValue); // TODO: See what's the max number of people in a room in the API
+        integerField.setMax(maxValue);
         integerField.addClassNames(
                 LumoUtility.Display.INLINE_FLEX
         );

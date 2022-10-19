@@ -1,11 +1,14 @@
 package com.chalmers.getaroom.views.components;
 
-import com.chalmers.getaroom.views.components.buttons.ExecuteSearchButton;
+import com.chalmers.getaroom.views.components.buttons.SearchButton;
 import com.chalmers.getaroom.views.components.controls.DatePickerControl;
 import com.chalmers.getaroom.views.components.controls.IntegerUnlabeledStepper;
 import com.chalmers.getaroom.views.components.controls.TimePickerControl;
 import com.chalmers.getaroom.views.utilities.TimeUtils;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.theme.lumo.LumoUtility;
@@ -20,7 +23,7 @@ import java.time.temporal.ChronoUnit;
  * A container for the search query
  */
 public class QueryContainer extends Div {
-    public final ExecuteSearchButton executeSearchButton;
+    private final SearchButton searchButton;
     private final TimePickerControl startTimePicker;
     private final TimePickerControl endTimePicker;
     private final DatePickerControl datePicker;
@@ -60,7 +63,7 @@ public class QueryContainer extends Div {
         groupSizeStepper = new IntegerUnlabeledStepper(1, 16, 4);
         groupSizeStepper.getElement().setAttribute("aria-label", "Select number of seats for room search");
 
-        executeSearchButton = new ExecuteSearchButton();
+        searchButton = new SearchButton();
 
         // Add to container
         add(
@@ -73,8 +76,12 @@ public class QueryContainer extends Div {
                 new Span(new Text(" on ")),
                 datePicker,
                 new Span(new Text(" and ")),
-                executeSearchButton
+                searchButton
         );
+    }
+
+    public void addSearchButtonListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        searchButton.addClickListener(listener);
     }
 
     public int getGroupSize() {

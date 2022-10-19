@@ -1,6 +1,6 @@
 package com.chalmers.getaroom.views.components.buttons;
 
-import com.chalmers.getaroom.views.HasChangeableIcon;
+import com.chalmers.getaroom.views.utilities.HasChangeableIcon;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;

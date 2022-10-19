@@ -23,17 +23,17 @@ import java.util.logging.Logger;
 @UIScope
 public class ShowOnMapButtonController {
     GetARoomFacadeInterface getARoomFacade;
-    MapViewController mapViewController;
+    MapComponentController mapComponentController;
     GeolocationComponentController geolocationComponentController;
     private final Logger logger = Logger.getLogger(ShowOnMapButtonController.class.getName());
 
     public ShowOnMapButtonController(
             GetARoomFacadeInterface getARoomFacade,
-            MapViewController mapViewController,
+            MapComponentController mapComponentController,
             GeolocationComponentController geolocationComponentController) {
 
         this.getARoomFacade = getARoomFacade;
-        this.mapViewController = mapViewController;
+        this.mapComponentController = mapComponentController;
         this.geolocationComponentController = geolocationComponentController;
     }
 
@@ -61,17 +61,17 @@ public class ShowOnMapButtonController {
             userLocation = geolocationComponentController.getLocation();
             if (Double.isNaN(userLocation.latitude())) {
                 Notification.show("Please enable location services to see the route from your location to the room.");
-                mapViewController.showRoute(new Route(0, Arrays.asList(destination))); // Just mark the destination
+                mapComponentController.showRoute(new Route(0, Arrays.asList(destination))); // Just mark the destination
             } else {
                 try {
                     Route route = getARoomFacade.getWalkingRoute(userLocation, destination);
-                    mapViewController.showRoute(route);
+                    mapComponentController.showRoute(route);
 
                 } catch (IOException ex) {
                     logger.log(Level.SEVERE, "Could not get walking route even though input was not NaN.", e);
                 }
             }
-            mapViewController.flyTo(destination);
+            mapComponentController.flyTo(destination);
         }
 
     }

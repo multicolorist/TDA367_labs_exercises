@@ -1,4 +1,4 @@
-package com.chalmers.getaroom.views;
+package com.chalmers.getaroom.views.utilities;
 
 import com.vaadin.flow.component.icon.Icon;
 

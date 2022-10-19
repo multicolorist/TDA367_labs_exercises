@@ -1,8 +1,8 @@
-package com.chalmers.getaroom.views.components.displays;
+package com.chalmers.getaroom.views.components;
 
 import com.chalmers.getaroom.controllers.ShowOnMapButtonController;
 import com.chalmers.getaroom.models.objects.SearchRecord;
-import com.chalmers.getaroom.views.Mediator;
+import com.chalmers.getaroom.views.utilities.Mediator;
 import com.chalmers.getaroom.views.components.buttons.ShowOnMapButton;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -26,16 +26,16 @@ import java.util.Objects;
 /**
  * A component that displays a list of SearchRecords
  * Note that Vaadin has a bug with loading duplicated results:
- * https://github.com/vaadin/flow-components/issues/3547
+ * <a href="https://github.com/vaadin/flow-components/issues/3547">link</a>
  * The solution is to not allow duplicates in the list, or to
  * use a Grid instead to display the records.
  */
-public class RecordDisplay extends VirtualList<SearchRecord> {
-    ShowOnMapButtonController showOnMapButtonController;
+public class SearchResultComponent extends VirtualList<SearchRecord> {
+    private final ShowOnMapButtonController showOnMapButtonController;
     private LocalDate currentSearchQueryDate;
     private final Mediator mapMediator;
 
-    public RecordDisplay(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) throws IOException {
+    public SearchResultComponent(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) throws IOException {
         // Init fields
         this.showOnMapButtonController = showOnMapButtonController;
         this.mapMediator = mapMediator;
@@ -70,7 +70,7 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
      * @param searchRecord The search record to create a list entry for
      * @return A component that represents the search record in the list
      */
-    Component listEntryProvider(SearchRecord searchRecord) {
+    private Component listEntryProvider(SearchRecord searchRecord) {
         // Buttons
         Button showMapButton = new ShowOnMapButton(searchRecord.room());
         showMapButton.addClickListener(showOnMapButtonController.getListener());
@@ -163,9 +163,9 @@ public class RecordDisplay extends VirtualList<SearchRecord> {
         Details foldablePanel = new Details(topLayout, bottomLayout);
         foldablePanel.addClassNames(
                 "custom-full-width",
-                LumoUtility.Padding.Vertical.NONE, // Perhaps too little? Important to weigh legibility vs. compactness
+                LumoUtility.Padding.Vertical.NONE,
                 LumoUtility.Padding.Horizontal.MEDIUM,
-                LumoUtility.BoxShadow.SMALL, // https://vaadin.com/docs/latest/styling/lumo/utility-classes/#box-shadow
+                LumoUtility.BoxShadow.SMALL,
                 LumoUtility.BorderRadius.SMALL
         );
         foldablePanel.getElement().setAttribute("aria-label", "A room from the search results");
