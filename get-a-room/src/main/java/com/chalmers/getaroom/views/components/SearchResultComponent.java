@@ -2,8 +2,8 @@ package com.chalmers.getaroom.views.components;
 
 import com.chalmers.getaroom.controllers.ShowOnMapButtonController;
 import com.chalmers.getaroom.models.objects.SearchRecord;
-import com.chalmers.getaroom.views.utilities.Mediator;
 import com.chalmers.getaroom.views.components.buttons.ShowOnMapButton;
+import com.chalmers.getaroom.views.utilities.Mediator;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;

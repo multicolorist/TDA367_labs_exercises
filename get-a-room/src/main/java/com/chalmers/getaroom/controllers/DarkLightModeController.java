@@ -1,7 +1,7 @@
 package com.chalmers.getaroom.controllers;
 
-import com.chalmers.getaroom.views.utilities.HasChangeableIcon;
 import com.chalmers.getaroom.views.components.PreferredClientThemeComponent;
+import com.chalmers.getaroom.views.utilities.HasChangeableIcon;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Tag;
