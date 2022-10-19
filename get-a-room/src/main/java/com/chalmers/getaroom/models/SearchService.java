@@ -33,7 +33,6 @@ class SearchService implements SearchServiceInterface {
         this.routeService = routeService;
     }
 
-
     /**
      * Search for matching rooms that are free at the given time
      *
@@ -58,8 +57,6 @@ class SearchService implements SearchServiceInterface {
             List<Room> matchingRooms = new ArrayList<>();
             roomLoop:
             for (Room room : candidateRooms) {
-
-                //todo Include the rooms with unknown size? (marked with -1)
                 if (room.seats() < searchQuery.groupSize()) {
                     continue;
                 }

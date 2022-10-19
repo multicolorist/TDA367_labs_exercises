@@ -3,7 +3,6 @@ package com.chalmers.getaroom.models.objects;
 import com.google.gson.JsonObject;
 import net.fortuna.ical4j.model.component.VEvent;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
