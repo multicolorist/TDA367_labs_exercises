@@ -5,6 +5,7 @@ import java.time.Instant;
 
 /**
  * Interface for a cache that can hold any object of type T
+ *
  * @param <T> The type of the cached objects
  */
 public interface GenericCacheInterface<T> {

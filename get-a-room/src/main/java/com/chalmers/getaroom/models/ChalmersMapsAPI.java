@@ -39,7 +39,6 @@ class ChalmersMapsAPI implements ChalmersMapsAPIInterface {
      */
     public JsonObject informationBoard(UUID uuid) throws IOException {
         try {
-            // TODO: Use a correct return type, and parse the JsonObject to a list of Room objects
             final String requestUrl = baseUrl + String.format("information_board/%s/json", uuid.toString());
             return requests.readJsonElementFromUrl(requestUrl).getAsJsonObject();
         } catch (Exception e) {

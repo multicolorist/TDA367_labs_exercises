@@ -1,13 +1,13 @@
 package com.chalmers.getaroom.models.utilities;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A cache that can hold any object of type T
+ *
  * @param <T> The type of the cached objects
  */
 public class GenericCache<T> implements GenericCacheInterface<T> {
