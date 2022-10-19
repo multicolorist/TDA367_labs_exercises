@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Represents a route
  *
- * @param distance The distance between the two locations
- *                 TODO: Add the rest of the fields for the routeTODO: Discuss visibility for fields
+ * @param distance  The distance between the two locations
+ * @param maneuvers A list of locations, describing the separate parts of the route
  */
 public record Route(double distance, List<Location> maneuvers) {
     /**
@@ -22,10 +22,9 @@ public record Route(double distance, List<Location> maneuvers) {
      */
     public static Route fromJSON(JsonObject obj) {
         List<Location> maneuvers = new ArrayList<>();
-        //TODO: Update this as fields change
         double distance = obj.getAsJsonObject("items")
                 .getAsJsonArray("routes").get(0)
-                .getAsJsonObject()// Todo: Verify - does it always return a single route?
+                .getAsJsonObject()
                 .get("distance").getAsDouble();
 
         JsonArray maneuversJson = obj.getAsJsonObject("items").getAsJsonArray("routes").get(0).getAsJsonObject().getAsJsonArray("legs").get(0).getAsJsonObject().getAsJsonArray("steps");

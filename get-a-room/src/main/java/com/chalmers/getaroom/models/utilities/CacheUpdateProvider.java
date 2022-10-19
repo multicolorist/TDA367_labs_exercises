@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * Interface for providing objects to cache
+ *
  * @param <T> The type of the cached objects
  */
 public interface CacheUpdateProvider<T> {

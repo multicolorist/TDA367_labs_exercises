@@ -2,7 +2,6 @@ package com.chalmers.getaroom.models.objects;
 
 import com.google.gson.JsonObject;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 /**

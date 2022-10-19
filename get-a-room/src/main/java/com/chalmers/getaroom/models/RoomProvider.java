@@ -84,7 +84,7 @@ class RoomProvider implements CacheUpdateProvider<List<Room>> {
                     }
                 }
             }
-            
+
             return rooms;
         } catch (Exception e) {
             logger.log(java.util.logging.Level.SEVERE, "Failed to get rooms from ChalmersMapsAPI with exception", e);
