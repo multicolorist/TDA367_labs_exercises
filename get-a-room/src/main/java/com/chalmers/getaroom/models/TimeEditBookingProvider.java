@@ -28,7 +28,7 @@ class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, Li
     private final RoomServiceInterface roomServiceInterface;
     private final TimeEditAPIInterface timeEditAPIInterface;
 
-    private final int weeksForwardToCache = 2;
+    private static final int weeksForwardToCache = 2;
 
     @Autowired
     public TimeEditBookingProvider(RoomServiceInterface roomServiceInterface, TimeEditAPIInterface timeEditAPIInterface) {

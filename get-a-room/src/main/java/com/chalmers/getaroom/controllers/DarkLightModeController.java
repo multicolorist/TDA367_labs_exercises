@@ -51,13 +51,13 @@ public class DarkLightModeController implements ComponentEventListener<ClickEven
         Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
 
         Optional<Cookie> themeCookie = Arrays.stream(cookies)
-                .filter(cookie -> cookie.getName().equals("theme"))
+                .filter(cookie -> "theme".equals(cookie.getName()))
                 .findFirst();
 
         if (themeCookie.isPresent()) {
-            if (themeCookie.get().getValue().equals("dark")) {
+            if ("dark".equals(themeCookie.get().getValue())) {
                 setTheme(true, true);
-            } else if (themeCookie.get().getValue().equals("light")) {
+            } else if ("light".equals(themeCookie.get().getValue())) {
                 setTheme(false, true);
             } else {
                 setClientPreferredTheme();

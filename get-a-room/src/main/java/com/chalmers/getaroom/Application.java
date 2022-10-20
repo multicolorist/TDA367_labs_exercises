@@ -24,7 +24,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 @EnableScheduling
 public class Application implements AppShellConfigurator {
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
