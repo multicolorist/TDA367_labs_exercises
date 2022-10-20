@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 class ChalmersMapsAPI implements ChalmersMapsAPIInterface {
 
-    private final String baseUrl = "https://maps.chalmers.se/v2/";
+    private static final String baseUrl = "https://maps.chalmers.se/v2/";
     private final Logger logger = Logger.getLogger(ChalmersMapsAPI.class.getName());
     private final PercentEscaper percentEscaper = new PercentEscaper("", false);
     private final WebRequestsInterface requests;

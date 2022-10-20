@@ -17,7 +17,7 @@ public class ApplicationStartup
 
     private final Logger logger = Logger.getLogger(ApplicationStartup.class.getName());
 
-    // Services to initialize
+    // Services to initialize on startup
     @Autowired
     public ApplicationStartup(GetARoomFacadeInterface getARoomFacadeInterface) {
     }
@@ -29,6 +29,5 @@ public class ApplicationStartup
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         logger.info("Application ready");
-        return;
     }
 }

@@ -4,7 +4,7 @@ import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.utilities.WebRequests;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 

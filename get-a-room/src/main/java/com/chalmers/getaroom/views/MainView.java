@@ -35,7 +35,7 @@ import java.io.IOException;
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-app-layout.css", themeFor = "vaadin-app-layout")
 @CssImport(value = "./themes/getaroom/componentSpecific/vaadin-horizontal-layout.css", themeFor = "vaadin-horizontal-layout")
 @PageTitle("GetARoom")
-@Route(value = "")
+@Route("")
 @Component
 @UIScope
 public class MainView extends AppLayout implements HasComponents, HasStyle, HasOpenableDrawer {

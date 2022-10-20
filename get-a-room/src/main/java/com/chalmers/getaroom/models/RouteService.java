@@ -72,7 +72,7 @@ class RouteService implements RouteServiceInterface {
 
         // Using the haversine formula - works well also for small distances:
         // https://www.movable-type.co.uk/scripts/latlong.html
-        double R = 6371e3; // earth radius
+        double r = 6371e3; // earth radius
         double phi1 = Math.toRadians(destination.latitude());
         double phi2 = Math.toRadians(origin.latitude());
         double dPhi = Math.toRadians(origin.latitude() - destination.latitude());
@@ -83,7 +83,7 @@ class RouteService implements RouteServiceInterface {
                         Math.sin(dLambda / 2) * Math.sin(dLambda / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return R * c;
+        return r * c;
     }
 
 }

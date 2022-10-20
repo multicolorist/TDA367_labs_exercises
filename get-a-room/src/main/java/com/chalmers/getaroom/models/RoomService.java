@@ -31,7 +31,7 @@ class RoomService implements RoomServiceInterface {
         try {
             refreshRoomCache();
         } catch (Exception e) {
-
+            logger.log(java.util.logging.Level.SEVERE, "Failed to do initial room cache retrieval", e);
         }
     }
 
