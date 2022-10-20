@@ -5,7 +5,7 @@ import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.objects.Room;
 import com.chalmers.getaroom.models.utilities.CacheUpdateProvider;
 import net.fortuna.ical4j.data.ParserException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.text.ParseException;

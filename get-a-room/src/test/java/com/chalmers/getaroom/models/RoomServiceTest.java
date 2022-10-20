@@ -3,7 +3,7 @@ package com.chalmers.getaroom.models;
 import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.objects.Room;
 import com.chalmers.getaroom.models.utilities.CacheUpdateProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
