@@ -23,7 +23,8 @@ public class AboutDialog extends Dialog {
                 new Paragraph("GetARoom was developed by Space, Goose & Matcha."),
                 new Span("When you have found your room at Campus Johanneberg or Campus Lindholmen, press the booking button "),
                 new Span(new Icon(VaadinIcon.CALENDAR_CLOCK)),
-                new Span(" to go to TimeEdit."));
+                new Span(" to go to TimeEdit."),
+                new Paragraph("Please be aware that some rare rooms shown cannot be booked by students, as TimeEdit does not expose this information."));
 
         Button closeButton = new Button(new Icon("lumo", "cross"),
                 (e) -> this.close());
