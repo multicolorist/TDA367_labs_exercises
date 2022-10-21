@@ -69,6 +69,9 @@ class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, Li
         net.fortuna.ical4j.model.Calendar schedule = timeEditAPIInterface.getSchedule(room.timeEditId(), startTime, endTime);
 
         for (CalendarComponent component : schedule.getComponents()) {
+            if(!component.getProperty("LOCATION").isPresent()) continue;
+            if(component.getProperty("LOCATION").get().getValue().isEmpty()) continue;
+
             bookings.add(Booking.fromVEvent((VEvent) component));
         }
 
