@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
-public class GetARoomFacade implements GetARoomFacadeInterface {
+class GetARoomFacade implements GetARoomFacadeInterface {
 
     private final RouteServiceInterface routeService;
     private final SearchServiceInterface searchService;
