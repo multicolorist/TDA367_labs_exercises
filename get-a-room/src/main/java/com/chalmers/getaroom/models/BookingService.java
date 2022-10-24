@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 class BookingService implements BookingServiceInterface {
 
-    private GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;
+    private final GenericCacheInterface<Dictionary<Room, List<Booking>>> bookingCache;
     private final Logger logger = Logger.getLogger(BookingService.class.getName());
 
     @Autowired

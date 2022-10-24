@@ -55,7 +55,7 @@ public class MapComponent extends Component implements HasSize, HasStyle, HasCom
         String finalLocationArrayString = "[" + finalLoc.get(1) + "," + finalLoc.get(0) + "]";
 
         // Show route on the map
-        getElement().executeJs("this.showRoute(" + locationArrayString.toString() + ", " + finalLocationArrayString + ");");
+        getElement().executeJs("this.showRoute(" + locationArrayString + ", " + finalLocationArrayString + ");");
     }
 
     /**

@@ -17,8 +17,8 @@ public class BookingTest {
 
         try {
             Booking b = Booking.fromJSON(jObj);
-            assertEquals(b.startTime(), LocalDateTime.of(2022, 04, 20, 10, 00, 00));
-            assertEquals(b.endTime(), LocalDateTime.of(2022, 04, 20, 11, 45, 00));
+            assertEquals(b.startTime(), LocalDateTime.of(2022, 4, 20, 10, 0, 0));
+            assertEquals(b.endTime(), LocalDateTime.of(2022, 4, 20, 11, 45, 0));
         } catch (Exception e) {
             fail(e);
         }

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 public class AboutButtonController {
-    Dialog aboutDialog;
+    private final Dialog aboutDialog;
 
     @Autowired
     public AboutButtonController(AboutDialog aboutDialog) {

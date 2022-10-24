@@ -112,7 +112,7 @@ public class TimeEditBookingProviderTest {
         TimeEditAPIInterface api = mock(TimeEditAPIInterface.class);
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
 
-        when(api.getSchedule((String) any(), any(), any())).thenThrow(IOException.class);
+        when(api.getSchedule(any(), any(), any())).thenThrow(IOException.class);
         when(roomServiceInterface.getRooms()).thenReturn(Arrays.asList(new Room[]{mockRoom}));
 
         TimeEditBookingProvider service = new TimeEditBookingProvider(roomServiceInterface, api);

@@ -71,7 +71,7 @@ const routePathPaint = { "line-color": "#0050ff", "line-width": 8 };
 class MapLibre extends LitElement {
   map!: MapLibreComponent;
 
-  // Must be used because map cannot initialized in constructor
+  // Must be used because map cannot be initialized in constructor
   onReady: Event = new CustomEvent("ready");
   ready: boolean = false;
 
@@ -107,7 +107,8 @@ class MapLibre extends LitElement {
 
   /**
    * Shows a route given by GeoJSON data.
-   * @param route GeoJSON data of the route to show.
+   * @param maneuvers list of coordinates in the route
+   * @param finalDestination the coordinates where a pin should be drawn
    */
   showRoute(maneuvers: any, finalDestination: any) {
     if (this.ready) {
@@ -154,8 +155,7 @@ class MapLibre extends LitElement {
   }
 
   /**
-   * Removes a room from the map.
-   * @param roomID UUID of the room to remove.
+   * Removes the currently displayed room from the map.
    */
   removeRoom() {
     if (this.ready) {
@@ -173,7 +173,9 @@ class MapLibre extends LitElement {
 
   /**
    * Display a room on the map.
-   * @param room Room to display.
+   * @param name the name of the room
+   * @param latitude the latitude of the room
+   * @param longitude the longitude of the room
    */
   addRoom(name: string, latitude: number, longitude: number) {
     if (this.ready) {
@@ -244,6 +246,8 @@ class MapLibre extends LitElement {
   /**
    * Adds a fill layer with given source that contains polygons.
    * If duplicate ID is given, old pin will be overwritten.
+   * @param id the ID of the pin
+   * @param text the text to be displayed under the pin
    * @param latitude Latitude of the pin.
    * @param longitude Longitude of the pin.
    */

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
 
-@Component
 /**
  * Used to initialize the application
  */
+@Component
 public class ApplicationStartup
         implements ApplicationListener<ApplicationReadyEvent> {
 

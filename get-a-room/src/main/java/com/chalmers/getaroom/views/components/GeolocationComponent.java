@@ -6,8 +6,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import java.time.Instant;
-
 /**
  * A custom component that uses the browser's geolocation API to get the user's location
  */
@@ -18,7 +16,6 @@ import java.time.Instant;
 public class GeolocationComponent extends Component {
     private Double latitude = Double.NaN;
     private Double longitude = Double.NaN;
-    private Instant lastUpdated;
 
     /**
      * Gets the last latitude of the user
@@ -55,13 +52,11 @@ public class GeolocationComponent extends Component {
     private void onUpdate() {
         getLatitude();
         getLongitude();
-        this.lastUpdated = Instant.now();
     }
 
     @ClientCallable
     private void onError() {
         latitude = Double.NaN;
         longitude = Double.NaN;
-        this.lastUpdated = Instant.now();
     }
 }
