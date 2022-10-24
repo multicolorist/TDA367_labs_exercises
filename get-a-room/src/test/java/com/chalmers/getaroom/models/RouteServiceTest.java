@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +30,16 @@ public class RouteServiceTest {
             fail(e);
         }
 
+    }
+
+    @Test
+    void getRoute_shouldFailOnGettingNoRoute() throws IOException {
+        ChalmersMapsAPIInterface api = mock(ChalmersMapsAPIInterface.class);
+
+        when(api.route(any(), any())).thenThrow(IOException.class);
+
+        RouteServiceInterface routeService = new RouteService(api);
+        assertThrows(IOException.class, () -> routeService.getRoute(new Location(1, 1), new Location(2, 2)));
     }
 
     @Test

@@ -47,4 +47,13 @@ public class RoomServiceTest {
         assertEquals(1, rooms.size());
         assertEquals("Test name", rooms.get(0).name());
     }
+
+    @Test
+    public void initializer_shouldThrowProperly() throws IOException {
+        CacheUpdateProvider<List<Room>> provider = mock(CacheUpdateProvider.class);
+
+        when(provider.getNewDataToCache()).thenThrow(new IOException("Test exception"));
+
+        new RoomService(provider);
+    }
 }
