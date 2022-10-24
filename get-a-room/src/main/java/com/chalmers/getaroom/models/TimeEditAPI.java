@@ -38,7 +38,7 @@ class TimeEditAPI implements TimeEditAPIInterface {
      */
     public Calendar getSchedule(String id, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {
         String sURL = "https://cloud.timeedit.net/chalmers/web/public/ri.ics?sid=3" +
-                "&object=" + percentEscaper.escape(id) + "&type=room" + "&l=en";
+                "&object=" + percentEscaper.escape(id.replace("chalmers:", "")) + "&type=room" + "&l=en";
         return webRequests.readIcalendarFromUrl(sURL);
     }
 }
