@@ -2,14 +2,18 @@ package com.chalmers.getaroom.models;
 
 import com.chalmers.getaroom.models.objects.Location;
 import com.chalmers.getaroom.models.utilities.WebRequests;
+import com.chalmers.getaroom.models.utilities.WebRequestsInterface;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 
 public class ChalmersMapsAPITest {
     @Test
@@ -26,6 +30,15 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
+    public void informationBoard_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.informationBoard(UUID.randomUUID()));
+    }
+
+    @Test
     public void timeEditSchedule_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
@@ -36,6 +49,15 @@ public class ChalmersMapsAPITest {
         } catch (Exception e) {
             fail(e);
         }
+    }
+
+    @Test
+    public void timeEditSchedule_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.timeEditSchedule("", 0, 0));
     }
 
     @Test
@@ -52,6 +74,15 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
+    public void getInfo_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.getInfo(UUID.randomUUID()));
+    }
+
+    @Test
     public void route_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
@@ -62,6 +93,15 @@ public class ChalmersMapsAPITest {
         } catch (Exception e) {
             fail(e);
         }
+    }
+
+    @Test
+    public void route_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.route(new Location(0, 0), new Location(0, 0)));
     }
 
     @Test
@@ -78,6 +118,15 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
+    public void getGeoJsonBuildings_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.getGeoJsonBuildings());
+    }
+
+    @Test
     public void getGeoJsonPOI_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
@@ -91,6 +140,15 @@ public class ChalmersMapsAPITest {
     }
 
     @Test
+    public void getGeoJsonPOI_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.getGeoJsonPOI());
+    }
+
+    @Test
     public void getTimeEditInfo_shouldGiveProperJsonAndIsNotEmpty() {
         ChalmersMapsAPIInterface api = new ChalmersMapsAPI(new WebRequests());
 
@@ -101,5 +159,14 @@ public class ChalmersMapsAPITest {
         } catch (Exception e) {
             fail(e);
         }
+    }
+
+    @Test
+    public void getTimeEditInfo_shouldFailProperly() throws IOException {
+        WebRequestsInterface wr = mock(WebRequests.class);
+        when(wr.readJsonElementFromUrl(any())).thenThrow(new IOException("Test exception"));
+
+        ChalmersMapsAPI api = new ChalmersMapsAPI(wr);
+        assertThrows(IOException.class, () -> api.getTimeEditInfo("test"));
     }
 }

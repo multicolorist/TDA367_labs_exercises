@@ -38,4 +38,21 @@ public class BookingServiceTest {
 
     }
 
+    @Test
+    public void initializer_shouldThrow() throws IOException {
+        CacheUpdateProvider<Dictionary<Room, List<Booking>>> provider = mock(CacheUpdateProvider.class);
+
+        when(provider.getNewDataToCache()).thenThrow(new IOException("Test exception"));
+
+        new BookingService(provider);
+    }
+
+    @Test
+    public void getBookings_shouldWarn() throws IOException {
+        CacheUpdateProvider<Dictionary<Room, List<Booking>>> provider = mock(CacheUpdateProvider.class);
+        when(provider.getNewDataToCache()).thenReturn(new Hashtable<>());
+
+        BookingService service = new BookingService(provider);
+        service.getBookings(new Room("", 0, "", "", "", "", UUID.randomUUID(), new Location(0, 0), new Location(0, 0)));
+    }
 }

@@ -15,8 +15,7 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -103,5 +102,21 @@ public class TimeEditBookingProviderTest {
             fail(e);
         }
 
+    }
+
+
+    @Test
+    void getNewDataCache_shouldLogOnGetSchedule() throws IOException, ParserException {
+        Room mockRoom = new Room("Chalmers Test", 1, "Building A", "Floor 1", "Adress A", "chalmers:test", UUID.randomUUID(), new Location(0, 0), new Location(1, 1));
+
+        TimeEditAPIInterface api = mock(TimeEditAPIInterface.class);
+        RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
+
+        when(api.getSchedule((String) any(), any(), any())).thenThrow(IOException.class);
+        when(roomServiceInterface.getRooms()).thenReturn(Arrays.asList(new Room[]{mockRoom}));
+
+        TimeEditBookingProvider service = new TimeEditBookingProvider(roomServiceInterface, api);
+
+        service.getNewDataToCache();
     }
 }

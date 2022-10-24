@@ -13,13 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
@@ -27,6 +28,7 @@ class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, Li
 
     private final RoomServiceInterface roomServiceInterface;
     private final TimeEditAPIInterface timeEditAPIInterface;
+    private final Logger logger = Logger.getLogger(TimeEditBookingProvider.class.getName());
 
     private static final int weeksForwardToCache = 2;
 
@@ -49,21 +51,15 @@ class TimeEditBookingProvider implements CacheUpdateProvider<Dictionary<Room, Li
         for (Room room : roomServiceInterface.getRooms()) {
             try {
                 bookings.put(room, getBookings(room, LocalDateTime.now(ZoneId.of("Europe/Paris"))));
-            } catch (ParseException | ParserException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Could not get or parse bookings for a specific room " + room.name(), e);
             }
         }
         return bookings;
     }
 
-    private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, IllegalArgumentException, ParseException, ParserException {
+    private List<Booking> getBookings(Room room, LocalDateTime startTime) throws IOException, ParserException {
         List<Booking> bookings = new ArrayList<>();
-        if (room == null) {
-            throw new IllegalArgumentException("Room cannot be null");
-        }
-        if (weeksForwardToCache <= 0) {
-            throw new IllegalArgumentException(weeksForwardToCache + " is not a valid number of weeks to cache");
-        }
 
         LocalDateTime endTime = startTime.plusWeeks(weeksForwardToCache);
         net.fortuna.ical4j.model.Calendar schedule = timeEditAPIInterface.getSchedule(room.timeEditId(), startTime, endTime);
