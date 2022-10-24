@@ -6,6 +6,8 @@ This application is aimed at students to aid in finding breakout rooms on Chalme
 
 ## Running the application
 
+Make sure you have Java version 18 installed.
+
 The project is a Maven project. To run it from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then go to
 http://localhost:8080 in your browser.
