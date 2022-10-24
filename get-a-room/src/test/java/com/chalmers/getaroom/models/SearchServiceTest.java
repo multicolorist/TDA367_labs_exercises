@@ -1,11 +1,9 @@
 package com.chalmers.getaroom.models;
 
 import com.chalmers.getaroom.models.objects.*;
-import net.fortuna.ical4j.data.ParserException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import static org.mockito.Mockito.when;
 class SearchServiceTest {
 
     @Test
-    void search_shouldReturnProperResultsWhenSortingByDistance() throws IOException, ParseException, ParserException {
+    void search_shouldReturnProperResultsWhenSortingByDistance() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -33,17 +31,17 @@ class SearchServiceTest {
 
         when(roomServiceInterface.getRooms()).thenReturn(rooms);
 
-        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 00), LocalDateTime.of(2022, 01, 01, 13, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 15, 00), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 11, 00), LocalDateTime.of(2022, 01, 01, 12, 30))));
-        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 30), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 16, 30), LocalDateTime.of(2022, 01, 01, 17, 00))));
+        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 0), LocalDateTime.of(2022, 1, 1, 13, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 15, 0), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 11, 0), LocalDateTime.of(2022, 1, 1, 12, 30))));
+        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 30), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 16, 30), LocalDateTime.of(2022, 1, 1, 17, 0))));
 
         when(routeServiceInterface.getBirdsDistance(any(), any())).thenReturn(1000.0);
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 2, LocalDateTime.of(2022, 01, 01, 12, 15), LocalDateTime.of(2022, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 2, LocalDateTime.of(2022, 1, 1, 12, 15), LocalDateTime.of(2022, 1, 1, 13, 0));
 
         SearchResult searchResult = searchServiceInterface.search(query);
 
@@ -55,7 +53,7 @@ class SearchServiceTest {
     }
 
     @Test
-    void search_shouldReturnProperResultsWhenSortingByName() throws IOException, ParseException, ParserException {
+    void search_shouldReturnProperResultsWhenSortingByName() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -69,17 +67,17 @@ class SearchServiceTest {
 
         when(roomServiceInterface.getRooms()).thenReturn(rooms);
 
-        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 00), LocalDateTime.of(2022, 01, 01, 13, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 15, 00), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 11, 00), LocalDateTime.of(2022, 01, 01, 12, 30))));
-        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 30), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 16, 30), LocalDateTime.of(2022, 01, 01, 17, 00))));
+        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 0), LocalDateTime.of(2022, 1, 1, 13, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 15, 0), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 11, 0), LocalDateTime.of(2022, 1, 1, 12, 30))));
+        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 30), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 16, 30), LocalDateTime.of(2022, 1, 1, 17, 0))));
 
         when(routeServiceInterface.getBirdsDistance(any(), any())).thenReturn(1000.0);
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(Double.NaN, Double.NaN), 2, LocalDateTime.of(2022, 01, 01, 12, 15), LocalDateTime.of(2022, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(Double.NaN, Double.NaN), 2, LocalDateTime.of(2022, 1, 1, 12, 15), LocalDateTime.of(2022, 1, 1, 13, 0));
 
         SearchResult searchResult = searchServiceInterface.search(query);
 
@@ -91,7 +89,7 @@ class SearchServiceTest {
     }
 
     @Test
-    void search_shouldThrowIllegalArgumentExceptionOnGroupSizeSmallerThanOne() throws IOException, ParseException, ParserException {
+    void search_shouldThrowIllegalArgumentExceptionOnGroupSizeSmallerThanOne() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -105,23 +103,23 @@ class SearchServiceTest {
 
         when(roomServiceInterface.getRooms()).thenReturn(rooms);
 
-        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 00), LocalDateTime.of(2022, 01, 01, 13, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 15, 00), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 11, 00), LocalDateTime.of(2022, 01, 01, 12, 30))));
-        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 30), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 16, 30), LocalDateTime.of(2022, 01, 01, 17, 00))));
+        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 0), LocalDateTime.of(2022, 1, 1, 13, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 15, 0), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 11, 0), LocalDateTime.of(2022, 1, 1, 12, 30))));
+        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 30), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 16, 30), LocalDateTime.of(2022, 1, 1, 17, 0))));
 
         when(routeServiceInterface.getBirdsDistance(any(), any())).thenReturn(1000.0);
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 0, LocalDateTime.of(2022, 01, 01, 12, 15), LocalDateTime.of(2022, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 0, LocalDateTime.of(2022, 1, 1, 12, 15), LocalDateTime.of(2022, 1, 1, 13, 0));
 
         assertThrows(IllegalArgumentException.class, () -> searchServiceInterface.search(query));
     }
 
     @Test
-    void search_shouldThrowIllegalArgumentExceptionOnStartTimeAfterEndTime() throws IOException, ParseException, ParserException {
+    void search_shouldThrowIllegalArgumentExceptionOnStartTimeAfterEndTime() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -135,23 +133,23 @@ class SearchServiceTest {
 
         when(roomServiceInterface.getRooms()).thenReturn(rooms);
 
-        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 00), LocalDateTime.of(2022, 01, 01, 13, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 15, 00), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 11, 00), LocalDateTime.of(2022, 01, 01, 12, 30))));
-        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 30), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 16, 30), LocalDateTime.of(2022, 01, 01, 17, 00))));
+        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 0), LocalDateTime.of(2022, 1, 1, 13, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 15, 0), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 11, 0), LocalDateTime.of(2022, 1, 1, 12, 30))));
+        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 30), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 16, 30), LocalDateTime.of(2022, 1, 1, 17, 0))));
 
         when(routeServiceInterface.getBirdsDistance(any(), any())).thenReturn(1000.0);
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2022, 01, 01, 12, 15), LocalDateTime.of(2021, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2022, 1, 1, 12, 15), LocalDateTime.of(2021, 1, 1, 13, 0));
 
         assertThrows(IllegalArgumentException.class, () -> searchServiceInterface.search(query));
     }
 
     @Test
-    void search_shouldSkipRoomIfFailToGetBookings() throws IOException, ParseException, ParserException {
+    void search_shouldSkipRoomIfFailToGetBookings() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -171,13 +169,13 @@ class SearchServiceTest {
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 01, 01, 12, 15), LocalDateTime.of(2021, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 1, 1, 12, 15), LocalDateTime.of(2021, 1, 1, 13, 0));
 
         searchServiceInterface.search(query);
     }
 
     @Test
-    void search_shouldFailOnGetRoomsFail() throws IOException, ParseException, ParserException {
+    void search_shouldFailOnGetRoomsFail() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -197,13 +195,13 @@ class SearchServiceTest {
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 01, 01, 12, 15), LocalDateTime.of(2021, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 1, 1, 12, 15), LocalDateTime.of(2021, 1, 1, 13, 0));
 
         assertThrows(IOException.class, () -> searchServiceInterface.search(query));
     }
 
     @Test
-    void search_shouldSkipRoomIfBirdsDistanceFails() throws IOException, ParseException, ParserException {
+    void search_shouldSkipRoomIfBirdsDistanceFails() throws IOException {
         RoomServiceInterface roomServiceInterface = mock(RoomServiceInterface.class);
         BookingServiceInterface bookingServiceInterface = mock(BookingServiceInterface.class);
         RouteServiceInterface routeServiceInterface = mock(RouteServiceInterface.class);
@@ -217,17 +215,17 @@ class SearchServiceTest {
 
         when(roomServiceInterface.getRooms()).thenReturn(rooms);
 
-        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 00), LocalDateTime.of(2022, 01, 01, 13, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 15, 00), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 11, 00), LocalDateTime.of(2022, 01, 01, 12, 30))));
-        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 12, 30), LocalDateTime.of(2022, 01, 01, 16, 00))));
-        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 01, 01, 16, 30), LocalDateTime.of(2022, 01, 01, 17, 00))));
+        when(bookingServiceInterface.getBookings(rooms.get(0))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 0), LocalDateTime.of(2022, 1, 1, 13, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(1))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 15, 0), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(2))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 11, 0), LocalDateTime.of(2022, 1, 1, 12, 30))));
+        when(bookingServiceInterface.getBookings(rooms.get(3))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 12, 30), LocalDateTime.of(2022, 1, 1, 16, 0))));
+        when(bookingServiceInterface.getBookings(rooms.get(4))).thenReturn(List.of(new Booking(LocalDateTime.of(2022, 1, 1, 16, 30), LocalDateTime.of(2022, 1, 1, 17, 0))));
 
         when(routeServiceInterface.getBirdsDistance(any(), any())).thenThrow(RuntimeException.class);
 
         SearchServiceInterface searchServiceInterface = new SearchService(bookingServiceInterface, roomServiceInterface, routeServiceInterface);
 
-        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 01, 01, 12, 15), LocalDateTime.of(2021, 01, 01, 13, 00));
+        SearchQuery query = new SearchQuery(new Location(1, 1), 1, LocalDateTime.of(2021, 1, 1, 12, 15), LocalDateTime.of(2021, 1, 1, 13, 0));
 
         searchServiceInterface.search(query);
     }

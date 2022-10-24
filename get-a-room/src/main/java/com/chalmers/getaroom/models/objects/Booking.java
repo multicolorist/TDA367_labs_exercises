@@ -3,7 +3,6 @@ package com.chalmers.getaroom.models.objects;
 import com.google.gson.JsonObject;
 import net.fortuna.ical4j.model.component.VEvent;
 
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,7 +22,7 @@ public record Booking(LocalDateTime startTime, LocalDateTime endTime) {
      * @param obj A JSON object representing the booking
      * @return A Booking object from the parsed JSON
      */
-    public static Booking fromJSON(JsonObject obj) throws ParseException {
+    public static Booking fromJSON(JsonObject obj) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMdd'T'HHmmss");
         LocalDateTime startTime = LocalDateTime.parse(obj.get("reservation_begin").getAsString(), formatter);
         LocalDateTime endTime = LocalDateTime.parse(obj.get("reservation_end").getAsString(), formatter);

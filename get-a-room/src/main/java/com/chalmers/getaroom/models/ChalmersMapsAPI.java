@@ -86,7 +86,7 @@ class ChalmersMapsAPI implements ChalmersMapsAPIInterface {
     }
 
     /**
-     * Get information about a API object identified by its UID.
+     * Get information about an API object identified by its UID.
      *
      * @param uuid The unique identifier of the object
      * @return JSON object representing information about the object

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 class RouteService implements RouteServiceInterface {
 
-    private ChalmersMapsAPIInterface chalmersMapsAPI;
+    private final ChalmersMapsAPIInterface chalmersMapsAPI;
     private final Logger logger = Logger.getLogger(RouteService.class.getName());
 
     @Autowired

@@ -6,7 +6,6 @@ import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 
 /**
  * A custom anchor that looks and acts like a button
@@ -18,7 +17,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyle {
     /**
-     * Custom-Attribut, used to identify the `vaadin-button` as child of `CustomAnchor`
+     * Custom-Attribute, used to identify the `vaadin-button` as child of `CustomAnchor`
      */
     private static final String ATTR_ANCHOR = "anchor";
 
@@ -35,7 +34,7 @@ public class CustomAnchor extends Composite<Anchor> implements HasTheme, HasStyl
         this();
         setHref(href);
         setText(text);
-        btn.setIcon(new Icon(VaadinIcon.CALENDAR_CLOCK));
+        btn.setIcon(icon);
         if (customClassName != null && !customClassName.isEmpty()) {
             btn.addClassName(customClassName);
         }

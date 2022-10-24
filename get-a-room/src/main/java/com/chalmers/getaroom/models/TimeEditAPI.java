@@ -11,7 +11,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Utility for accessing the TimeEdit API
@@ -20,7 +19,7 @@ import java.util.List;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 class TimeEditAPI implements TimeEditAPIInterface {
 
-    private WebRequestsInterface webRequests;
+    private final WebRequestsInterface webRequests;
     private final PercentEscaper percentEscaper = new PercentEscaper("", false);
 
     public TimeEditAPI(WebRequestsInterface webRequests) {
@@ -38,25 +37,8 @@ class TimeEditAPI implements TimeEditAPIInterface {
      * @throws ParserException If the underlying API request returned invalid or malformed data
      */
     public Calendar getSchedule(String id, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {
-        return getSchedule(List.of(id), start, end);
-    }
-
-    /**
-     * Gets a schedule from TimeEdit for multiple given rooms and time period.
-     *
-     * @param IDs   A list of TimeEdit IDs for rooms
-     * @param start The start time of the period to get bookings for
-     * @param end   The end time of the period to get bookings for
-     * @return Calendar object representing all bookings for the rooms and given period
-     * @throws IOException     If the underlying API request failed for some reason
-     * @throws ParserException If the underlying API request returned invalid or malformed data
-     */
-    public Calendar getSchedule(List<String> IDs, LocalDateTime start, LocalDateTime end) throws IOException, ParserException {
-        StringBuilder sURL = new StringBuilder("https://cloud.timeedit.net/chalmers/web/public/ri.ics?sid=3");
-        for (String id : IDs) {
-            sURL.append("&object=").append(percentEscaper.escape(id)).append("&type=room");
-        }
-        sURL.append("&l=en");
-        return webRequests.readIcalendarFromUrl(sURL.toString());
+        String sURL = "https://cloud.timeedit.net/chalmers/web/public/ri.ics?sid=3" +
+                "&object=" + percentEscaper.escape(id) + "&type=room" + "&l=en";
+        return webRequests.readIcalendarFromUrl(sURL);
     }
 }

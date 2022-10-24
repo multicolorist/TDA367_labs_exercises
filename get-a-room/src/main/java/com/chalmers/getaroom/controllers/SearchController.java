@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 // @UIScope
 public class SearchController {
     private final GetARoomFacadeInterface getARoomFacade;
-    private GeolocationComponentController geolocationComponentController;
+    private final GeolocationComponentController geolocationComponentController;
     private final QueryContainer queryContainer;
     private final SearchResultComponent searchResultComponent;
     private final Logger logger = Logger.getLogger(SearchController.class.getName());

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @UIScope
 public class AboutButton extends Button {
-    Icon icon = new Icon(VaadinIcon.QUESTION);
+    private final Icon icon = new Icon(VaadinIcon.QUESTION);
 
     public AboutButton() {
         this.setIcon(icon);

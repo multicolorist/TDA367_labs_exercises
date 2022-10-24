@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION, proxyMode = ScopedProxyMode.NO)
 class RoomService implements RoomServiceInterface {
 
-    private GenericCacheInterface<List<Room>> roomCache;
+    private final GenericCacheInterface<List<Room>> roomCache;
     private final Logger logger = Logger.getLogger(RoomService.class.getName());
 
     @Autowired

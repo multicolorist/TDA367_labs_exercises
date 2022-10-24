@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 public class MapComponentController {
     private final MapComponent mapComponent;
 
-    GetARoomFacadeInterface getARoomFacade;
     private final Logger logger = Logger.getLogger(MapComponentController.class.getName());
 
     /**
@@ -31,7 +30,6 @@ public class MapComponentController {
      */
     public MapComponentController(MapComponent mapComponent, GetARoomFacadeInterface getARoomFacade) {
         this.mapComponent = mapComponent;
-        this.getARoomFacade = getARoomFacade;
 
         try {
             mapComponent.addGeoJSON("buildings", getARoomFacade.getGeoJsonBuildings());

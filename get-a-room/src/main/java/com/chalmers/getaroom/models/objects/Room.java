@@ -50,7 +50,7 @@ public record Room(String name, int seats, String building, String floor, String
             entranceLongitude = infoObj.get("entrance_longitude").getAsDouble();
             entranceLatitude = infoObj.get("entrance_latitude").getAsDouble();
         } else {
-            //Fallback to "normal" location
+            // Fallback to "normal" location
             entranceLongitude = longitude;
             entranceLatitude = latitude;
         }

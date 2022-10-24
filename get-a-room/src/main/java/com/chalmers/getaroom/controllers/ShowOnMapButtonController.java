@@ -22,9 +22,9 @@ import java.util.logging.Logger;
 @Component
 @UIScope
 public class ShowOnMapButtonController {
-    GetARoomFacadeInterface getARoomFacade;
-    MapComponentController mapComponentController;
-    GeolocationComponentController geolocationComponentController;
+    private final GetARoomFacadeInterface getARoomFacade;
+    private final MapComponentController mapComponentController;
+    private final GeolocationComponentController geolocationComponentController;
     private final Logger logger = Logger.getLogger(ShowOnMapButtonController.class.getName());
 
     public ShowOnMapButtonController(
@@ -47,7 +47,7 @@ public class ShowOnMapButtonController {
     }
 
     private class ShowOnMapButtonListener implements ComponentEventListener<ClickEvent<Button>> {
-        GetARoomFacadeInterface getARoomFacade;
+        private final GetARoomFacadeInterface getARoomFacade;
 
         public ShowOnMapButtonListener(GetARoomFacadeInterface getARoomFacade) {
             this.getARoomFacade = getARoomFacade;

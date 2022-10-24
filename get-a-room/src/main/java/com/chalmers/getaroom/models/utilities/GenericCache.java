@@ -13,9 +13,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class GenericCache<T> implements GenericCacheInterface<T> {
 
     private T cache = null;
-    private transient CacheUpdateProvider<T> updateProvider;
+    private final transient CacheUpdateProvider<T> updateProvider;
     private Instant lastRefresh = null;
-    private transient Lock cacheRefreshInProgressLock = new ReentrantLock();
+    private final transient Lock cacheRefreshInProgressLock = new ReentrantLock();
     private boolean cacheRefreshSucceeded = false;
 
     /**
@@ -41,11 +41,11 @@ public class GenericCache<T> implements GenericCacheInterface<T> {
                 cacheRefreshInProgressLock.unlock();
             }
         } else {
-            //Cache update already in progress on another thread. Wait for it to complete
+            // Cache update already in progress on another thread. Wait for it to complete
             cacheRefreshInProgressLock.lock();
             cacheRefreshInProgressLock.unlock();
             if (!cacheRefreshSucceeded) {
-                //Cache update appears to have failed. Trying again
+                // Cache update appears to have failed. Trying again
                 refreshCache();
             }
         }

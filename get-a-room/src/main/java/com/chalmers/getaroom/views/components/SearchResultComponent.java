@@ -18,7 +18,6 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.dom.ElementFactory;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -35,7 +34,7 @@ public class SearchResultComponent extends VirtualList<SearchRecord> {
     private LocalDate currentSearchQueryDate;
     private final Mediator mapMediator;
 
-    public SearchResultComponent(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) throws IOException {
+    public SearchResultComponent(ShowOnMapButtonController showOnMapButtonController, Mediator mapMediator) {
         // Init fields
         this.showOnMapButtonController = showOnMapButtonController;
         this.mapMediator = mapMediator;
