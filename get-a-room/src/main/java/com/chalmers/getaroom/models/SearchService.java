@@ -86,13 +86,13 @@ class SearchService implements SearchServiceInterface {
 
                 try {
                     results.add(new SearchRecord(room, bookingService.getBookings(room),
-                            searchQuery.userLocation() != null ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : Double.NaN));
+                            !Double.isNaN(searchQuery.userLocation().latitude()) && !Double.isNaN(searchQuery.userLocation().longitude()) ? routeService.getBirdsDistance(searchQuery.userLocation(), room.location()) : Double.NaN));
                 } catch (Exception e) {
                     logger.log(Level.WARNING, "Failed to get bookings for room: " + room.name() + " with UUID " + room.uuid() + ". Skipping room for current search.", e);
                 }
             }
 
-            if (searchQuery.userLocation() == null) {
+            if (Double.isNaN(searchQuery.userLocation().latitude()) || Double.isNaN(searchQuery.userLocation().longitude())) {
                 results.sort(Comparator.comparing(o -> o.room().name()));
             } else {
                 results.sort(Comparator.comparing(o -> o.birdsDistance()));
