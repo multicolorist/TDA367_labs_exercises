@@ -88,10 +88,7 @@ class SearchService implements SearchServiceInterface {
                 List<Booking> bookings = bookingService.getBookings(room);
 
                 for (Booking booking : bookings) {
-                    // Booking start time is within the search time
-                    if (((booking.startTime().isAfter(searchQuery.startTime()) || booking.startTime().isEqual(searchQuery.startTime())) && booking.startTime().isBefore(searchQuery.endTime()))
-                            // or Booking end time is within the search time
-                            || (booking.endTime().isAfter(searchQuery.startTime()) && (booking.endTime().isBefore(searchQuery.endTime()) || booking.endTime().isEqual(searchQuery.endTime())))) {
+                    if (hasTimeOverlap(searchQuery, booking)) {
                         continue roomLoop;
                     }
                 }
@@ -103,6 +100,10 @@ class SearchService implements SearchServiceInterface {
 
         }
         return matchingRooms;
+    }
+
+    private static boolean hasTimeOverlap(SearchQuery searchQuery, Booking booking) {
+        return !searchQuery.endTime().isBefore(booking.startTime()) && !searchQuery.startTime().isAfter(booking.endTime());
     }
 
     private void validateSearchQuery(SearchQuery searchQuery) {
